@@ -12,13 +12,13 @@ export default function SkeuoButton({ children, className = "", ...props }: Skeu
   const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <motion.button
+    <button
       {...props}
-      onMouseDown={() => setIsPressed(true)}
-      onMouseUp={() => setIsPressed(false)}
-      onMouseLeave={() => setIsPressed(false)}
-      onTouchStart={() => setIsPressed(true)}
-      onTouchEnd={() => setIsPressed(false)}
+      onMouseDown={(e) => { setIsPressed(true); props.onMouseDown?.(e); }}
+      onMouseUp={(e) => { setIsPressed(false); props.onMouseUp?.(e); }}
+      onMouseLeave={(e) => { setIsPressed(false); props.onMouseLeave?.(e); }}
+      onTouchStart={(e) => { setIsPressed(true); props.onTouchStart?.(e); }}
+      onTouchEnd={(e) => { setIsPressed(false); props.onTouchEnd?.(e); }}
       className={`relative overflow-hidden skeuo-btn px-8 py-4 text-lg font-bold tracking-wide transition-all duration-200 
         ${isPressed ? 'skeuo-pressed scale-[0.98]' : 'hover:-translate-y-[2px] hover:scale-[1.02]'} 
         ${className}`}
@@ -30,6 +30,6 @@ export default function SkeuoButton({ children, className = "", ...props }: Skeu
       <span className="relative z-10 opacity-90 transition-opacity duration-200" style={{ textShadow: "0 1px 1px rgba(255,255,255,0.4)" }}>
         {children}
       </span>
-    </motion.button>
+    </button>
   );
 }
