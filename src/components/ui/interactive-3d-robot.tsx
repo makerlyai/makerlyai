@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useRef } from "react";
+import { useInView } from "framer-motion";
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
 interface InteractiveRobotSplineProps {
@@ -49,13 +50,19 @@ export function InteractiveRobotSpline({
 export function RobotSection() {
   const ROBOT_SCENE_URL =
     "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
+    
+  // Defer heavy WebGL canvas initialization until user scrolls near
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "800px 0px 800px 0px" });
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black border-y border-white/10 z-20">
-      <InteractiveRobotSpline
-        scene={ROBOT_SCENE_URL}
-        className="absolute inset-0 z-0"
-      />
+    <div ref={containerRef} className="relative w-screen h-screen overflow-hidden bg-black border-y border-white/10 z-20">
+      {isInView && (
+        <InteractiveRobotSpline
+          scene={ROBOT_SCENE_URL}
+          className="absolute inset-0 z-0"
+        />
+      )}
       
       {/* Explicit mask to hide the Spline watermark which sits at the bottom right */}
       <div className="absolute bottom-0 right-0 w-48 h-16 bg-black z-10 pointer-events-none" />

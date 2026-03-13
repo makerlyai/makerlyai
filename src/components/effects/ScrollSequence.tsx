@@ -31,37 +31,66 @@ export default function ScrollSequence({
   // Map progress to frame index
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
-  useEffect(() => {
-    // Preload images
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
+  const hasPreloaded = useRef(false);
 
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      // ezgif extracts frames starting from 1 usually, e.g. ezgif-frame-001.jpg
-      const frameNumber = i + 1;
-      const paddedIndex = frameNumber.toString().padStart(3, '0');
-      
-      // Try the exact ezgif format first
-      img.src = `${imagePathPrefix}${paddedIndex}.${imageExtension}`;
-      
-      img.onload = () => {
-        loadedCount++;
-        setImagesLoaded(loadedCount);
-        if (i === 0 && canvasRef.current) {
-          drawFrame(img);
+  useEffect(() => {
+    // Only preload when the sequence section is close to entering the screen
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasPreloaded.current) {
+          hasPreloaded.current = true;
+          // Disconnect immediately after triggering
+          observer.disconnect();
+
+          const loadedImages: HTMLImageElement[] = [];
+          let loadedCount = 0;
+          
+          // Mobile optimization to save RAM
+          // On mobile, load fewer frames to save memory. 
+          const isMobile = window.innerWidth < 768;
+          const frameStep = isMobile ? 3 : 1; 
+          const framesToLoad = Math.ceil(frameCount / frameStep);
+
+          for (let i = 0; i < frameCount; i += frameStep) {
+            const img = new Image();
+            const frameNumber = i + 1;
+            const paddedIndex = frameNumber.toString().padStart(3, '0');
+            
+            img.src = `${imagePathPrefix}${paddedIndex}.${imageExtension}`;
+            
+            img.onload = () => {
+              loadedCount++;
+              setImagesLoaded(loadedCount * frameStep); // approximate loading bar visually
+              if (i === 0 && canvasRef.current) {
+                drawFrame(img);
+              }
+            };
+            
+            img.onerror = () => {
+                img.src = `${imagePathPrefix}${i}.${imageExtension}`;
+            }
+            
+            // On mobile, duplicate the frame reference to fill the gaps so the `useTransform` logic still works 0-136
+            if (isMobile) {
+               for(let j = 0; j < frameStep && (i + j) < frameCount; j++) {
+                  loadedImages[i + j] = img;
+               }
+            } else {
+               loadedImages[i] = img;
+            }
+          }
+          
+          setImages(loadedImages);
         }
-      };
-      
-      // Fallback
-      img.onerror = () => {
-          img.src = `${imagePathPrefix}${i}.${imageExtension}`;
-      }
-      
-      loadedImages.push(img);
+      },
+      { rootMargin: "1000px 0px 1000px 0px" } // Trigger early but not on mount
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
     
-    setImages(loadedImages);
+    return () => observer.disconnect();
   }, [frameCount, imagePathPrefix, imageExtension]);
 
   const drawFrame = (img: HTMLImageElement) => {

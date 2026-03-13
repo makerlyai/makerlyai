@@ -42,11 +42,11 @@ export default function Home() {
       
       {/* Universal Fixed Cinematic Background - Prevents awkward black gaps */}
       <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
-         <div className="absolute inset-0 bg-background/90 dark:bg-black/85 z-10 mix-blend-multiply" />
+         <div className="absolute inset-0 bg-background/90 md:bg-background/90 dark:bg-black/90 md:dark:bg-black/85 z-10 md:mix-blend-multiply" />
          <img 
            src="/scene1.jpg" 
            alt="Cinematic Canvas" 
-           className="w-full h-full object-cover opacity-25 mix-blend-luminosity"
+           className="w-full h-full object-cover opacity-15 md:opacity-25 md:mix-blend-luminosity"
          />
       </div>
       {isLoading && <SmoothLoader onLoadingComplete={() => setIsLoading(false)} />}

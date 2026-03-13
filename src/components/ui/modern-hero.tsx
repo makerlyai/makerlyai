@@ -13,10 +13,8 @@ import { useRef } from "react";
 export const SmoothScrollHero = () => {
   return (
     <div className="bg-zinc-950">
-      <ReactLenis root>
-        <Hero />
-        <Schedule />
-      </ReactLenis>
+      <Hero />
+      <Schedule />
     </div>
   );
 };
