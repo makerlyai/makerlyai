@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, lazy, useRef } from "react";
+import { Suspense, lazy, useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
@@ -51,13 +51,20 @@ export function RobotSection() {
   const ROBOT_SCENE_URL =
     "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
     
+  const [isMobile, setIsMobile] = useState(true); // Default true for safety SSR
+  
+  useEffect(() => {
+     setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
+    
   // Defer heavy WebGL canvas initialization until user scrolls near
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "800px 0px 800px 0px" });
 
   return (
     <div ref={containerRef} className="relative w-screen h-screen overflow-hidden bg-black border-y border-white/10 z-20">
-      {isInView && (
+      {/* Strictly prevent WebGL from loading on smartphones per performance rule */}
+      {isInView && !isMobile && (
         <InteractiveRobotSpline
           scene={ROBOT_SCENE_URL}
           className="absolute inset-0 z-0"

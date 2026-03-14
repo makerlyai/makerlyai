@@ -11,7 +11,7 @@ interface TimelineItem {
   date: string;
   content: string;
   category: string;
-  icon: React.ElementType;
+  icon: any;
   relatedIds: number[];
   status: "completed" | "in-progress" | "pending";
   energy: number;

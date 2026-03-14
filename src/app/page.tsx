@@ -14,7 +14,7 @@ import { TextRoll } from "@/components/ui/text-roll";
 import { GlowingFeatures } from "@/components/ui/glowing-features";
 import { Tweet } from "@/components/ui/tweet";
 import { RobotSection } from "@/components/ui/interactive-3d-robot";
-import { SmoothScrollHero } from "@/components/ui/modern-hero";
+import { AntiGravityHero } from "@/components/ui/anti-gravity-hero";
 import { TestimonialsWithMarquee } from "@/components/ui/testimonials-with-marquee";
 import { RadialOrbitalTimelineDemo } from "@/components/ui/radial-orbital-timeline-demo";
 
@@ -166,7 +166,7 @@ export default function Home() {
 
       <RobotSection />
 
-      <SmoothScrollHero />
+      <AntiGravityHero />
 
       {/* Image Sequence Scroll Triggered Effect */}
       {/* Fallback frame naming strategy based on ezgif extraction */}
