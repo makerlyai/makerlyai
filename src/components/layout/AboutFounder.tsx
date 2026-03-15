@@ -1,12 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
 import Image from "next/image";
 
 export default function AboutFounder() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(true);
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -22,10 +27,10 @@ export default function AboutFounder() {
 
   // Content for the cards
   const founderImages = [
-    { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[40vh] md:h-[60vh]" },
-    { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[25vh] md:h-[30vh]" },
-    { src: "/myphoto3.jpg", y: y3, className: "col-span-1 h-[25vh] md:h-[30vh]" },
-    { src: "/myphoto4nature.jpg", y: y1, className: "col-span-1 md:col-span-2 h-[30vh]" }
+    { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[300px] md:h-[60vh]" },
+    { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[200px] md:h-[30vh]" },
+    { src: "/myphoto3.jpg", y: y3, className: "col-span-1 h-[200px] md:h-[30vh]" },
+    { src: "/myphoto4nature.jpg", y: y1, className: "col-span-1 md:col-span-2 h-[250px] md:h-[30vh]" }
   ];
 
   return (
@@ -57,7 +62,7 @@ export default function AboutFounder() {
           {founderImages.map((img, idx) => (
              <motion.div 
                key={idx} 
-               style={{ y: img.y }} 
+               style={{ y: isMobile ? 0 : img.y }} 
                className={`relative rounded-3xl overflow-hidden group shadow-2xl ${img.className}`}
              >
                {/* Using an img tag directly instead of next/image temporarily since assets need to be moved to /public */}
@@ -65,6 +70,7 @@ export default function AboutFounder() {
                <img 
                  src={img.src} 
                  alt="Founder Activity" 
+                 decoding="async"
                  className="object-cover w-full h-full scale-100 group-hover:scale-110 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]"
                />
                <div className="absolute inset-0 border border-white/20 rounded-3xl z-20 pointer-events-none mix-blend-overlay" />
