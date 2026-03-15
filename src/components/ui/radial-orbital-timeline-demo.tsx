@@ -63,7 +63,7 @@ const timelineData = [
 
 export function RadialOrbitalTimelineDemo() {
   return (
-    <div className="relative w-full h-screen bg-black border-y border-white/10 z-20 flex flex-col items-center overflow-hidden pt-24 md:pt-32">
+    <div className="relative w-full min-h-[100dvh] md:h-screen bg-black border-y border-white/10 z-20 flex flex-col items-center overflow-hidden pt-24 md:pt-32">
       <div className="absolute top-8 md:top-12 left-0 right-0 z-0 text-center pointer-events-none">
         <h2 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-white">
           Operation <span className="text-brand-blue">Timeline</span>

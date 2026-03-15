@@ -155,7 +155,7 @@ export default function ScrollSequence({
 
   return (
     <div ref={containerRef} className="relative w-full h-[300vh] bg-transparent">
-      <div className="sticky top-0 w-full h-screen overflow-hidden">
+      <div className="sticky top-0 w-full h-[100dvh] md:h-screen overflow-hidden">
         
         {/* Loading overlay if assets are huge */}
         {imagesLoaded < frameCount && (

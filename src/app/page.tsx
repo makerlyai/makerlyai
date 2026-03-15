@@ -54,7 +54,7 @@ export default function Home() {
       {/* Hero Section */}
       <section 
         ref={heroRef}
-        className="relative w-full h-screen flex flex-col items-center justify-center p-4 overflow-hidden"
+        className="relative w-full min-h-[100dvh] md:h-screen flex flex-col items-center justify-center p-4 overflow-hidden"
       >
         {/* Hero section now leverages the universal fixed background */}
 

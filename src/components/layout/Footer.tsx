@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer 
       ref={containerRef}
-      className="relative w-full h-[80vh] bg-foreground text-background overflow-hidden flex flex-col justify-between pt-20"
+      className="relative w-full h-[700px] md:h-[80vh] bg-foreground text-background overflow-hidden flex flex-col justify-between pt-20"
       style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
     >
       <motion.div 
