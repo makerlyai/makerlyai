@@ -63,7 +63,7 @@ export default function Header() {
         
         {/* Brand Logo - Encased in a perfectly crafted premium 'Glass Pill' container to frame the logo intentionally */}
         <div 
-          className="relative flex items-center justify-center cursor-pointer group bg-white/95 md:backdrop-blur-3xl h-10 md:h-14 px-8 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
+          className="relative flex items-center justify-center cursor-pointer group bg-white md:backdrop-blur-3xl h-10 md:h-14 px-8 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           {/* Subtle reflection overlay */}
