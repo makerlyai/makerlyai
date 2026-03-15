@@ -32,7 +32,7 @@ export default function Header() {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 inset-x-0 z-[100] transition-[background-color,padding] duration-500 ${
         scrolled 
-          ? "bg-background/80 backdrop-blur-2xl py-4" 
+          ? "bg-background/95 md:bg-background/80 md:backdrop-blur-2xl py-4" 
           : "bg-transparent py-6"
       }`}
     >
@@ -40,7 +40,7 @@ export default function Header() {
         
         {/* Brand Logo - Encased in a perfectly crafted premium 'Glass Pill' container to frame the logo intentionally */}
         <div 
-          className="relative flex items-center justify-center cursor-pointer group bg-white/95 backdrop-blur-3xl h-12 md:h-16 px-6 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
+          className="relative flex items-center justify-center cursor-pointer group bg-white/95 md:backdrop-blur-3xl h-12 md:h-16 px-6 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           {/* Subtle reflection overlay */}

@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* Neon Scroll Stripe - Left to Right Motion */}
-      <section id="capabilities" className="relative w-full py-24 md:py-32 overflow-hidden z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-xl border-y border-white/10">
+      <section id="capabilities" className="relative w-full py-24 md:py-32 overflow-hidden z-20 flex flex-col items-center justify-center bg-black/80 md:bg-black/40 md:backdrop-blur-xl border-y border-white/10">
         <div className="absolute inset-0 bg-brand-blue/5 blur-3xl pointer-events-none" />
         <p className="text-white/50 uppercase tracking-[0.3em] text-xs font-semibold mb-16 relative z-10">What We Do</p>
         
@@ -190,7 +190,7 @@ export default function Home() {
       <AboutFounder />
 
       {/* Social Proof & Updates */}
-      <section className="relative w-full py-24 px-4 flex justify-center bg-black/40 backdrop-blur-3xl z-20 border-y border-white/10">
+      <section className="relative w-full py-24 px-4 flex justify-center bg-black/80 md:bg-black/40 md:backdrop-blur-3xl z-20 border-y border-white/10">
          <Tweet className="w-full shadow-2xl scale-[1.02]" id="1630000000000000000" />
       </section>
 

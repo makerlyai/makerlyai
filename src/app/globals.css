@@ -53,27 +53,45 @@ body {
 
 @layer utilities {
   .glass-panel {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background-color: rgba(255, 255, 255, 0.4); /* Solid fallback for mobile readability */
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-glass);
     border-radius: 1rem;
   }
   
+  @media (min-width: 768px) {
+    .glass-panel {
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: var(--shadow-glass);
+    }
+  }
+  
   .dark .glass-panel {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  @media (min-width: 768px) {
+    .dark .glass-panel {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
   
   .glass-card {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.4);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
     border-radius: 0.75rem;
     position: relative;
     overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .glass-card {
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    }
   }
 
   .skeuo-btn {

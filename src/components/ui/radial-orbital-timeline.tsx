@@ -40,6 +40,11 @@ export default function RadialOrbitalTimeline({
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
+
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
       setExpandedItems({});
@@ -85,7 +90,7 @@ export default function RadialOrbitalTimeline({
   useEffect(() => {
     let rotationTimer: NodeJS.Timeout;
 
-    if (autoRotate && viewMode === "orbital") {
+    if (autoRotate && viewMode === "orbital" && !isMobile) {
       rotationTimer = setInterval(() => {
         setRotationAngle((prev) => {
           const newAngle = (prev + 0.3) % 360;
@@ -99,7 +104,7 @@ export default function RadialOrbitalTimeline({
         clearInterval(rotationTimer);
       }
     };
-  }, [autoRotate, viewMode]);
+  }, [autoRotate, viewMode, isMobile]);
 
   const centerViewOnNode = (nodeId: number) => {
     if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
@@ -173,7 +178,7 @@ export default function RadialOrbitalTimeline({
               className="absolute w-24 h-24 rounded-full border border-white/10 animate-ping opacity-50"
               style={{ animationDelay: "0.5s" }}
             ></div>
-            <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md"></div>
+            <div className="w-8 h-8 rounded-full bg-white/95 md:bg-white/80 md:backdrop-blur-md"></div>
           </div>
 
           <div className="absolute w-96 h-96 rounded-full border border-white/10"></div>
@@ -252,7 +257,7 @@ export default function RadialOrbitalTimeline({
                 </div>
 
                 {isExpanded && (
-                  <Card className="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
+                  <Card className="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-black/95 md:bg-black/90 md:backdrop-blur-lg border-white/30 shadow-xl md:shadow-white/10 overflow-visible">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-white/50"></div>
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
