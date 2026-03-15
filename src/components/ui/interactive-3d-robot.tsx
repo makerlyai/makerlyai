@@ -1,152 +1,88 @@
 "use client";
 
-import { Suspense, lazy, useRef, useState, useEffect } from "react";
-import { useInView } from "framer-motion";
-const Spline = lazy(() => import("@splinetool/react-spline"));
-
-interface InteractiveRobotSplineProps {
-  scene: string;
-  className?: string;
-}
-
-export function InteractiveRobotSpline({
-  scene,
-  className,
-}: InteractiveRobotSplineProps) {
-  return (
-    <Suspense
-      fallback={
-        <div
-          className={`w-full h-full flex items-center justify-center bg-gray-900 text-white ${className}`}
-        >
-          <svg
-            className="animate-spin h-5 w-5 text-white mr-3"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l2-2.647z"
-            ></path>
-          </svg>
-        </div>
-      }
-    >
-      <Spline scene={scene} className={className} />
-    </Suspense>
-  );
-}
-
-// --- CSS-Only Mobile Fallback ---
-// A zero-WebGL, pure CSS surrogate to fill the void on smartphones while maintaining 60fps
-function MobileRobotFallback() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0 perspective-[1000px] mt-24">
-      {/* Background Ambient Glow */}
-      <div className="absolute w-[300px] h-[300px] bg-brand-blue/20 blur-[80px] rounded-full mix-blend-screen" />
-      
-      {/* CSS Floating Robot Body */}
-      <div 
-        className="relative w-48 h-64 animate-[float_6s_ease-in-out_infinite] z-10"
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {/* Head */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-24 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-[-10px_10px_30px_rgba(0,0,0,0.5),inset_2px_2px_15px_rgba(255,255,255,0.4)] flex flex-col items-center justify-center gap-2 overflow-hidden">
-           {/* Eyes */}
-           <div className="flex gap-6 mt-2">
-             <div className="w-4 h-5 rounded-full bg-brand-blue shadow-[0_0_15px_#1a4b9c] animate-pulse" />
-             <div className="w-4 h-5 rounded-full bg-brand-blue shadow-[0_0_15px_#1a4b9c] animate-pulse" />
-           </div>
-           {/* Mouth/Voice indicator */}
-           <div className="w-12 h-1 rounded-full bg-white/30 mt-4" />
-           {/* Glass Sheen */}
-           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent rotate-45" />
-        </div>
-        
-        {/* Antenna */}
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-1 h-6 bg-white/30">
-           <div className="absolute -top-2 -left-1.5 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee] animate-ping" />
-        </div>
-
-        {/* Torso */}
-        <div className="absolute top-28 left-1/2 -translate-x-1/2 w-40 h-32 bg-black/60 backdrop-blur-sm rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] flex items-center justify-center">
-           {/* Core Reactor */}
-           <div className="w-16 h-16 rounded-full border-4 border-brand-blue/30 flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full bg-brand-blue/50 shadow-[0_0_30px_#1a4b9c] animate-pulse" />
-           </div>
-        </div>
-        
-        {/* Floating shadow below */}
-        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-32 h-4 bg-black/80 blur-xl rounded-[100%] animate-[shadowPulse_6s_ease-in-out_infinite]" />
-      </div>
-      
-      {/* CSS Keyframes injected here for scoping (could also go to globals.css) */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotateY(-10deg) rotateX(5deg); }
-          50% { transform: translateY(-20px) rotateY(10deg) rotateX(-5deg); }
-        }
-        @keyframes shadowPulse {
-          0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-          50% { transform: translateX(-50%) scale(0.8); opacity: 0.2; }
-        }
-      `}} />
-    </div>
-  );
-}
+import { useRef } from "react";
+import { useScroll, useTransform, motion } from "framer-motion";
 
 export function RobotSection() {
-  const ROBOT_SCENE_URL =
-    "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
-    
-  const [isMobile, setIsMobile] = useState(true); // Default true for safety SSR
-  
-  useEffect(() => {
-     setIsMobile(window.matchMedia("(max-width: 768px)").matches);
-  }, []);
-    
-  // Defer heavy WebGL canvas initialization until user scrolls near
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "800px 0px 800px 0px" });
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 1, 0.3]);
 
   return (
     <div id="robot" ref={containerRef} className="relative w-full min-h-[100dvh] md:h-screen overflow-hidden bg-black border-y border-white/10 z-20 flex flex-col items-center justify-center">
-      {/* Mobile CSS Surrogate - 0 JS overhead */}
-      {isMobile && <MobileRobotFallback />}
-
-      {/* Strictly prevent WebGL from loading on smartphones per performance rule */}
-      {isInView && !isMobile && (
-        <InteractiveRobotSpline
-          scene={ROBOT_SCENE_URL}
-          className="absolute inset-0 z-0"
-        />
-      )}
       
-      {/* Explicit mask to hide the Spline watermark which sits at the bottom right */}
-      {!isMobile && (
-        <div className="absolute bottom-0 right-0 w-48 h-16 bg-black z-10 pointer-events-none" />
-      )}
+      {/* Abstract Background Particles */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-blue/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-900/30 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
 
-      <div className="absolute inset-0 z-20 pt-16 md:pt-12 lg:pt-16 px-4 md:px-8 pointer-events-none flex flex-col justify-start">
-        <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
-            Meet <span className="text-brand-blue">Whobee</span>
+      {/* The Neural Core (Glass Orb) */}
+      <motion.div 
+        style={{ y: y1, opacity }}
+        className="relative z-10 w-[280px] h-[280px] md:w-[400px] md:h-[400px] mt-24 md:mt-0 flex items-center justify-center perspective-[1000px]"
+      >
+        {/* Outer Halo */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-brand-blue/40 to-cyan-400/10 blur-xl animate-[spin_10s_linear_infinite]" />
+        
+        {/* Main Glass Sphere */}
+        <div className="absolute inset-4 rounded-full bg-black/40 backdrop-blur-2xl border border-white/20 shadow-[inset_0_0_60px_rgba(255,255,255,0.1),0_0_100px_rgba(26,75,156,0.3)] overflow-hidden flex items-center justify-center animate-[float_6s_ease-in-out_infinite]">
+          
+          {/* Inner Light Core */}
+          <div className="relative w-1/2 h-1/2 rounded-full bg-brand-blue/30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]" />
+          
+          {/* Neural Rings (CSS pseudo logic) */}
+          <div className="absolute w-full h-full rounded-full border border-white/10 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
+          <div className="absolute w-3/4 h-3/4 rounded-full border border-brand-blue/30 animate-[spin_8s_linear_infinite]" style={{ borderStyle: 'dashed' }} />
+          <div className="absolute w-1/2 h-1/2 rounded-full border border-cyan-400/20 animate-[spin_12s_linear_infinite_reverse]" style={{ borderStyle: 'dotted', borderWidth: '2px' }} />
+
+          {/* Glass Specular Reflection Highlight */}
+          <div className="absolute top-[10%] left-[20%] w-1/3 h-1/4 bg-white/30 rounded-[100%] blur-md rotate-[-45deg]" />
+        </div>
+
+        {/* Orbiting Data Node */}
+        <div className="absolute top-0 right-0 w-4 h-4 bg-white rounded-full shadow-[0_0_20px_#fff] animate-[orbit_8s_linear_infinite] origin-[-130px_130px] md:origin-[-190px_190px]" />
+      </motion.div>
+
+      {/* Typography Overlay */}
+      <motion.div 
+        style={{ y: y2 }}
+        className="absolute inset-0 z-20 pt-16 md:pt-12 lg:pt-16 px-4 md:px-8 pointer-events-none flex flex-col justify-start"
+      >
+        <div className="text-center text-white drop-shadow-lg w-full max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] flex flex-col gap-2">
+            <span>The</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-brand-blue to-cyan-300">Neural Core</span>
           </h2>
-          <p className="mt-4 text-xl opacity-80 uppercase tracking-widest">
-            Your Dedicated AI Architecture Assistant
+          <p className="mt-6 md:mt-8 text-lg md:text-xl opacity-80 uppercase tracking-widest px-4">
+            Bespoke Architecture. Zero Bloat. Infinite Scale.
           </p>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Global Injection of Scoped Keyframes */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-20px) scale(1.02); }
+        }
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+        }
+        @media (min-width: 768px) {
+          @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+          }
+        }
+      `}} />
     </div>
   );
 }
