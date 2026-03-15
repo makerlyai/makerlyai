@@ -27,10 +27,10 @@ export default function AboutFounder() {
 
   // Content for the cards
   const founderImages = [
-    { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[300px] md:h-[60vh]" },
-    { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[200px] md:h-[30vh]" },
-    { src: "/myphoto3.jpg", y: y3, className: "col-span-1 h-[200px] md:h-[30vh]" },
-    { src: "/myphoto4nature.jpg", y: y1, className: "col-span-1 md:col-span-2 h-[250px] md:h-[30vh]" }
+    { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[400px] md:h-[60vh]" },
+    { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[192px] md:h-[30vh]" },
+    { src: "/myphoto3.jpg", y: y3, className: "col-span-1 h-[192px] md:h-[30vh]" },
+    { src: "/myphoto4nature.jpg", y: y1, className: "col-span-2 md:col-span-2 h-[250px] md:h-[30vh]" }
   ];
 
   return (
