@@ -46,6 +46,8 @@ export default function Home() {
          <img 
            src="/scene1.jpg" 
            alt="Cinematic Canvas" 
+           decoding="async"
+           fetchPriority="high"
            className="w-full h-full object-cover opacity-15 md:opacity-25 md:mix-blend-luminosity"
          />
       </div>

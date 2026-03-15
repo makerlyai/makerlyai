@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { motion, useSpring } from 'framer-motion';
+import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
 
-  // Smooth springing for the cursor
-  const cursorX = useSpring(mousePosition.x, { stiffness: 500, damping: 28 });
-  const cursorY = useSpring(mousePosition.y, { stiffness: 500, damping: 28 });
+  // Smooth springing for the cursor (bypasses React Native render cycle)
+  const cursorX = useSpring(mouseX, { stiffness: 500, damping: 28 });
+  const cursorY = useSpring(mouseY, { stiffness: 500, damping: 28 });
 
   useEffect(() => {
     // Check if the device is a touch device (mobile optimizations priority)
@@ -22,8 +23,9 @@ export default function CustomCursor() {
     window.addEventListener('resize', checkMobile);
 
     const updateMousePosition = (e: MouseEvent) => {
-      setHasMoved(true);
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!hasMoved) setHasMoved(true); // Only trigger component render once to reveal
+      mouseX.set(e.clientX); // Direct DOM mutation
+      mouseY.set(e.clientY);
     };
 
     const handleMouseOver = (e: MouseEvent) => {

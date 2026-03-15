@@ -121,24 +121,31 @@ export default function ScrollSequence({
   };
 
   useEffect(() => {
+    let resizeTimer: NodeJS.Timeout;
     const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-        // Redraw current frame
-        const currentIndex = Math.min(
-          frameCount - 1,
-          Math.max(0, Math.floor(frameIndex.get()))
-        );
-        if (images[currentIndex]?.complete) {
-          drawFrame(images[currentIndex]);
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (canvasRef.current && window.innerWidth !== canvasRef.current.width) {
+          canvasRef.current.width = window.innerWidth;
+          canvasRef.current.height = window.innerHeight;
+          // Redraw current frame
+          const currentIndex = Math.min(
+            frameCount - 1,
+            Math.max(0, Math.floor(frameIndex.get()))
+          );
+          if (images[currentIndex]?.complete) {
+            drawFrame(images[currentIndex]);
+          }
         }
-      }
+      }, 150);
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
+    };
   }, [images, frameIndex, frameCount]);
 
   useEffect(() => {
