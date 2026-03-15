@@ -26,6 +26,7 @@ export default function AboutFounder() {
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
 
   // Content for the cards
+  // Mobile Math: Left image = 400px. Right column = 192px + 192px + 16px (gap-4) = 400px. Perfect alignment.
   const founderImages = [
     { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[400px] md:h-[60vh]" },
     { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[192px] md:h-[30vh]" },
@@ -34,7 +35,7 @@ export default function AboutFounder() {
   ];
 
   return (
-    <section ref={containerRef} className="relative w-full py-24 md:py-48 px-4 md:px-12 bg-background overflow-hidden">
+    <section id="founder" ref={containerRef} className="relative w-full py-24 md:py-48 px-4 md:px-12 bg-background overflow-hidden">
       <motion.div style={{ opacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
         
         {/* Text Area */}

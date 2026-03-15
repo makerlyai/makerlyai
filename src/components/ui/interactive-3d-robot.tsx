@@ -120,7 +120,7 @@ export function RobotSection() {
   const isInView = useInView(containerRef, { once: true, margin: "800px 0px 800px 0px" });
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[100dvh] md:h-screen overflow-hidden bg-black border-y border-white/10 z-20 flex flex-col items-center justify-center">
+    <div id="robot" ref={containerRef} className="relative w-full min-h-[100dvh] md:h-screen overflow-hidden bg-black border-y border-white/10 z-20 flex flex-col items-center justify-center">
       {/* Mobile CSS Surrogate - 0 JS overhead */}
       {isMobile && <MobileRobotFallback />}
 
