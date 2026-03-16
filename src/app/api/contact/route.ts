@@ -56,8 +56,26 @@ function getEnvConfig() {
   const notionApiKey = process.env.NOTION_API_KEY?.trim();
   const notionDatabaseId = process.env.NOTION_DATABASE_ID?.trim();
 
-  if (!gmailUser || !gmailAppPassword || !notionApiKey || !notionDatabaseId) {
-    return null;
+  const missing: string[] = [];
+
+  if (!gmailUser) {
+    missing.push("GMAIL_USER");
+  }
+
+  if (!gmailAppPassword) {
+    missing.push("GMAIL_APP_PASSWORD");
+  }
+
+  if (!notionApiKey) {
+    missing.push("NOTION_API_KEY");
+  }
+
+  if (!notionDatabaseId) {
+    missing.push("NOTION_DATABASE_ID");
+  }
+
+  if (missing.length > 0) {
+    return { missing };
   }
 
   return {
@@ -135,7 +153,7 @@ function buildClientConfirmationText(name: string) {
     `Hello ${name},`,
     "",
     "Thank you for reaching out to Makerlyai.",
-    "We’ve received your project request and our team will review it shortly.",
+    "We've received your project request and our team will review it shortly.",
     "",
     "You can expect a response within 24 hours.",
     "",
@@ -166,16 +184,17 @@ export async function POST(request: Request) {
 
     const config = getEnvConfig();
 
-    if (!config) {
+    if ("missing" in config) {
       return NextResponse.json(
         {
           success: false,
-          message: "Server configuration is incomplete.",
+          message: `Server configuration is incomplete. Missing: ${config.missing.join(", ")}`,
           results: {
             notion: false,
             adminEmail: false,
             clientEmail: false,
           } satisfies ContactResults,
+          deployment: process.env.VERCEL_URL ?? null,
         },
         { status: 500 },
       );
@@ -209,7 +228,7 @@ export async function POST(request: Request) {
       await transporter.sendMail({
         from: config.gmailUser,
         to: "getmakerlyai@gmail.com",
-        subject: "🚀 New Lead — Makerlyai",
+        subject: "?? New Lead � Makerlyai",
         text: buildAdminNotificationText(data),
         replyTo: data.email,
       });
@@ -222,7 +241,7 @@ export async function POST(request: Request) {
       await transporter.sendMail({
         from: config.gmailUser,
         to: data.email,
-        subject: "We received your request — Makerlyai",
+        subject: "We received your request � Makerlyai",
         text: buildClientConfirmationText(data.name),
       });
       results.clientEmail = true;
