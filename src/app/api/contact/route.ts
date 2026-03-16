@@ -62,10 +62,10 @@ function validateContactPayload(
 }
 
 function getEnvConfig(): EnvConfig {
-  const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.trim();
-  const notionApiKey = process.env.NOTION_API_KEY?.trim();
-  const notionDatabaseId = process.env.NOTION_DATABASE_ID?.trim();
+  const gmailUser = process.env.GMAIL_USER?.trim() ?? "";
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.trim() ?? "";
+  const notionApiKey = process.env.NOTION_API_KEY?.trim() ?? "";
+  const notionDatabaseId = process.env.NOTION_DATABASE_ID?.trim() ?? "";
 
   const missing: string[] = [];
 
