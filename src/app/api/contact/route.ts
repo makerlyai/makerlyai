@@ -17,15 +17,26 @@ type ContactResults = {
   clientEmail: boolean;
 };
 
+type EnvConfig =
+  | {
+      gmailUser: string;
+      gmailAppPassword: string;
+      notionApiKey: string;
+      notionDatabaseId: string;
+    }
+  | {
+      missing: string[];
+    };
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function normalizeField(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function validateContactPayload(payload: unknown):
-  | { data: ContactRequestBody }
-  | { error: string } {
+function validateContactPayload(
+  payload: unknown,
+): { data: ContactRequestBody } | { error: string } {
   if (!payload || typeof payload !== "object") {
     return { error: "Invalid request body." };
   }
@@ -50,7 +61,7 @@ function validateContactPayload(payload: unknown):
   return { data };
 }
 
-function getEnvConfig() {
+function getEnvConfig(): EnvConfig {
   const gmailUser = process.env.GMAIL_USER?.trim();
   const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.trim();
   const notionApiKey = process.env.NOTION_API_KEY?.trim();
@@ -228,7 +239,7 @@ export async function POST(request: Request) {
       await transporter.sendMail({
         from: config.gmailUser,
         to: "getmakerlyai@gmail.com",
-        subject: "?? New Lead — Makerlyai",
+        subject: "New Lead - Makerlyai",
         text: buildAdminNotificationText(data),
         replyTo: data.email,
       });
@@ -241,7 +252,7 @@ export async function POST(request: Request) {
       await transporter.sendMail({
         from: config.gmailUser,
         to: data.email,
-        subject: "We received your request — Makerlyai",
+        subject: "We received your request - Makerlyai",
         text: buildClientConfirmationText(data.name),
       });
       results.clientEmail = true;
