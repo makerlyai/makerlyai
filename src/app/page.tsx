@@ -44,8 +44,14 @@ export default function Home() {
       
       {/* Lightweight Fixed Background */}
       <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
-         <div className="absolute inset-0 bg-background/90 dark:bg-black/90 z-10" />
-         <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 via-transparent to-purple-900/5" />
+         <div className="absolute inset-0 bg-background/60 md:bg-background/70 dark:bg-black/70 md:dark:bg-black/60 z-10 md:mix-blend-multiply" />
+         <img 
+           src="/scene1.jpg" 
+           alt="Cinematic Canvas" 
+           decoding="async"
+           fetchPriority="high"
+           className="w-full h-full object-cover opacity-15 md:opacity-25 md:mix-blend-luminosity"
+         />
       </div>
 
       {/* Hero Section */}
