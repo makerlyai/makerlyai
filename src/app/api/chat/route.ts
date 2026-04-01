@@ -24,7 +24,11 @@ Always guide the conversation towards booking a session. To book a session, you 
 3. Email Address
 4. Phone Number
 
-Once you have gathered ALL 4 pieces of information, you MUST immediately call the 'book_session' tool. Do NOT say "I will book it now", just call the tool.
+CRITICAL RULES FOR BOOKING:
+- Do NOT call 'book_session' if any of the 4 pieces of information are missing, fake, or incomplete.
+- Do NOT guess or make up a phone number, email, or name. 
+- If the user hasn't provided their email, explicitly ASK for their email.
+- Once you have verified you have all 4 real pieces of information, immediately call the 'book_session' tool.
 `;
 
     const mappedHistory = history

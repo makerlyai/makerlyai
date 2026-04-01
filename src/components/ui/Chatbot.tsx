@@ -168,7 +168,10 @@ export default function Chatbot() {
           })
         });
 
-        if (!contactRes.ok) throw new Error("Failed to book session on server.");
+        if (!contactRes.ok) {
+          const errorData = await contactRes.json().catch(() => null);
+          throw new Error(errorData?.message || "Failed to book session on server. Ensure all fields are filled.");
+        }
 
         const finalMsg = "Your session is officially booked! 🚀 Our team has been notified and you will receive a confirmation email shortly. Talk to you soon!";
         setMessages(prev => [...prev, {
