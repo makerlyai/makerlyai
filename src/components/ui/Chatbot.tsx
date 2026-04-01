@@ -52,20 +52,22 @@ export default function Chatbot() {
         body: JSON.stringify({ message: userMsg.content, history: messages }),
       });
 
-      if (!response.ok) throw new Error("API failed");
-      
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.reply || "API failed");
+      }
       
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: data.reply
       }]);
-    } catch (error) {
+    } catch (error: any) {
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Sorry, my neural connection dropped. Could you share your request via the contact form?"
+        content: error.message || "Sorry, my neural connection dropped. Could you share your request via the contact form?"
       }]);
     } finally {
       setIsLoading(false);
@@ -84,7 +86,7 @@ export default function Chatbot() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 w-14 h-14 rounded-full bg-brand-blue text-white shadow-[0_0_20px_rgba(26,75,156,0.4)] flex items-center justify-center border border-white/20"
+            className="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-50 w-14 h-14 rounded-full bg-brand-blue text-white shadow-[0_0_20px_rgba(26,75,156,0.4)] flex items-center justify-center border border-white/20"
           >
             <MessageSquare size={24} />
             {/* Notification dot */}
@@ -101,7 +103,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 w-[calc(100vw-3rem)] sm:w-[380px] h-[500px] max-h-[calc(100vh-6rem)] bg-zinc-950/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-[380px] h-[500px] max-h-[calc(100vh-8rem)] bg-zinc-950/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
