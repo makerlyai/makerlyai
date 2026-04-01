@@ -163,13 +163,11 @@ function buildClientConfirmationText(name: string) {
   return [
     `Hello ${name},`,
     "",
-    "Thank you for reaching out to Makerlyai.",
-    "We've received your project request and our team will review it shortly.",
+    "Thank you for reaching out to MakerlyAI.",
+    "We will contact you soon within a few hours, and then within 24 hours your preview will be ready.",
     "",
-    "You can expect a response within 24 hours.",
-    "",
-    "Best regards",
-    "Makerlyai Team",
+    "Best regards,",
+    "MakerlyAI Team",
   ].join("\n");
 }
 
