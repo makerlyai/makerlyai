@@ -44,8 +44,14 @@ export default function Chatbot() {
     window.speechSynthesis.speak(utterance);
   };
 
+  const recognitionRef = useRef<any>(null);
+  const transcriptRef = useRef<string>("");
+
   const toggleListening = () => {
     if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
       setIsListening(false);
       return;
     }
@@ -56,33 +62,52 @@ export default function Chatbot() {
       return;
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
-
-    recognition.onstart = () => setIsListening(true);
-    
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      if (transcript.trim()) {
-        sendMessage(transcript);
-      }
-    };
-
-    recognition.onerror = (event: any) => {
-      console.error("Speech recognition error", event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
     try {
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      transcriptRef.current = "";
+      
+      // Native continuous stops mobile browsers from aggressively auto-aborting
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => setIsListening(true);
+      
+      recognition.onresult = (event: any) => {
+        let currentFinal = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            currentFinal += event.results[i][0].transcript;
+          }
+        }
+        if (currentFinal) {
+          transcriptRef.current += " " + currentFinal.trim();
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        if (event.error === 'not-allowed') {
+           alert("Microphone access denied. Please click the icon in your address bar and allow microphone permissions!");
+        } else if (event.error !== 'no-speech') {
+           // We silently ignore no-speech as it usually just means they paused talking
+           alert(`Microphone error: ${event.error}`);
+        }
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+        const finalContent = transcriptRef.current.trim();
+        if (finalContent) {
+          sendMessage(finalContent);
+        }
+      };
+
       recognition.start();
     } catch (e) {
-      console.error(e);
+      console.error("Failed to start speech recognition:", e);
       setIsListening(false);
     }
   };
