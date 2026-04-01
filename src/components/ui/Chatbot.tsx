@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User, Sparkles } from "lucide-react";
+import { MessageSquare, X, Send, Bot, User, Sparkles, Mic, Keyboard } from "lucide-react";
 
 type Message = {
   id: string;
@@ -12,6 +12,8 @@ type Message = {
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<"text" | "voice">("text");
+  const [isListening, setIsListening] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -22,6 +24,68 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Clean up speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const speakText = (text: string) => {
+    if (mode !== "voice" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel(); // Stop current speech
+    const cleanText = text.replace(/\[SHOW_TIME_SLOTS\]/g, "").trim();
+    if (!cleanText) return;
+    
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in your browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => setIsListening(true);
+    
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript.trim()) {
+        sendMessage(transcript);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    try {
+      recognition.start();
+    } catch (e) {
+      console.error(e);
+      setIsListening(false);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,11 +124,13 @@ export default function Chatbot() {
       
       // Auto-submit the form if the LLM invoked the book_session tool
       if (data.toolCall) {
+        const confirmMsg = data.reply || "Got it. I'm securing that slot for you right now...";
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           role: "assistant",
-          content: data.reply || "Got it. I'm securing that slot for you right now..."
+          content: confirmMsg
         }]);
+        speakText(confirmMsg);
         
         const contactRes = await fetch("/api/contact", {
           method: "POST",
@@ -79,11 +145,13 @@ export default function Chatbot() {
 
         if (!contactRes.ok) throw new Error("Failed to book session on server.");
 
+        const finalMsg = "Your session is officially booked! 🚀 Our team has been notified and you will receive a confirmation email shortly. Talk to you soon!";
         setMessages(prev => [...prev, {
           id: (Date.now() + 2).toString(),
           role: "assistant",
-          content: "Your session is officially booked! 🚀 Our team has been notified and you will receive a confirmation email shortly. Talk to you soon!"
+          content: finalMsg
         }]);
+        speakText(finalMsg);
         
         setIsLoading(false);
         return;
@@ -94,6 +162,7 @@ export default function Chatbot() {
         role: "assistant",
         content: data.reply
       }]);
+      speakText(data.reply);
     } catch (error: any) {
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
@@ -155,12 +224,37 @@ export default function Chatbot() {
                   </p>
                 </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white"
-              >
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center bg-black/50 rounded-full p-1 border border-white/10">
+                  <button
+                    onClick={() => {
+                      setMode("text");
+                      if (window.speechSynthesis) window.speechSynthesis.cancel();
+                    }}
+                    className={`p-1.5 rounded-full transition-colors ${mode === "text" ? "bg-white/20 text-white" : "text-white/40 hover:text-white/70"}`}
+                  >
+                    <Keyboard size={14} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMode("voice");
+                      // Optionally speak welcome message if enabling voice for the first time
+                    }}
+                    className={`p-1.5 rounded-full transition-colors ${mode === "voice" ? "bg-brand-blue text-white" : "text-white/40 hover:text-white/70"}`}
+                  >
+                    <Mic size={14} />
+                  </button>
+                </div>
+                <button 
+                  onClick={() => {
+                    setIsOpen(false);
+                    if (window.speechSynthesis) window.speechSynthesis.cancel();
+                  }}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
@@ -216,23 +310,46 @@ export default function Chatbot() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Form */}
-            <form onSubmit={handleSubmit} className="p-3 border-t border-white/10 bg-white/5 flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="E.g. I need a food delivery app..."
-                className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-blue/50 transition-colors"
-              />
-              <button 
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className="w-10 h-10 shrink-0 bg-brand-blue text-white rounded-xl flex items-center justify-center hover:bg-brand-blue/90 disabled:opacity-50 disabled:hover:bg-brand-blue transition-colors"
-              >
-                <Send size={16} className="ml-0.5" />
-              </button>
-            </form>
+            {/* Input Form / Voice Control */}
+            <div className="p-3 border-t border-white/10 bg-white/5">
+              {mode === "text" ? (
+                <form onSubmit={handleSubmit} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="E.g. I need a food delivery app..."
+                    className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-blue/50 transition-colors"
+                  />
+                  <button 
+                    type="submit"
+                    disabled={!input.trim() || isLoading}
+                    className="w-10 h-10 shrink-0 bg-brand-blue text-white rounded-xl flex items-center justify-center hover:bg-brand-blue/90 disabled:opacity-50 disabled:hover:bg-brand-blue transition-colors"
+                  >
+                    <Send size={16} className="ml-0.5" />
+                  </button>
+                </form>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-2">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={toggleListening}
+                    disabled={isLoading}
+                    className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-colors disabled:opacity-50 ${
+                      isListening ? "bg-red-500 text-white" : "bg-brand-blue text-white hover:bg-brand-blue/90"
+                    }`}
+                  >
+                    {isListening && (
+                      <span className="absolute inset-0 rounded-full border-2 border-red-500 animate-[ping_1.5s_ease-out_infinite]" />
+                    )}
+                    <Mic size={24} />
+                  </motion.button>
+                  <p className="text-xs text-white/50 mt-3 font-medium">
+                    {isLoading ? "Thinking..." : isListening ? "Listening... Tap to stop" : "Tap to speak"}
+                  </p>
+                </div>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
