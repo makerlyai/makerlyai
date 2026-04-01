@@ -18,6 +18,11 @@ import { HowItWorks } from "@/components/ui/HowItWorks";
 import { ShowcaseSection } from "@/components/ui/ShowcaseSection";
 import { TrustSignals } from "@/components/ui/TrustSignals";
 import { StickyCTA } from "@/components/ui/StickyCTA";
+import dynamic from "next/dynamic";
+
+const Chatbot = dynamic(() => import("@/components/ui/Chatbot"), {
+  ssr: false,
+});
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -178,6 +183,9 @@ export default function Home() {
 
       {/* Sticky Mobile CTA */}
       <StickyCTA />
+
+      {/* AI Chatbot */}
+      <Chatbot />
     </main>
   );
 }

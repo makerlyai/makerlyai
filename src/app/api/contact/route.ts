@@ -215,10 +215,12 @@ export async function POST(request: Request) {
     const createdAt = new Date().toISOString();
     const notion = new Client({ auth: config.notionApiKey });
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: config.gmailUser,
-        pass: config.gmailAppPassword,
+        pass: config.gmailAppPassword.replace(/\s+/g, ""),
       },
     });
 
