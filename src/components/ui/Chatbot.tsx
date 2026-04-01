@@ -31,16 +31,16 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isLoading) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
       role: "user",
-      content: input.trim()
+      content: text.trim()
     };
 
+    const currentHistory = [...messages];
     setMessages(prev => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
@@ -49,13 +49,44 @@ export default function Chatbot() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg.content, history: messages }),
+        body: JSON.stringify({ message: userMsg.content, history: currentHistory }),
       });
 
       const data = await response.json();
       
       if (!response.ok) {
         throw new Error(data.reply || "API failed");
+      }
+      
+      // Auto-submit the form if the LLM invoked the book_session tool
+      if (data.toolCall) {
+        setMessages(prev => [...prev, {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.reply || "Got it. I'm securing that slot for you right now..."
+        }]);
+        
+        const contactRes = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: data.toolCall.name,
+            email: data.toolCall.email,
+            phone: data.toolCall.phone,
+            projectDetails: `Chatbot AI Lead.\nPreferred Time Slot: ${data.toolCall.timeSlot}`,
+          })
+        });
+
+        if (!contactRes.ok) throw new Error("Failed to book session on server.");
+
+        setMessages(prev => [...prev, {
+          id: (Date.now() + 2).toString(),
+          role: "assistant",
+          content: "Your session is officially booked! 🚀 Our team has been notified and you will receive a confirmation email shortly. Talk to you soon!"
+        }]);
+        
+        setIsLoading(false);
+        return;
       }
       
       setMessages(prev => [...prev, {
@@ -72,6 +103,11 @@ export default function Chatbot() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendMessage(input);
   };
 
   return (
@@ -139,12 +175,29 @@ export default function Chatbot() {
                   }`}>
                     {msg.role === "user" ? <User size={14} className="text-white/70" /> : <Bot size={14} className="text-brand-blue" />}
                   </div>
-                  <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
-                    msg.role === "user" 
-                      ? "bg-brand-blue text-white rounded-tr-sm" 
-                      : "bg-white/5 text-white/90 rounded-tl-sm border border-white/5"
-                  }`}>
-                    {msg.content}
+                  <div className="flex flex-col gap-2">
+                    <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
+                      msg.role === "user" 
+                        ? "bg-brand-blue text-white rounded-tr-sm" 
+                        : "bg-white/5 text-white/90 rounded-tl-sm border border-white/5"
+                    }`}>
+                      {msg.content.replace("[SHOW_TIME_SLOTS]", "").trim()}
+                    </div>
+                    
+                    {/* Render Quick Reply Time Slots */}
+                    {msg.content.includes("[SHOW_TIME_SLOTS]") && msg.role === "assistant" && (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {["Morning", "Afternoon", "Evening", "Tomorrow"].map((slot) => (
+                          <button
+                            key={slot}
+                            onClick={() => sendMessage(slot)}
+                            className="px-3 py-1.5 bg-brand-blue/20 hover:bg-brand-blue/40 border border-brand-blue/30 text-brand-blue rounded-full text-xs font-medium transition-colors"
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

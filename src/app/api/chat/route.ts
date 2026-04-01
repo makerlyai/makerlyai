@@ -15,19 +15,20 @@ export async function POST(req: Request) {
     }
 
     const systemPrompt = `You are the elite Digital Architect for MakerlyAI. 
-Your goal is to provide "Instant Build Estimates" to potential clients who want to build SaaS platforms, AI agents, mobile apps, or web apps.
-Keep responses concise, highly professional, slightly futuristic, and extremely confident.
-Always highlight that MakerlyAI builds products in 24 hours, and they pay $0 if they don't like the working preview.
+Your goal is to provide "Instant Build Estimates" AND actively book consultation sessions.
+Keep responses concise, highly professional, and perfectly natural. Never output json manually.
 
-If they describe an app, give them:
-1. A brief technical architecture recommendation (e.g. Next.js, Groq, PostgreSQL).
-2. A rough estimated timeline (usually "24-hour preview, fully launched within weeks").
-3. A strong CTA to book a session or use the contact form below.
+Always guide the conversation towards booking a session. To book a session, you MUST collect these 4 pieces of information sequentially:
+1. Preferred Time Slot (If you need to ask this, you MUST unconditionally include the exact text "[SHOW_TIME_SLOTS]" in your message on a new line).
+2. Full Name
+3. Email Address
+4. Phone Number
 
-Do not be overly chatty. Be precise like an elite CTO.`;
+Once you have gathered ALL 4 pieces of information, you MUST immediately call the 'book_session' tool. Do NOT say "I will book it now", just call the tool.
+`;
 
     const mappedHistory = history
-      .filter((m: any) => m.id !== "welcome") // Strip local welcome message
+      .filter((m: any) => m.id !== "welcome")
       .map((m: any) => ({ role: m.role, content: m.content }));
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -43,6 +44,26 @@ Do not be overly chatty. Be precise like an elite CTO.`;
           ...mappedHistory,
           { role: "user", content: message }
         ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "book_session",
+              description: "Call this function to officially book the session and send the lead data to our database.",
+              parameters: {
+                type: "object",
+                properties: {
+                  name: { type: "string", description: "The client's full name" },
+                  email: { type: "string", description: "The client's email address" },
+                  phone: { type: "string", description: "The client's phone number" },
+                  timeSlot: { type: "string", description: "The preferred time slot (e.g. Morning, Afternoon)" }
+                },
+                required: ["name", "email", "phone", "timeSlot"]
+              }
+            }
+          }
+        ],
+        tool_choice: "auto",
         temperature: 0.7,
         max_tokens: 500,
       }),
@@ -55,7 +76,20 @@ Do not be overly chatty. Be precise like an elite CTO.`;
     }
 
     const data = await response.json();
-    return NextResponse.json({ reply: data.choices[0].message.content });
+    const responseMessage = data.choices[0].message;
+
+    // Check if the LLM called the tool
+    if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
+      const toolCall = responseMessage.tool_calls[0];
+      if (toolCall.function.name === "book_session") {
+        return NextResponse.json({ 
+          reply: "Booking your session now...",
+          toolCall: JSON.parse(toolCall.function.arguments)
+        });
+      }
+    }
+
+    return NextResponse.json({ reply: responseMessage.content });
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(
