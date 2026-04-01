@@ -40,6 +40,12 @@ export default function AboutFounder() {
         
         {/* Text Area */}
         <motion.div style={{ scale }} className="w-full lg:w-5/12 z-20">
+          <div className="mb-4 inline-flex items-center gap-3">
+            <div className="w-8 h-px bg-brand-blue/50" />
+            <span className="text-sm font-bold tracking-[0.3em] uppercase text-brand-blue">
+              Tousif Raza
+            </span>
+          </div>
           <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
             Meet the <br/>
             <span className="text-gradient">Architect</span>
