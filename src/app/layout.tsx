@@ -10,10 +10,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MakerlyAI | We Build Your App in 24 Hours — Pay Only If You Like It",
+  title: "Makerly AI | AI App, SaaS, and Automation Development Agency",
   description:
-    "MakerlyAI builds premium SaaS platforms, AI agents, web apps, and mobile apps. Get a working preview in 24 hours — pay $0 if you don't like it. Trusted by founders worldwide.",
+    "Makerly AI is a software development agency that builds SaaS platforms, AI agents, web apps, and mobile apps for founders and businesses worldwide.",
   keywords: [
+    "Makerly AI",
+    "Makerly AI agency",
+    "Makerly AI software development",
     "build SaaS for me",
     "AI app development service",
     "custom software development agency",
@@ -32,16 +35,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://makerlyai.in",
-    siteName: "MakerlyAI",
-    title: "MakerlyAI | We Build Your App in 24 Hours",
+    siteName: "Makerly AI",
+    title: "Makerly AI | AI App, SaaS, and Automation Development Agency",
     description:
-      "Get a working preview in 24 hours. Pay $0 if you don't like it. SaaS, AI agents, web & mobile apps.",
+      "Makerly AI builds SaaS platforms, AI agents, web apps, and mobile apps for fast-moving founders and businesses.",
     images: [
       {
         url: "/initialletterlogosquare.png",
         width: 512,
         height: 512,
-        alt: "MakerlyAI Logo",
+        alt: "Makerly AI Logo",
       },
     ],
   },
@@ -49,9 +52,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@MakerlyAI",
     creator: "@MakerlyAI",
-    title: "MakerlyAI | We Build Your App in 24 Hours",
+    title: "Makerly AI | AI App, SaaS, and Automation Development Agency",
     description:
-      "Get a working preview in 24 hours. Pay $0 if you don't like it.",
+      "Makerly AI builds SaaS platforms, AI agents, web apps, and mobile apps for founders and businesses.",
     images: ["/initialletterlogosquare.png"],
   },
   robots: {
@@ -81,11 +84,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "MakerlyAI",
+              name: "Makerly AI",
               url: "https://makerlyai.in",
               logo: "https://makerlyai.in/initialletterlogosquare.png",
               description:
-                "Premium AI-powered software development agency. SaaS, AI agents, web apps, mobile apps. Working preview in 24 hours.",
+                "Makerly AI is a software development agency focused on SaaS platforms, AI agents, web apps, mobile apps, and automation systems.",
               contactPoint: {
                 "@type": "ContactPoint",
                 email: "getmakerlyai@gmail.com",
@@ -107,7 +110,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "MakerlyAI",
+              name: "Makerly AI",
               url: "https://makerlyai.in",
               potentialAction: {
                 "@type": "SearchAction",
@@ -126,7 +129,7 @@ export default function RootLayout({
               serviceType: "Software Development",
               provider: {
                 "@type": "Organization",
-                name: "MakerlyAI",
+                name: "Makerly AI",
               },
               areaServed: "Worldwide",
               hasOfferCatalog: {

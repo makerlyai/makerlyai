@@ -1,14 +1,12 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import AboutFounder from "@/components/layout/AboutFounder";
 import Footer from "@/components/layout/Footer";
-import GlassCard from "@/components/ui/GlassCard";
 import ContactSection from "@/components/layout/ContactSection";
 import ButtonWithIconDemo from "@/components/ui/button-with-icon";
 import { SpecialText } from "@/components/ui/special-text";
-import { TextRoll } from "@/components/ui/text-roll";
 import { GlowingFeatures } from "@/components/ui/glowing-features";
 import { Tweet } from "@/components/ui/tweet";
 import { AntiGravityHero } from "@/components/ui/anti-gravity-hero";
@@ -24,6 +22,24 @@ const Chatbot = dynamic(() => import("@/components/ui/Chatbot"), {
   ssr: false,
 });
 
+const faqItems = [
+  {
+    question: "What is Makerly AI?",
+    answer:
+      "Makerly AI is a software development agency that builds SaaS products, AI agents, web apps, mobile apps, and automation systems for founders and businesses.",
+  },
+  {
+    question: "What services does Makerly AI offer?",
+    answer:
+      "Makerly AI offers SaaS development, AI agent development, custom web app development, mobile app development, and product strategy for startups and growing companies.",
+  },
+  {
+    question: "Is Makerly AI a real brand and company?",
+    answer:
+      "Yes. Makerly AI is the official brand behind makerlyai.in, with a public website, social profiles, and a direct inquiry channel for projects and partnerships.",
+  },
+];
+
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   
@@ -34,13 +50,25 @@ export default function Home() {
   
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
-  }, []);
-
   return (
     <main className="relative min-h-screen selection:bg-brand-blue/30 bg-background overflow-clip">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqItems.map((item) => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer,
+              },
+            })),
+          }),
+        }}
+      />
       
       {/* Lightweight Fixed Background */}
       <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
@@ -83,11 +111,22 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]"
           >
-            <TextRoll duration={0.8}>WE BUILD,</TextRoll><br />
+            <span className="block text-white">Makerly AI</span>
             <span className="text-brand-blue drop-shadow-[0_0_15px_rgba(26,75,156,0.5)]">
-               <TextRoll duration={0.8} getEnterDelay={(i) => i * 0.1 + 0.4} getExitDelay={(i) => i * 0.1 + 0.6}>YOU GROW.</TextRoll>
+              builds what you grow.
             </span>
           </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="max-w-3xl text-balance text-base leading-7 text-white/75 md:text-lg"
+          >
+            Makerly AI is a software development agency for founders and
+            businesses that need SaaS products, AI agents, web apps, mobile
+            apps, and automation systems built with speed and clarity.
+          </motion.p>
           
           <motion.div
              initial={{ opacity: 0, y: 30 }}
@@ -172,6 +211,40 @@ export default function Home() {
 
       {/* Showcase — replaces ScrollSequence */}
       <ShowcaseSection />
+
+      <section className="relative z-20 mx-auto w-full max-w-5xl px-4 py-20 md:px-8">
+        <div className="glass-card border border-white/10 p-8 md:p-12">
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-brand-blue">
+              Makerly AI FAQ
+            </p>
+            <h2 className="text-3xl font-black text-white md:text-5xl">
+              Clear signals for people and search engines
+            </h2>
+            <p className="mt-4 text-base leading-7 text-white/70">
+              These answers make it explicit that Makerly AI is a distinct brand
+              and a real software development business, not a typo or a generic
+              search phrase.
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            {faqItems.map((item) => (
+              <article
+                key={item.question}
+                className="rounded-2xl border border-white/10 bg-white/5 p-6"
+              >
+                <h3 className="text-lg font-semibold text-white">
+                  {item.question}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-white/70 md:text-base">
+                  {item.answer}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Founder Section */}
       <AboutFounder />
