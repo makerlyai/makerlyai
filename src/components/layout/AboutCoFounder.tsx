@@ -413,11 +413,6 @@ export default function AboutCoFounder() {
                   label="Soha Shaikh on Instagram"
                   icon={instagramIcon}
                 />
-                <MagneticSocialLink
-                  href="#"
-                  label="Soha Shaikh on X"
-                  icon={twitterIcon}
-                />
               </motion.div>
             </motion.div>
           </div>
