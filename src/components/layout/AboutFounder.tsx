@@ -115,8 +115,6 @@ export default function AboutFounder() {
 
   // Parallax calculations
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
 
@@ -139,21 +137,12 @@ export default function AboutFounder() {
     </svg>
   );
 
-  // Content for the cards
-  // Mobile Math: Left image = 400px. Right column = 192px + 192px + 16px (gap-4) = 400px. Perfect alignment.
-  const founderImages = [
-    { src: "/myphoto1.jpg", y: y1, className: "col-span-1 md:col-span-2 row-span-2 h-[400px] md:h-[60vh]" },
-    { src: "/myphoto2.webp", y: y2, className: "col-span-1 h-[192px] md:h-[30vh]" },
-    { src: "/myphoto3.jpg", y: y3, className: "col-span-1 h-[192px] md:h-[30vh]" },
-    { src: "/myphoto4nature.jpg", y: y1, className: "col-span-2 md:col-span-2 h-[250px] md:h-[30vh]" }
-  ];
-
   return (
     <section id="founder" ref={containerRef} className="relative w-full py-24 md:py-48 px-4 md:px-12 bg-background overflow-hidden">
       <motion.div style={{ opacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
         
         {/* Text Area */}
-        <motion.div style={{ scale }} className="w-full lg:w-5/12 z-20">
+        <motion.div style={{ scale }} className="w-full lg:w-7/12 z-20">
           <div className="mb-4 inline-flex items-center gap-3">
             <div className="w-8 h-px bg-brand-blue/50" />
             <span className="text-sm font-bold tracking-[0.3em] uppercase text-brand-blue">
@@ -241,30 +230,46 @@ export default function AboutFounder() {
           </motion.div>
         </motion.div>
 
-        {/* Parallax Photo Grid */}
-        <div className="w-full lg:w-7/12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 relative">
-          
-          {/* Abstract glow behind the images to separate from background */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brand-blue/10 blur-[100px] pointer-events-none rounded-full" />
+        {/* Hero Portrait */}
+        <motion.div
+          variants={scaleReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="relative w-full lg:w-5/12 lg:ml-auto"
+        >
+          {/* Glow ring behind image */}
+          <div className="absolute -inset-4 z-0 rounded-3xl bg-gradient-to-br from-brand-blue/20 via-purple-500/10 to-transparent blur-2xl" />
 
-          {founderImages.map((img, idx) => (
-             <motion.div 
-               key={idx} 
-               style={{ y: isMobile ? 0 : img.y }} 
-               className={`relative rounded-3xl overflow-hidden group shadow-2xl ${img.className}`}
-             >
-               {/* Using an img tag directly instead of next/image temporarily since assets need to be moved to /public */}
-               <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-               <img 
-                 src={img.src} 
-                 alt="Founder Activity" 
-                 decoding="async"
-                 className="object-cover w-full h-full scale-100 group-hover:scale-110 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]"
-               />
-               <div className="absolute inset-0 border border-white/20 rounded-3xl z-20 pointer-events-none mix-blend-overlay" />
-             </motion.div>
-          ))}
-        </div>
+          <motion.div
+            style={{ y: isMobile ? 0 : y1 }}
+            className="group relative z-10 overflow-hidden rounded-3xl shadow-2xl"
+          >
+            <img
+              src="/founder/tousif-main.jpeg"
+              alt="Tousif Raza — Founder of MakerlyAI"
+              loading="lazy"
+              decoding="async"
+              className="aspect-[3/4] w-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105"
+            />
+
+            {/* Bottom gradient overlay */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-2/5 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+            {/* Hover glow */}
+            <div className="pointer-events-none absolute inset-0 z-20 rounded-3xl border border-white/10 transition-all duration-500 group-hover:border-brand-blue/30 group-hover:shadow-[inset_0_0_40px_rgba(26,75,156,0.15)]" />
+
+            {/* Name overlay at bottom */}
+            <div className="absolute bottom-0 left-0 z-20 p-6 md:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-blue">
+                Founder
+              </p>
+              <h3 className="mt-1 text-2xl font-black text-white md:text-3xl">
+                Tousif Raza
+              </h3>
+            </div>
+          </motion.div>
+        </motion.div>
       </motion.div>
     </section>
   );
