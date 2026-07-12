@@ -99,6 +99,43 @@ function MagneticSocialLink({ href, label, icon }: { href: string; label: string
   );
 }
 
+/* ─────────────────────── Mosaic Image ─────────────────────── */
+
+function MosaicImage({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      variants={scaleReveal}
+      className={`group relative overflow-hidden rounded-2xl shadow-2xl ${className ?? ""}`}
+    >
+      {/* Dark overlay that lifts on hover */}
+      <div className="absolute inset-0 z-10 bg-black/25 transition-all duration-700 group-hover:bg-black/0" />
+
+      {/* Image with hover zoom */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className="h-full w-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110"
+      />
+
+      {/* Inner border */}
+      <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl border border-white/10 mix-blend-overlay" />
+
+      {/* Bottom gradient */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-gradient-to-t from-black/40 to-transparent" />
+    </motion.div>
+  );
+}
+
 export default function AboutFounder() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -271,6 +308,46 @@ export default function AboutFounder() {
           </motion.div>
         </motion.div>
       </motion.div>
+
+      {/* ════════════════ Image Mosaic ════════════════ */}
+      <div className="mx-auto max-w-7xl px-4 pb-24 md:px-12 md:pb-32 mt-32">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid auto-rows-[220px] grid-cols-2 gap-4 md:auto-rows-[280px] md:grid-cols-3 md:gap-6"
+        >
+          {/* Speaking — wide, spans 2 cols */}
+          <MosaicImage
+            src="/myphoto4nature.jpg"
+            alt="Tousif nature photo"
+            className="col-span-2 row-span-1"
+          />
+
+          {/* Close portrait — tall, spans 2 rows */}
+          <MosaicImage
+            src="/myphoto1.jpg"
+            alt="Tousif portrait"
+            className="col-span-1 row-span-2"
+          />
+
+          {/* Action */}
+          <MosaicImage
+            src="/myphoto2.webp"
+            alt="Tousif action shot"
+            className="col-span-1 row-span-1"
+          />
+
+          {/* Lifestyle */}
+          <MosaicImage
+            src="/myphoto3.jpg"
+            alt="Tousif lifestyle"
+            className="col-span-1 row-span-1"
+          />
+        </motion.div>
+      </div>
+
     </section>
   );
 }
