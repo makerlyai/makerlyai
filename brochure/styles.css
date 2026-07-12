@@ -1,0 +1,682 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy: #0a1628;
+  --navy-light: #0f2040;
+  --cobalt: #1a3a6b;
+  --blue: #0066ff;
+  --cyan: #00d4ff;
+  --neon: #00ffcc;
+  --white: #ffffff;
+  --gray: #b0c4de;
+  --accent-orange: #ff6b35;
+  --gradient-hero: linear-gradient(135deg, #0a1628 0%, #0f2040 40%, #1a3a6b 100%);
+  --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
+  --glow-blue: 0 0 20px rgba(0, 102, 255, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #0a0a0a;
+  color: var(--white);
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--navy);
+}
+
+@media screen {
+  .page { margin: 20px auto; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+}
+
+/* ===== PAGE 1: HERO COVER ===== */
+.page-hero {
+  background: var(--gradient-hero);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.hero-bg-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/circuit_bg.png');
+  background-size: cover;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  z-index: 0;
+}
+
+.hero-top-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid rgba(0,212,255,0.15);
+}
+
+.school-logo {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  box-shadow: var(--glow-cyan);
+  object-fit: cover;
+  background: white;
+  padding: 2px;
+}
+
+.school-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.camp-badge {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  padding: 8px 22px;
+  border-radius: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px 40px;
+}
+
+.hero-subtitle-top {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 15px;
+}
+
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 50%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.hero-tagline {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 8px;
+  color: var(--neon);
+  margin-bottom: 30px;
+}
+
+.hero-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  margin-bottom: 30px;
+}
+
+.hero-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 580px;
+  margin-bottom: 30px;
+}
+
+.hero-info-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 12px;
+  padding: 18px 12px;
+  text-align: center;
+}
+
+.hero-info-card .icon { font-size: 28px; margin-bottom: 8px; }
+.hero-info-card .label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+.hero-info-card .value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.hero-image-strip {
+  position: relative;
+  z-index: 2;
+  height: 220px;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+
+.hero-image-strip img {
+  flex: 1;
+  object-fit: cover;
+  height: 100%;
+  filter: brightness(0.8) contrast(1.1);
+}
+
+.hero-image-strip .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--navy) 0%, transparent 30%, transparent 70%, var(--navy) 100%);
+  pointer-events: none;
+}
+
+.hero-bottom-bar {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 22px 30px;
+  background: rgba(0,212,255,0.05);
+  border-top: 1px solid rgba(0,212,255,0.15);
+}
+
+.hero-bottom-bar p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+
+.hero-bottom-bar strong { color: var(--cyan); }
+
+/* ===== PAGE 2: PROGRAM OVERVIEW ===== */
+.page-program { background: var(--gradient-hero); }
+
+.section-header {
+  text-align: center;
+  padding: 32px 30px 22px;
+  position: relative;
+  z-index: 2;
+}
+
+.section-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 10px 28px 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.day-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.day-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+
+.day-card.day1::before { background: linear-gradient(90deg, #00d4ff, #0066ff); }
+.day-card.day2::before { background: linear-gradient(90deg, #00ffcc, #00d4ff); }
+.day-card.day3::before { background: linear-gradient(90deg, #ff6b35, #ffaa00); }
+.day-card.day4::before { background: linear-gradient(90deg, #a855f7, #6366f1); }
+
+.day-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.day1 .day-number { color: #00d4ff; }
+.day2 .day-number { color: #00ffcc; }
+.day3 .day-number { color: #ff6b35; }
+.day4 .day-number { color: #a855f7; }
+
+.day-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+
+.day-topics {
+  list-style: none;
+  padding: 0;
+}
+
+.day-topics li {
+  font-size: 14px;
+  color: var(--gray);
+  padding: 5px 0;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.day-topics li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-size: 14px;
+}
+
+.day-concepts {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,212,255,0.1);
+}
+
+.day-concepts span {
+  display: inline-block;
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin: 3px 4px 3px 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Photo strip between days */
+.program-photo {
+  position: relative;
+  z-index: 2;
+  margin: 0 28px;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.program-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85) contrast(1.1);
+}
+
+.program-photo .photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,22,40,0.7) 0%, transparent 50%, rgba(10,22,40,0.7) 100%);
+}
+
+.program-photo .photo-caption {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ===== PAGE 3: OUTCOMES + HARDWARE ===== */
+.page-outcomes { background: var(--gradient-hero); }
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  padding: 0 28px 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.outcome-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,212,255,0.12);
+  border-radius: 14px;
+  padding: 22px 14px;
+  text-align: center;
+}
+
+.outcome-card .outcome-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.outcome-card .outcome-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.4;
+}
+
+.hardware-section {
+  padding: 0 28px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.hardware-visual {
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 16px;
+}
+
+.hardware-photo {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 200px;
+}
+
+.hardware-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hardware-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.hw-chip {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hw-chip .hw-icon { font-size: 24px; }
+.hw-chip .hw-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* Why Join */
+.why-section {
+  padding: 0 28px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.why-card {
+  background: linear-gradient(135deg, rgba(0,102,255,0.1), rgba(0,212,255,0.05));
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 12px;
+  padding: 20px 12px;
+  text-align: center;
+}
+
+.why-card .why-icon { font-size: 28px; margin-bottom: 10px; }
+.why-card .why-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.4;
+}
+
+/* ===== PAGE 4: CTA ===== */
+.page-cta { background: var(--gradient-hero); }
+
+.cta-hero {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 60px 40px 40px;
+}
+
+.cta-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--white), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 14px;
+}
+
+.cta-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray);
+  margin-bottom: 35px;
+}
+
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: var(--white);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 18px 60px;
+  border-radius: 50px;
+  text-decoration: none;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  box-shadow: var(--glow-cyan);
+  margin-bottom: 24px;
+}
+
+.cta-limited {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent-orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 45px;
+}
+
+.cta-school-photo {
+  margin: 0 45px 35px;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 220px;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-school-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+.cta-school-photo .overlay-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px;
+  background: linear-gradient(transparent, rgba(10,22,40,0.9));
+  text-align: center;
+}
+
+.cta-school-photo .overlay-label p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.cta-school-photo .overlay-label small {
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+}
+
+.eligibility-bar {
+  position: relative;
+  z-index: 2;
+  margin: 0 45px 35px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 16px;
+  padding: 24px 35px;
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  align-items: center;
+}
+
+.elig-item {
+  text-align: center;
+}
+
+.elig-item .elig-icon { font-size: 28px; margin-bottom: 8px; }
+.elig-item .elig-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.elig-item .elig-value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.cta-contact {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 45px 25px;
+}
+
+.cta-contact p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.cta-footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 25px;
+  margin-top: auto;
+  border-top: 1px solid rgba(0,212,255,0.1);
+}
+
+.cta-footer p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(176,196,222,0.6);
+  letter-spacing: 1px;
+}
+
+/* Print styles */
+@media print {
+  body { background: white; }
+  .page {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+}

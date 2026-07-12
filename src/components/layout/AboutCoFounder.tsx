@@ -163,10 +163,7 @@ export default function AboutCoFounder() {
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReduced = useReducedMotion();
 
-  const isMobileRef = useRef(true);
-  if (typeof window !== "undefined") {
-    isMobileRef.current = window.matchMedia("(max-width: 768px)").matches;
-  }
+
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -407,17 +404,17 @@ export default function AboutCoFounder() {
                   Connect
                 </span>
                 <MagneticSocialLink
-                  href="https://linkedin.com/in/sohashaikh"
+                  href="https://www.linkedin.com/in/soha-shaikh-412948307/"
                   label="Soha Shaikh on LinkedIn"
                   icon={linkedinIcon}
                 />
                 <MagneticSocialLink
-                  href="https://instagram.com/sohashaikh"
+                  href="https://instagram.com/art_.enthusiasm"
                   label="Soha Shaikh on Instagram"
                   icon={instagramIcon}
                 />
                 <MagneticSocialLink
-                  href="https://x.com/sohashaikh"
+                  href="#"
                   label="Soha Shaikh on X"
                   icon={twitterIcon}
                 />

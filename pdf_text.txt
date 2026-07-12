@@ -1,0 +1,147 @@
+makerlyai
+Portfolio & Rate Card 2026
+D I G I T A L  A R C H I T E C T U R E  &  A I  E N G I N E E R I N G
+We build what
+you grow.
+you grow.
+Makerly AI is a software development agency for founders
+and businesses that need SaaS products, AI agents, web
+apps, mobile apps, and automation systems built with
+speed and clarity.
+24h
+First working preview
+5+
+Products shipped
+100%
+Satisfaction guarantee
+EMAIL  getmakerlyai@gmail.com
+WEB  makerlyai.in
+LOCATION  Jamshedpur, Jharkhand, India
+MAKERLY AI — CONFIDENTIAL
+01 / 04
+
+makerlyai
+CA PA B I L I T I E S
+W H A T  W E  B U I L D
+Premium Deliverables
+Deliverables
+We don't build standard software. Every product we deploy is engineered for
+speed, conversion, and undeniable aesthetic superiority.
+O U R  P R O C E S S
+From Idea to Product
+Product
+01
+Tell Us Your Idea
+Share your vision — app, SaaS, AI agent, website. We listen, ask sharp questions, and map your requirements.
+02
+We Build in 24 Hours
+Our elite engineers deliver a working preview within 24 hours. Real code. Real product. Not a mockup.
+03
+Pay Only If You Like It
+Review the preview. If it doesn't meet your standards, you pay nothing. Zero risk, maximum reward.
+MAKERLY AI — CONFIDENTIAL
+02 / 04
+🧠 AI Agents & Automation
+Deploy intelligent virtual employees that handle
+support, scheduling, and sales 24/7. Custom LLM
+integration with OpenAI, Anthropic, and Groq.
+🌐 Immersive Web Experiences
+Blazing fast marketing sites that feel like native
+apps — fluid, interactive, conversion-optimized.
+Built with Next.js, React, and modern frameworks.
+📱 Cross-Platform Apps
+Native-quality mobile and desktop apps built with
+modern frameworks. One codebase, every device.
+Android, iOS, and Web.
+📈 SaaS & Revenue Engines
+Scalable multi-tenant platforms with billing,
+analytics, and growth tools built in from day one.
+Architected for MRR.
+
+makerlyai
+I N V E ST M E N T
+I N V E S T M E N T  &  E N G A G E M E N T  M O D E L S
+Rate Card
+Card
+Flexible engagement models tailored for maximum ROI. Whether you need
+ongoing leadership, dedicated sprints, or an end-to-end build — we adapt.
+P R O J E C T - B A S E D  P A C K A G E S
+MAKERLY AI — CONFIDENTIAL
+03 / 04
+Launch
+$1,000  starting
+Ideal for landing pages, MVPs, and rapid product
+launches. Get to market fast.
+DEVELOPER
+$20 /hr
+UI/UX DESIGN
+$25 /hr
+Up to 10 pages / screens
+High-fidelity responsive UI/UX
+Database integration (Supabase /
+Prisma)
+Standard API & form setup
+SEO & performance optimization
+Delivery in ~1 week
+⭐ Scale — Recommended
+$3,500 + starting
+For comprehensive platforms, complex web-
+apps, and full AI integrations.
+DEVELOPER
+$50 /hr
+UI/UX DESIGN
+$35 /hr
+Unlimited core pages
+Custom AI workflows & LLM integrations
+Authentication & payment gateways
+Dynamic dashboards & CMS
+Complete CI/CD & cloud deployment
+Delivery in 3–5 weeks
+
+makerlyai
+T E C H N O LO GY  &  C O N TAC T
+T E C H N O L O G Y  S T A C K
+Built With the Best
+Best
+W H Y  M A K E R L Y  A I
+🔥 Speed
+Working preview in 24 hours. No
+endless discovery phases.
+💎 Premium Quality
+Every build feels expensive, runs fast,
+and forces competition to play catch-
+up.
+🛡️ Zero Risk
+Pay only if you like the result. Your
+satisfaction is guaranteed.
+Ready to build your
+digital empire?
+digital empire?
+Let's start the conversation. Share your vision and we'll
+deliver the first working preview within 24 hours.
+EMAIL  getmakerlyai@gmail.com
+WEB  makerlyai.in
+Instagram
+X (Twitter)
+LinkedIn
+GitHub
+YouTube
+Telegram
+MAKERLY AI © 2026 — CONFIDENTIAL & PROPRIETARY
+04 / 04
+F R O N T E N D
+Next.js 14 / React 18
+TypeScript
+Tailwind CSS
+Framer Motion
+B AC K E N D  &  DATA
+Node.js / Express
+Prisma ORM
+Supabase / PostgreSQL
+REST & GraphQL APIs
+A I  &  C LO U D
+OpenAI / Anthropic /
+Groq
+Custom RAG Pipelines
+Vercel / AWS
+CI/CD Automation
