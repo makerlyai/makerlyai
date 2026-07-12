@@ -1,7 +1,58 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useScroll, useTransform, motion, useMotionValue, useSpring } from "framer-motion";
+import { useScroll, useTransform, motion, useMotionValue, useSpring, type Variants } from "framer-motion";
+
+/* ─────────────────────── Animation Variants ─────────────────────── */
+const fadeBlur: Variants = {
+  hidden: { opacity: 0, filter: "blur(12px)", y: 32 },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+};
+
+const scaleReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.92, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const slideUp: Variants = {
+  hidden: { opacity: 0, y: 48 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+/* ─────────────────────── Expertise Tag ─────────────────────── */
+function ExpertiseTag({ label, delay }: { label: string; delay: number }) {
+  return (
+    <motion.span
+      variants={slideUp}
+      custom={delay}
+      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-brand-blue/40 hover:bg-brand-blue/10 hover:text-white"
+    >
+      <span className="h-1.5 w-1.5 rounded-full bg-brand-blue" />
+      {label}
+    </motion.span>
+  );
+}
 
 /* ─────────────────────── Magnetic Hover Hook ─────────────────────── */
 function useMagnetic(strength = 0.3) {
@@ -122,8 +173,53 @@ export default function AboutFounder() {
              </p>
           </div>
 
+          {/* Pull Quote — Glassmorphic Card */}
+          <motion.blockquote
+            variants={scaleReveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="glass-quote relative my-10 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl md:p-8"
+          >
+            <span className="absolute -top-3 left-6 text-5xl font-black leading-none text-brand-blue/30">
+              &ldquo;
+            </span>
+            <p className="relative z-10 text-lg italic leading-relaxed text-foreground/90 md:text-xl">
+              An idea without execution is just an illusion. True engineering means building <span className="font-semibold text-brand-blue">systems that just work</span>, while maintaining the elegance of a premium product.
+            </p>
+            <footer className="mt-4 text-sm font-semibold text-foreground/50">
+              — Tousif Raza
+            </footer>
+          </motion.blockquote>
+
+          {/* Expertise Tags */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="mb-10 flex flex-wrap gap-3"
+          >
+            {[
+              "System Architecture",
+              "Full-Stack Development",
+              "Cloud Deployment",
+              "Performance Tuning",
+              "Technical Strategy",
+              "Product Engineering",
+            ].map((tag, i) => (
+              <ExpertiseTag key={tag} label={tag} delay={i * 0.05} />
+            ))}
+          </motion.div>
+
           {/* Social Links */}
-          <div className="mt-8 flex items-center gap-4">
+          <motion.div
+            variants={fadeBlur}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex items-center gap-4"
+          >
             <span className="mr-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/40">
               Connect
             </span>
@@ -142,7 +238,7 @@ export default function AboutFounder() {
               label="Tousif Raza on X"
               icon={twitterIcon}
             />
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Parallax Photo Grid */}
