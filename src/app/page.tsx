@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import AboutFounder from "@/components/layout/AboutFounder";
+import AboutCoFounder from "@/components/layout/AboutCoFounder";
 import Footer from "@/components/layout/Footer";
 import ContactSection from "@/components/layout/ContactSection";
 import ButtonWithIconDemo from "@/components/ui/button-with-icon";
@@ -248,6 +249,9 @@ export default function Home() {
 
       {/* Founder Section */}
       <AboutFounder />
+
+      {/* Co-Founder Section */}
+      <AboutCoFounder />
 
       {/* Social Proof */}
       <section className="relative w-full py-24 px-4 flex justify-center bg-black/80 md:bg-black/40 z-20 border-y border-white/10">

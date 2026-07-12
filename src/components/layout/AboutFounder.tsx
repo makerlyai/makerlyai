@@ -1,17 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-import GlassCard from "@/components/ui/GlassCard";
-import Image from "next/image";
 
 export default function AboutFounder() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [isMobile, setIsMobile] = useState(true);
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
-  }, []);
+  const isMobileRef = useRef(true);
+  if (typeof window !== "undefined") {
+    isMobileRef.current = window.matchMedia("(max-width: 768px)").matches;
+  }
+  const isMobile = isMobileRef.current;
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -52,7 +51,7 @@ export default function AboutFounder() {
           </h2>
           <div className="space-y-6 text-lg md:text-xl text-foreground/80 leading-relaxed font-light">
              <p>
-               With years of award-winning experience, we don't just write code—we engineer digital empires. Every pixel is placed with intent. Every animation is mathematically smooth.
+               The hands that turn blueprints into reality. Tousif&apos;s expertise spans <strong className="font-bold text-foreground">full-stack execution, product development, and tech deployments</strong>—from architecture to production, every system is engineered for speed and scale.
              </p>
              <p>
                At MakerlyAI, the philosophy is simple: <strong className="font-bold text-foreground">Build products that feel expensive, run blazingly fast, and force the competition to play catch-up.</strong>
