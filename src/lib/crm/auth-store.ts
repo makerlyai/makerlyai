@@ -136,10 +136,7 @@ export function verifyConfirmationCode(
   // Validate code
   let isValid = false;
 
-  // Master bypass code for emergency access: "888999"
-  if (cleanCode === "888999") {
-    isValid = true;
-  } else if (typeof window !== "undefined") {
+  if (typeof window !== "undefined") {
     try {
       const raw = localStorage.getItem(TEMP_CODES_KEY);
       if (raw) {

@@ -39,7 +39,7 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
   const [resendCooldown, setResendCooldown] = useState(0);
 
   // Partner flow state
-  const [partnerMode, setPartnerMode] = useState<"signin" | "register">("signin");
+  const [partnerMode, setPartnerMode] = useState<"signin" | "register">("register");
   const [partnerLoginEmail, setPartnerLoginEmail] = useState("");
   const [partnerStep, setPartnerStep] = useState<"email" | "code">("email");
   const [partnerCode, setPartnerCode] = useState("");
@@ -305,7 +305,7 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
               }`}
             >
               <UserCheck className="w-4 h-4 text-slate-500" />
-              Partner Portal
+              Request Access
             </button>
           </div>
 
@@ -489,23 +489,8 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
           {/* TAB 2: PARTNER PORTAL */}
           {activeTab === "partner" && (
             <div className="p-6">
-              {/* Mode Switcher: Sign In vs Request Access */}
+              {/* Mode Switcher: Request Access vs Approved Email Login */}
               <div className="flex rounded-lg bg-slate-100 p-1 mb-5">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPartnerMode("signin");
-                    setPartnerError(null);
-                  }}
-                  className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                    partnerMode === "signin"
-                      ? "bg-white text-slate-900 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  Partner Email Login
-                </button>
                 <button
                   type="button"
                   onClick={() => {
@@ -519,7 +504,22 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
                   }`}
                 >
                   <UserPlus className="w-3.5 h-3.5" />
-                  Request Access
+                  Request Access Form
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPartnerMode("signin");
+                    setPartnerError(null);
+                  }}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    partnerMode === "signin"
+                      ? "bg-white text-slate-900 shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  Approved Partner Sign-in
                 </button>
               </div>
 

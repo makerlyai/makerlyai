@@ -63,11 +63,36 @@ export default function CRMPage() {
     setActivities(getStoredActivities());
     const storedUsers = getStoredUsers();
     setUsers(storedUsers);
-    setActiveUserState(getActiveUser());
 
-    // Load auth session
+    // Load auth session and strictly sync activeUser
     const session = getAuthSession();
     setAuthSessionState(session);
+
+    if (session) {
+      if (session.role === "owner") {
+        const ownerUser: User = {
+          id: "usr-admin-tousif",
+          name: "Tousif Raza",
+          email: session.email,
+          role: "admin",
+          approved: true,
+        };
+        setActiveUser(ownerUser);
+        setActiveUserState(ownerUser);
+      } else {
+        const partnerUser: User = {
+          id: "usr-partner-" + session.email.toLowerCase().replace(/[^a-z0-9]/g, ""),
+          name: session.name || session.email.split("@")[0],
+          email: session.email,
+          role: "partner",
+          approved: true,
+        };
+        setActiveUser(partnerUser);
+        setActiveUserState(partnerUser);
+      }
+    } else {
+      setActiveUserState(getActiveUser());
+    }
 
     // Refresh pending requests count
     const reqs = getAccessRequests();
@@ -79,21 +104,39 @@ export default function CRMPage() {
     setMounted(true);
   }, []);
 
+  // Defensive invariant: If authenticated as partner, NEVER allow activeUser to be admin
+  useEffect(() => {
+    if (authSession && authSession.role === "partner" && activeUser.role !== "partner") {
+      const partnerUser: User = {
+        id: "usr-partner-" + authSession.email.toLowerCase().replace(/[^a-z0-9]/g, ""),
+        name: authSession.name || authSession.email.split("@")[0],
+        email: authSession.email,
+        role: "partner",
+        approved: true,
+      };
+      setActiveUser(partnerUser);
+      setActiveUserState(partnerUser);
+    }
+  }, [authSession, activeUser]);
+
   const handleAuthorized = (session: AuthSession) => {
     setAuthSessionState(session);
     if (session.role === "owner") {
-      const ownerUser =
-        users.find((u) => u.email === "getmakerlyai@gmail.com") || getActiveUser();
+      const ownerUser: User = {
+        id: "usr-admin-tousif",
+        name: "Tousif Raza",
+        email: session.email,
+        role: "admin",
+        approved: true,
+      };
       setActiveUser(ownerUser);
       setActiveUserState(ownerUser);
     } else {
-      const partnerUser = users.find(
-        (u) => u.email.toLowerCase() === session.email.toLowerCase()
-      ) || {
-        id: "user-" + Date.now(),
-        name: session.name,
+      const partnerUser: User = {
+        id: "usr-partner-" + session.email.toLowerCase().replace(/[^a-z0-9]/g, ""),
+        name: session.name || session.email.split("@")[0],
         email: session.email,
-        role: "partner" as const,
+        role: "partner",
         approved: true,
       };
       setActiveUser(partnerUser);
@@ -112,6 +155,10 @@ export default function CRMPage() {
   };
 
   const handleUserChange = (user: User) => {
+    // Role change is forbidden for partner sessions
+    if (authSession?.role === "partner") {
+      return;
+    }
     setActiveUser(user);
     setActiveUserState(user);
   };
