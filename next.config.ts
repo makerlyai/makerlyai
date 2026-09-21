@@ -44,20 +44,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: "/CRM",
-        destination: "/crm",
-        permanent: true,
-      },
-      {
-        source: "/CRM/:path*",
-        destination: "/crm/:path*",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
