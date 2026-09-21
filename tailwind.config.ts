@@ -15,7 +15,35 @@ const config: Config = {
           blue: "#1a4b9c",
           light: "#f5f5f0", // Cream
           dark: "#121212",  // Dark Slate
-        }
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+          950: "#1e1b4b",
+        },
+        obsidian: {
+          950: "#060911",
+          900: "#090d18",
+          850: "#0d1322",
+          800: "#121b30",
+          750: "#18233d",
+          700: "#1f2d4e",
+        },
+        pipeline: {
+          new: "#3b82f6",
+          contacted: "#06b6d4",
+          interested: "#8b5cf6",
+          proposal: "#ec4899",
+          negotiation: "#f59e0b",
+          won: "#10b981",
+          lost: "#64748b",
+        },
       },
       backgroundImage: {
         "glass-gradient": "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))",

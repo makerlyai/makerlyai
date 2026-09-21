@@ -1,11 +1,7 @@
 "use client";
 
-export const OWNER_EMAILS = [
-  "iamtousifraza@gmail.com",
-  "getmakerlyai@gmail.com",
-] as const;
-
-export type OwnerEmail = (typeof OWNER_EMAILS)[number];
+import { OWNER_EMAILS, OwnerEmail, isOwnerEmail } from "./auth-constants";
+export { OWNER_EMAILS, type OwnerEmail, isOwnerEmail };
 
 export interface AuthSession {
   isAuthorized: boolean;
@@ -32,14 +28,7 @@ const AUTH_SESSION_KEY = "makerlyai_auth_session_v1";
 const ACCESS_REQUESTS_KEY = "makerlyai_access_requests_v2";
 const TEMP_CODES_KEY = "makerlyai_temp_codes_v1";
 
-// Default seed requests (empty - only real partner requests)
 const SEED_ACCESS_REQUESTS: AccessRequest[] = [];
-
-export function isOwnerEmail(email: string): boolean {
-  if (!email) return false;
-  const normalized = email.trim().toLowerCase();
-  return OWNER_EMAILS.some((e) => e.toLowerCase() === normalized);
-}
 
 export function getAuthSession(): AuthSession | null {
   if (typeof window === "undefined") return null;
@@ -208,21 +197,6 @@ export function verifyConfirmationCode(
   };
 }
 
-/**
- * Direct 1-tap owner session creator (for seamless demo / fast access)
- */
-export function loginAsOwnerDirect(email: OwnerEmail): AuthSession {
-  const session: AuthSession = {
-    isAuthorized: true,
-    email,
-    name: "MakerlyAI (Tousif Raza)",
-    role: "owner",
-    token: "mkr_owner_" + Date.now(),
-    authorizedAt: new Date().toISOString(),
-  };
-  setAuthSession(session);
-  return session;
-}
 
 /**
  * Submit partner access request for Tousif Raza's personal authorization

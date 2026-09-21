@@ -2,10 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  AccessRequest,
-  getAccessRequests,
-  approveAccessRequest,
-  rejectAccessRequest,
   AuthSession,
 } from "@/lib/crm/auth-store";
 import {
@@ -17,8 +13,21 @@ import {
   Building2,
   Mail,
   X,
-  Sparkles,
+  RefreshCw,
 } from "lucide-react";
+
+interface AuthorizedUserRecord {
+  id: string;
+  name: string;
+  email: string;
+  role: "owner" | "partner";
+  status: "approved" | "pending" | "rejected" | "revoked";
+  organization?: string;
+  note?: string;
+  created_at: string;
+  approved_at?: string;
+  approved_by?: string;
+}
 
 interface OwnerAccessManagerProps {
   isOpen: boolean;
@@ -33,11 +42,23 @@ export function OwnerAccessManager({
   currentSession,
   onRequestsUpdated,
 }: OwnerAccessManagerProps) {
-  const [requests, setRequests] = useState<AccessRequest[]>([]);
+  const [users, setUsers] = useState<AuthorizedUserRecord[]>([]);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">("all");
 
-  const refreshRequests = () => {
-    setRequests(getAccessRequests());
+  const refreshRequests = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/crm/auth/manage-access");
+      const data = await res.json();
+      if (data.success && data.users) {
+        setUsers(data.users);
+      }
+    } catch (err) {
+      console.error("Failed to load access requests:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -48,29 +69,36 @@ export function OwnerAccessManager({
 
   if (!isOpen) return null;
 
-  const handleApprove = (id: string) => {
-    approveAccessRequest(id, currentSession.email);
-    refreshRequests();
-    if (onRequestsUpdated) onRequestsUpdated();
+  const handleAction = async (email: string, action: "approve" | "reject" | "revoke") => {
+    try {
+      const res = await fetch("/api/crm/auth/manage-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, action }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        await refreshRequests();
+        if (onRequestsUpdated) onRequestsUpdated();
+      }
+    } catch (err) {
+      console.error("Action error:", err);
+    }
   };
 
-  const handleReject = (id: string) => {
-    rejectAccessRequest(id);
-    refreshRequests();
-    if (onRequestsUpdated) onRequestsUpdated();
-  };
-
-  const filteredRequests = requests.filter((r) => {
-    if (filter === "pending") return r.status === "pending";
-    if (filter === "approved") return r.status === "approved";
+  // Only show partners in access manager (owners are permanent)
+  const partners = users.filter((u) => u.role === "partner");
+  const filteredUsers = partners.filter((u) => {
+    if (filter === "pending") return u.status === "pending";
+    if (filter === "approved") return u.status === "approved";
     return true;
   });
 
-  const pendingCount = requests.filter((r) => r.status === "pending").length;
+  const pendingCount = partners.filter((u) => u.status === "pending").length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150 text-slate-900">
         {/* Header */}
         <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-3">
@@ -80,7 +108,7 @@ export function OwnerAccessManager({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-bold text-slate-900">
-                  Partner Personal Authorizations
+                  Supabase Partner Authorizations
                 </h3>
                 {pendingCount > 0 && (
                   <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
@@ -89,143 +117,151 @@ export function OwnerAccessManager({
                 )}
               </div>
               <p className="text-xs text-slate-500">
-                Decided and verified exclusively by Tousif Raza ({currentSession.email})
+                Verified exclusively by Tousif Raza ({currentSession.email})
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-slate-200/60 text-slate-400 hover:text-slate-700 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-slate-200/60 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Filter Pills */}
-        <div className="px-5 pt-4 pb-2 flex items-center gap-2 border-b border-slate-100">
+        {/* Filter Bar */}
+        <div className="px-5 py-3 border-b border-slate-100 bg-white flex items-center justify-between">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setFilter("all")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                filter === "all"
+                  ? "bg-slate-900 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              All Partners ({partners.length})
+            </button>
+            <button
+              onClick={() => setFilter("pending")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                filter === "pending"
+                  ? "bg-amber-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              Pending Approval ({pendingCount})
+            </button>
+            <button
+              onClick={() => setFilter("approved")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                filter === "approved"
+                  ? "bg-emerald-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              Approved ({partners.filter((u) => u.status === "approved").length})
+            </button>
+          </div>
+
           <button
-            onClick={() => setFilter("all")}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
-              filter === "all"
-                ? "bg-slate-900 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
-            }`}
+            onClick={refreshRequests}
+            disabled={loading}
+            className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-500 text-xs flex items-center gap-1 cursor-pointer"
           >
-            All Requests ({requests.length})
-          </button>
-          <button
-            onClick={() => setFilter("pending")}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
-              filter === "pending"
-                ? "bg-amber-600 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
-            }`}
-          >
-            Pending ({pendingCount})
-          </button>
-          <button
-            onClick={() => setFilter("approved")}
-            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
-              filter === "approved"
-                ? "bg-emerald-600 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
-            }`}
-          >
-            Approved ({requests.filter((r) => r.status === "approved").length})
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            Refresh
           </button>
         </div>
 
         {/* Requests List */}
-        <div className="p-5 max-h-[440px] overflow-y-auto space-y-3">
-          {filteredRequests.length === 0 ? (
-            <div className="text-center py-10 text-slate-400 text-xs">
-              No authorization requests found in this view.
+        <div className="max-h-[380px] overflow-y-auto p-5 space-y-3">
+          {filteredUsers.length === 0 ? (
+            <div className="py-12 text-center text-slate-400 text-xs">
+              <UserCheck className="w-8 h-8 mx-auto mb-2 opacity-40" />
+              No partner access requests in this category.
             </div>
           ) : (
-            filteredRequests.map((req) => (
+            filteredUsers.map((user) => (
               <div
-                key={req.id}
-                className={`p-4 rounded-xl border transition-all ${
-                  req.status === "pending"
-                    ? "bg-amber-50/40 border-amber-200/80"
-                    : req.status === "approved"
-                    ? "bg-white border-slate-200"
-                    : "bg-slate-50 border-slate-200 opacity-60"
-                }`}
+                key={user.id}
+                className="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-xs"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-slate-900">{req.name}</span>
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                          req.status === "pending"
-                            ? "bg-amber-100 text-amber-800"
-                            : req.status === "approved"
-                            ? "bg-emerald-100 text-emerald-800"
-                            : "bg-rose-100 text-rose-800"
-                        }`}
-                      >
-                        {req.status}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
-                      <span className="flex items-center gap-1 font-mono">
-                        <Mail className="w-3.5 h-3.5 text-slate-400" />
-                        {req.email}
-                      </span>
-                      {req.organization && (
-                        <span className="flex items-center gap-1">
-                          <Building2 className="w-3.5 h-3.5 text-slate-400" />
-                          {req.organization}
+                      <span className="font-bold text-xs text-slate-900">{user.name}</span>
+                      {user.status === "pending" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          Pending Review
+                        </span>
+                      )}
+                      {user.status === "approved" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3" />
+                          Approved
+                        </span>
+                      )}
+                      {user.status === "rejected" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
+                          <XCircle className="w-3 h-3" />
+                          Rejected
                         </span>
                       )}
                     </div>
 
-                    {req.note && (
-                      <p className="text-xs text-slate-600 bg-slate-50 px-2.5 py-1 rounded border border-slate-200/60 mt-1">
-                        &ldquo;{req.note}&rdquo;
-                      </p>
-                    )}
-
-                    <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-1">
-                      <span>Requested: {new Date(req.requestedAt).toLocaleDateString()}</span>
-                      {req.approvedBy && (
-                        <span>• Confirmed by: {req.approvedBy}</span>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
+                      <span className="flex items-center gap-1 font-mono">
+                        <Mail className="w-3 h-3 text-slate-400" />
+                        {user.email}
+                      </span>
+                      {user.organization && (
+                        <span className="flex items-center gap-1">
+                          <Building2 className="w-3 h-3 text-slate-400" />
+                          {user.organization}
+                        </span>
                       )}
                     </div>
+
+                    {user.note && (
+                      <p className="text-[11px] text-slate-600 bg-slate-50 rounded-lg p-2 mt-1 border border-slate-100">
+                        {user.note}
+                      </p>
+                    )}
                   </div>
 
                   {/* Actions */}
                   <div className="flex items-center gap-1.5 shrink-0">
-                    {req.status === "pending" ? (
+                    {user.status === "pending" && (
                       <>
                         <button
-                          onClick={() => handleReject(req.id)}
-                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-600"
-                        >
-                          Decline
-                        </button>
-                        <button
-                          onClick={() => handleApprove(req.id)}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs flex items-center gap-1"
+                          onClick={() => handleAction(user.email, "approve")}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all flex items-center gap-1 shadow-xs cursor-pointer"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          Approve Access
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleAction(user.email, "reject")}
+                          className="px-2.5 py-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all cursor-pointer"
+                        >
+                          Reject
                         </button>
                       </>
-                    ) : req.status === "approved" ? (
+                    )}
+                    {user.status === "approved" && (
                       <button
-                        onClick={() => handleReject(req.id)}
-                        className="px-2.5 py-1 rounded-lg text-xs font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50"
+                        onClick={() => handleAction(user.email, "revoke")}
+                        className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 text-[11px] font-semibold transition-all cursor-pointer"
                       >
                         Revoke Access
                       </button>
-                    ) : (
+                    )}
+                    {user.status === "rejected" && (
                       <button
-                        onClick={() => handleApprove(req.id)}
-                        className="px-2.5 py-1 rounded-lg text-xs font-medium text-emerald-600 hover:bg-emerald-50"
+                        onClick={() => handleAction(user.email, "approve")}
+                        className="px-2.5 py-1 rounded-lg border border-emerald-200 hover:bg-emerald-50 text-emerald-700 text-[11px] font-semibold transition-all cursor-pointer"
                       >
                         Re-Approve
                       </button>
@@ -238,17 +274,16 @@ export function OwnerAccessManager({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span>Approved partners can log in at makerlyai.in/CRM with confirmation codes.</span>
+        <div className="p-4 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between text-xs text-slate-500">
+          <span>Outsider protection: Only approved partners can receive login verification codes.</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-900 text-white font-semibold text-xs hover:bg-black"
+            className="px-4 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold cursor-pointer"
           >
-            Done
+            Close
           </button>
         </div>
       </div>
     </div>
   );
 }
-

@@ -4,12 +4,20 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
+import { usePathname } from "next/navigation";
+
 import ButtonWithIconDemo from "@/components/ui/button-with-icon";
 
 export default function Header() {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Suppress marketing navigation header on CRM workspace
+  if (pathname?.toLowerCase().startsWith("/crm")) {
+    return null;
+  }
 
   // Hide header when scrolling down, show when scrolling up
   useMotionValueEvent(scrollY, "change", (latest) => {
