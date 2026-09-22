@@ -84,20 +84,42 @@ export default function Header() {
           />
         </div>
 
+        {/* Desktop Sticky Anchor Navigation */}
+        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 backdrop-blur-xl shadow-inner">
+          {[
+            { label: "Capabilities", id: "capabilities" },
+            { label: "Process", id: "process" },
+            { label: "Real Builds", id: "work" },
+            { label: "Pricing", id: "pricing" },
+            { label: "Team", id: "founder" },
+            { label: "FAQ", id: "faq" },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="px-3.5 py-1.5 text-xs font-semibold text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/10 cursor-pointer"
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
         {/* Desktop Quick Action */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
           <ButtonWithIconDemo 
-            text="Get in touch" 
+            text="Start Your Project" 
             onClick={() => scrollToSection('contact')} 
+            className="!bg-brand-blue !text-white font-bold"
           />
         </div>
 
         {/* Mobile Hamburger Menu Toggle */}
         <button 
-          className="md:hidden relative z-[110] p-2 text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20"
+          className="lg:hidden relative z-[110] p-2 text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20 cursor-pointer"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle navigation menu"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
     </motion.header>
@@ -108,52 +130,56 @@ export default function Header() {
         <motion.div
           initial={{ opacity: 0, y: "-100%" }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: "-100%", transition: { delay: 0.2, duration: 0.3 } }}
+          exit={{ opacity: 0, y: "-100%", transition: { delay: 0.1, duration: 0.3 } }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center"
         >
-          <div className="flex flex-col gap-8 text-center w-full px-8">
+          <div className="flex flex-col gap-6 text-center w-full max-w-sm px-8">
             <motion.p 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-white/50 tracking-[0.3em] text-xs uppercase mb-4"
+              className="text-brand-blue tracking-[0.3em] text-xs font-bold uppercase mb-2"
             >
               Navigation
             </motion.p>
             
             {[
-              { label: "Home", id: "home" },
               { label: "Capabilities", id: "capabilities" },
-              { label: "Architecture", id: "robot" },
-              { label: "Founder", id: "founder" }
+              { label: "Process", id: "process" },
+              { label: "Real Builds", id: "work" },
+              { label: "Pricing & Sprints", id: "pricing" },
+              { label: "Architects & Team", id: "founder" },
+              { label: "FAQ", id: "faq" },
+              { label: "CRM Workspace", id: "/crm", isRoute: true },
             ].map((link, idx) => (
               <motion.button
                 key={link.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 + (idx * 0.05) }}
+                transition={{ delay: 0.12 + (idx * 0.04) }}
                 onClick={() => {
-                  if (link.id === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
-                  else if (link.id === 'founder') scrollToSection('founder');
-                  else if (link.id === 'robot') scrollToSection('robot');
-                  else scrollToSection(link.id);
+                  if (link.isRoute) {
+                    window.location.href = link.id;
+                  } else {
+                    scrollToSection(link.id);
+                  }
                   setIsMobileMenuOpen(false);
                 }}
-                className="text-4xl font-black text-white hover:text-brand-blue transition-colors duration-300"
+                className="text-2xl font-black text-white hover:text-brand-blue transition-colors duration-200 cursor-pointer"
               >
                 {link.label}
               </motion.button>
             ))}
 
             <motion.div 
-               initial={{ opacity: 0, scale: 0.9 }}
+               initial={{ opacity: 0, scale: 0.95 }}
                animate={{ opacity: 1, scale: 1 }}
-               transition={{ delay: 0.4 }}
-               className="mt-8 pt-8 border-t border-white/10 flex justify-center w-full"
+               transition={{ delay: 0.35 }}
+               className="mt-6 pt-6 border-t border-white/10 flex justify-center w-full"
             >
               <ButtonWithIconDemo 
-                text="Start Project / Contact" 
+                text="Start Your Project" 
                 onClick={() => scrollToSection('contact')}
-                className="!bg-brand-blue !text-white w-full py-6 text-xl"
+                className="!bg-brand-blue !text-white w-full py-4 text-base font-bold cursor-pointer"
               />
             </motion.div>
           </div>

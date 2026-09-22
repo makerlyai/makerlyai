@@ -195,7 +195,7 @@ export default function AboutFounder() {
                The hands that turn blueprints into reality. Tousif&apos;s expertise spans <strong className="font-bold text-foreground">full-stack execution, product development, and tech deployments</strong>—from architecture to production, every system is engineered for speed and scale.
              </p>
              <p>
-               At MakerlyAI, the philosophy is simple: <strong className="font-bold text-foreground">Build products that feel expensive, run blazingly fast, and force the competition to play catch-up.</strong>
+               At MakerlyAI, the philosophy is simple: <strong className="font-bold text-foreground">Build products that feel premium, run blazingly fast, and scale reliably under real production workloads.</strong>
              </p>
           </div>
 
@@ -309,43 +309,46 @@ export default function AboutFounder() {
         </motion.div>
       </motion.div>
 
-      {/* ════════════════ Image Mosaic ════════════════ */}
-      <div className="mx-auto max-w-7xl px-4 pb-24 md:px-12 md:pb-32 mt-32">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="grid auto-rows-[220px] grid-cols-2 gap-4 md:auto-rows-[280px] md:grid-cols-3 md:gap-6"
-        >
-          {/* Speaking — wide, spans 2 cols */}
-          <MosaicImage
-            src="/myphoto4nature.jpg"
-            alt="Tousif nature photo"
-            className="col-span-2 row-span-1"
-          />
+      {/* ════════════════ Progressive Disclosure: Behind the Scenes ════════════════ */}
+      <div className="mx-auto max-w-7xl px-4 pb-16 md:px-12 mt-16">
+        <div className="flex flex-col items-center justify-center">
+          <details className="group w-full max-w-4xl cursor-pointer">
+            <summary className="list-none flex items-center justify-center gap-2 py-3 px-6 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-mono text-slate-300 hover:text-white transition-all mx-auto w-fit">
+              <span className="w-2 h-2 rounded-full bg-brand-blue" />
+              <span>Behind the Scenes &amp; Founder Gallery</span>
+              <span className="text-[10px] text-brand-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
 
-          {/* Close portrait — tall, spans 2 rows */}
-          <MosaicImage
-            src="/myphoto1.jpg"
-            alt="Tousif portrait"
-            className="col-span-1 row-span-2"
-          />
-
-          {/* Action */}
-          <MosaicImage
-            src="/myphoto2.webp"
-            alt="Tousif action shot"
-            className="col-span-1 row-span-1"
-          />
-
-          {/* Lifestyle */}
-          <MosaicImage
-            src="/myphoto3.jpg"
-            alt="Tousif lifestyle"
-            className="col-span-1 row-span-1"
-          />
-        </motion.div>
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid auto-rows-[200px] grid-cols-2 gap-4 md:auto-rows-[240px] md:grid-cols-3 md:gap-6 mt-8 pt-4 border-t border-white/10"
+            >
+              <MosaicImage
+                src="/myphoto4nature.jpg"
+                alt="Tousif nature photo"
+                className="col-span-2 row-span-1"
+              />
+              <MosaicImage
+                src="/myphoto1.jpg"
+                alt="Tousif portrait"
+                className="col-span-1 row-span-2"
+              />
+              <MosaicImage
+                src="/myphoto2.webp"
+                alt="Tousif action shot"
+                className="col-span-1 row-span-1"
+              />
+              <MosaicImage
+                src="/myphoto3.jpg"
+                alt="Tousif lifestyle"
+                className="col-span-1 row-span-1"
+              />
+            </motion.div>
+          </details>
+        </div>
       </div>
 
     </section>

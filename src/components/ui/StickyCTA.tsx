@@ -25,9 +25,9 @@ export function StickyCTA() {
             .getElementById("contact")
             ?.scrollIntoView({ behavior: "smooth" })
         }
-        className="pointer-events-auto w-full py-4 rounded-2xl bg-brand-blue text-white font-bold text-base tracking-wide shadow-[0_0_30px_rgba(26,75,156,0.4)] active:scale-[0.98] transition-transform duration-150"
+        className="pointer-events-auto w-full py-4 rounded-2xl bg-brand-blue text-white font-bold text-base tracking-wide shadow-[0_0_30px_rgba(26,75,156,0.4)] active:scale-[0.98] transition-transform duration-150 cursor-pointer"
       >
-        Book a Session — Free Preview
+        Start Your Project — 48h Preview
       </button>
     </div>
   );

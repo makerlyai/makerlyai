@@ -7,30 +7,30 @@ const steps = [
   {
     icon: MessageSquare,
     number: "01",
-    title: "Tell Us Your Idea",
+    title: "1. Technical Discovery & Blueprint",
     description:
-      "Share your vision — app, SaaS, AI agent, website. We listen, ask sharp questions, and map your requirements.",
+      "We unpack your vision, target users, database schema, and integrations to formulate an exact sprint specification.",
   },
   {
     icon: Rocket,
     number: "02",
-    title: "We Build in 24 Hours",
+    title: "2. Working Preview in 48–72h",
     description:
-      "Our elite engineers deliver a working preview within 24 hours. Real code. Real product. Not a mockup.",
+      "Our engineers deploy a live staging preview link demonstrating the initial user flow and design system. Real code, not static slides.",
   },
   {
     icon: CreditCard,
     number: "03",
-    title: "Pay Only If You Like It",
+    title: "3. 100% IP Transfer & Guarantee",
     description:
-      "Review the preview. If it doesn't meet your standards, you pay nothing. Zero risk, maximum reward.",
+      "Review the preview with our Satisfaction Guarantee. Upon final acceptance, full GitHub repository and database ownership are transferred to you.",
   },
 ];
 
 export function HowItWorks() {
   return (
     <section
-      id="how-it-works"
+      id="process"
       className="relative w-full py-24 md:py-32 px-4 md:px-12 z-20"
     >
       <div className="max-w-6xl mx-auto">
