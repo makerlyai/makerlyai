@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 
 import ButtonWithIconDemo from "@/components/ui/button-with-icon";
+import { SocialFoldCard } from "@/components/ui/social-fold-card";
 
 export default function Footer() {
   const containerRef = useRef<HTMLElement>(null);
@@ -21,14 +22,14 @@ export default function Footer() {
   return (
     <footer 
       ref={containerRef}
-      className="relative w-full h-[700px] md:h-[80vh] bg-foreground text-background overflow-hidden flex flex-col justify-between pt-20"
+      className="relative w-full h-[850px] md:h-[90vh] bg-foreground text-background overflow-hidden flex flex-col justify-between pt-16 md:pt-20"
       style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
     >
       <motion.div 
         style={{ y: yReveal }}
-        className="w-full h-full flex flex-col justify-between absolute inset-0 pt-20 pb-4 px-4 md:px-12"
+        className="w-full h-full flex flex-col justify-between absolute inset-0 pt-16 md:pt-20 pb-4 px-4 md:px-12"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-7xl mx-auto z-10 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 w-full max-w-7xl mx-auto z-10 relative">
           
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-3xl md:text-5xl font-light mb-8 max-w-xl text-white">
@@ -50,26 +51,36 @@ export default function Footer() {
           <div className="col-span-1 flex flex-col justify-between">
             <div>
               <p className="text-sm uppercase tracking-widest mb-4 opacity-50 font-mono">Connect // Network</p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {[
-                  { name: 'LinkedIn', url: 'https://linkedin.com/company/makerlyai' },
-                  { name: 'GitHub', url: 'https://github.com/makerlyai' },
-                  { name: 'X / Twitter', url: 'https://x.com/makerlyai' },
-                  { name: 'Instagram', url: 'https://instagram.com/makerlyai' },
-                  { name: 'YouTube', url: 'https://youtube.com/@makerlyai' },
-                  { name: 'Partner CRM', url: '/crm' },
-                ].map((link) => (
-                  <a 
-                    key={link.name} 
-                    href={link.url}
-                    target={link.url.startsWith('/') ? '_self' : '_blank'}
-                    rel="noreferrer"
-                    className="group relative overflow-hidden px-3.5 py-1.5 border border-white/10 rounded-full text-xs font-medium transition-colors hover:border-brand-blue/50"
-                  >
-                    <span className="relative z-10 transition-colors group-hover:text-white">{link.name}</span>
-                    <div className="absolute inset-0 bg-brand-blue/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                  </a>
-                ))}
+              
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start gap-4 mb-6">
+                <SocialFoldCard
+                  label="Socials"
+                  instagramUrl="https://instagram.com/makerlyai"
+                  twitterUrl="https://x.com/makerlyai"
+                  discordUrl="https://github.com/makerlyai"
+                  className="shrink-0 scale-90 origin-top-left"
+                />
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {[
+                    { name: 'LinkedIn', url: 'https://linkedin.com/company/makerlyai' },
+                    { name: 'GitHub', url: 'https://github.com/makerlyai' },
+                    { name: 'X / Twitter', url: 'https://x.com/makerlyai' },
+                    { name: 'Instagram', url: 'https://instagram.com/makerlyai' },
+                    { name: 'YouTube', url: 'https://youtube.com/@makerlyai' },
+                    { name: 'Partner CRM', url: '/crm' },
+                  ].map((link) => (
+                    <a 
+                      key={link.name} 
+                      href={link.url}
+                      target={link.url.startsWith('/') ? '_self' : '_blank'}
+                      rel="noreferrer"
+                      className="group relative overflow-hidden px-3.5 py-1.5 border border-white/10 rounded-full text-xs font-medium transition-colors hover:border-brand-blue/50"
+                    >
+                      <span className="relative z-10 transition-colors group-hover:text-white">{link.name}</span>
+                      <div className="absolute inset-0 bg-brand-blue/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 

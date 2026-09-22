@@ -29,6 +29,8 @@ import {
 } from "@/components/core/image-comparison";
 import { TextEffect } from "@/components/core/text-effect";
 import { BorderTrail } from "@/components/core/border-trail";
+import { CaseStudyMetricCard } from "@/components/ui/case-study-metric-card";
+import { TrendingUp, BarChart3, Activity } from "lucide-react";
 
 const BUILDS = [
   {
@@ -207,6 +209,53 @@ export function RealBuildsShowcase() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Live Case Study Metrics Highlight */}
+        <div className="mb-16 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-6 sm:p-10 backdrop-blur-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-5 text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-400/10 border border-lime-400/30 text-xs font-mono text-lime-400">
+                <Activity className="w-3.5 h-3.5" />
+                <span>Verified Case Study • B2B SaaS Automation</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                Scaled Monthly Run-Rate to $51K+ with 75% Gross Margin.
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
+                By replacing fragmented Zapier workflows and manual Google Sheets with a custom Next.js + Supabase engine and automated voice qualification, operating expenses were reduced from $24k/mo to $12.8k/mo while inbound conversion doubled.
+              </p>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase">Net Free Cashflow</div>
+                  <div className="text-xl sm:text-2xl font-black text-white mt-0.5">$38,456/mo</div>
+                  <div className="text-[10px] font-mono text-lime-400">+14.2% MoM</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase">Response Latency</div>
+                  <div className="text-xl sm:text-2xl font-black text-white mt-0.5">&lt; 45 Sec</div>
+                  <div className="text-[10px] font-mono text-cyan-400">vs 4h Manual</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 col-span-2 sm:col-span-1">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase">Pipeline Accuracy</div>
+                  <div className="text-xl sm:text-2xl font-black text-white mt-0.5">99.8%</div>
+                  <div className="text-[10px] font-mono text-emerald-400">Zero Lost Leads</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <CaseStudyMetricCard
+                onButtonClick={() => {
+                  const contactEl = document.getElementById("contact");
+                  if (contactEl) {
+                    contactEl.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Before / After Transformation using ImageComparison */}

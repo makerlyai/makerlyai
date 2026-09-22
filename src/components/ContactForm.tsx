@@ -3,6 +3,7 @@
 import { FormEvent, ChangeEvent, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, AlertCircle, Loader2, Send, ShieldCheck, Lock } from "lucide-react";
+import { BanterLoader } from "@/components/ui/banter-loader";
 
 type ContactFormState = {
   name: string;
@@ -164,7 +165,15 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+    <>
+      {isSubmitting && (
+        <BanterLoader
+          fullScreen={true}
+          text="Securing & Transmitting Project Brief..."
+          subtext="Syncing with Supabase CRM engine & dispatching confirmation..."
+        />
+      )}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Full Name Field */}
         <div className="flex flex-col gap-2">
@@ -344,5 +353,6 @@ export default function ContactForm() {
         </div>
       </div>
     </form>
+    </>
   );
 }
