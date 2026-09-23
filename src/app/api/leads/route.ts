@@ -31,63 +31,103 @@ async function verifyCrmSession(request: Request) {
   return { authorized: true, session };
 }
 
+function mapDbLead(row: any): Lead & { leadSource?: string } {
+  return {
+    id: row.id,
+    clientName: row.client_name,
+    phone: row.phone,
+    email: row.email || "",
+    businessName: row.business_name,
+    requirement: row.requirement,
+    notes: row.notes || "",
+    status: (row.status
+      ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
+      : "New") as any,
+    assignedTo: null,
+    assignedToName: null,
+    createdBy: row.created_by_user_id || "system",
+    createdByName: row.created_by_name || "Inbound Pipeline",
+    dealValue: Number(row.deal_value) || 99000,
+    commission: Number(row.commission_amount) || 0,
+    commissionRate: row.is_high_ticket ? 20 : 15,
+    isHighTicket: Boolean(row.is_high_ticket),
+    nextFollowupDate: new Date(Date.now() + 86400000 * 2).toISOString(),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    // Extra field for frontend segmentation (not in Lead type, passed as-is)
+    leadSource: row.lead_source || "partner",
+  };
+}
+
 export async function GET(request: Request) {
   const auth = await verifyCrmSession(request);
   if (!auth.authorized) {
     return NextResponse.json({ success: false, error: auth.error }, { status: 401 });
   }
 
+  const isOwner = auth.session?.role === "owner";
   const { searchParams } = new URL(request.url);
   const status = searchParams.get("status");
   const partnerId = searchParams.get("partnerId");
 
   try {
-    // 1. Fetch real leads from Supabase crm_leads table
+    // Fetch all leads from Supabase
     const { data: dbLeads, error } = await supabase
       .from("crm_leads")
       .select("*")
       .order("created_at", { ascending: false });
 
-    let leads: Lead[] = [];
+    let allDbLeads: (Lead & { leadSource?: string })[] = [];
 
     if (!error && dbLeads && dbLeads.length > 0) {
-      leads = dbLeads.map((row: any) => ({
-        id: row.id,
-        clientName: row.client_name,
-        phone: row.phone,
-        email: row.email || "",
-        businessName: row.business_name,
-        requirement: row.requirement,
-        notes: row.notes || "",
-        status: (row.status ? (row.status.charAt(0).toUpperCase() + row.status.slice(1)) : "New") as any,
-        assignedTo: null,
-        assignedToName: null,
-        createdBy: row.created_by_user_id || "system",
-        createdByName: row.created_by_name || "Inbound Pipeline",
-        dealValue: Number(row.deal_value) || 99000,
-        commission: Number(row.commission_amount) || 0,
-        commissionRate: row.is_high_ticket ? 20 : 15,
-        isHighTicket: Boolean(row.is_high_ticket),
-        nextFollowupDate: new Date(Date.now() + 86400000 * 2).toISOString(),
-        createdAt: row.created_at,
-        updatedAt: row.updated_at,
-      }));
+      allDbLeads = dbLeads.map(mapDbLead);
     }
 
-    // Combine with seed demo leads so the CRM dashboard always has context
-    const allLeads = [...leads, ...SEED_LEADS];
+    if (isOwner) {
+      // ── OWNER view ──────────────────────────────────────────────────────
+      // Inbound leads (chatbot + form) — exclusive to owner/admin
+      const inboundLeads = allDbLeads.filter(
+        (l) => l.leadSource === "chatbot" || l.leadSource === "contact_form"
+      );
 
-    let filtered = allLeads;
-    if (status && status !== "all") {
-      filtered = filtered.filter((l) => l.status === status);
-    }
-    if (partnerId) {
-      filtered = filtered.filter((l) => l.createdBy === partnerId);
-    }
+      // Partner-submitted leads (and seed data)
+      const partnerLeads = allDbLeads.filter(
+        (l) => l.leadSource !== "chatbot" && l.leadSource !== "contact_form"
+      );
 
-    return NextResponse.json({ success: true, leads: filtered });
+      // Full pipeline for owner = partner leads + seed demo
+      const fullLeads = [...partnerLeads, ...SEED_LEADS];
+      let filtered = fullLeads;
+      if (status && status !== "all") {
+        filtered = filtered.filter((l) => l.status === status);
+      }
+
+      return NextResponse.json({
+        success: true,
+        leads: filtered,
+        // Admin-only: inbound leads from AI chatbot & contact form
+        inbound_leads: inboundLeads,
+      });
+    } else {
+      // ── PARTNER view ─────────────────────────────────────────────────────
+      // Partners only see their own partner-submitted leads, NOT inbound ones
+      const partnerLeads = allDbLeads.filter(
+        (l) =>
+          l.leadSource !== "chatbot" &&
+          l.leadSource !== "contact_form" &&
+          (partnerId ? l.createdBy === partnerId : true)
+      );
+
+      let filtered = partnerLeads;
+      if (status && status !== "all") {
+        filtered = filtered.filter((l) => l.status === status);
+      }
+
+      return NextResponse.json({ success: true, leads: filtered });
+    }
   } catch (err: any) {
     console.error("[Leads GET] Error querying crm_leads:", err);
+    // Fall back to seed data only
     return NextResponse.json({ success: true, leads: SEED_LEADS });
   }
 }
@@ -112,7 +152,6 @@ export async function POST(request: Request) {
     const val = Number(dealValue) || 99000;
     const isHigh = val >= 100000;
 
-    // Insert into Supabase crm_leads table
     const { data: inserted, error } = await supabase
       .from("crm_leads")
       .insert({
@@ -126,10 +165,11 @@ export async function POST(request: Request) {
         deal_value: val,
         is_high_ticket: isHigh,
         commission_amount: isHigh ? val * 0.2 : val * 0.15,
-        created_by_user_id: partnerId ? null : null,
+        created_by_user_id: null,
         created_by_email: auth.session?.email || "partner@makerlyai.in",
         created_by_name: partnerName || auth.session?.email?.split("@")[0] || "Partner",
         created_by_role: auth.session?.role || "partner",
+        lead_source: "partner",
       })
       .select("*")
       .single();

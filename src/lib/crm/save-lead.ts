@@ -42,6 +42,10 @@ export async function saveInboundLead(input: InboundLeadInput): Promise<SaveLead
   let supabaseSaved = false;
   let createdLeadId = "lead-" + Date.now().toString(36);
 
+  // Derive the lead_source tag for segmentation
+  const leadSourceTag: "chatbot" | "contact_form" =
+    source === "AI Voice/Chat Assistant" ? "chatbot" : "contact_form";
+
   // 1. Persist directly into Supabase crm_leads table
   try {
     const { data: inserted, error: leadError } = await supabase
@@ -60,6 +64,7 @@ export async function saveInboundLead(input: InboundLeadInput): Promise<SaveLead
         created_by_email: "inbound@makerlyai.in",
         created_by_name: source,
         created_by_role: "system",
+        lead_source: leadSourceTag,
       })
       .select("id")
       .single();

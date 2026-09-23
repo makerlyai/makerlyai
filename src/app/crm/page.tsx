@@ -39,11 +39,13 @@ import {
   logoutSession,
   getAccessRequests,
 } from "@/lib/crm/auth-store";
-import { ShieldCheck, UserCheck, Sparkles, Filter, FileSpreadsheet } from "lucide-react";
+import { ShieldCheck, UserCheck, Sparkles, Filter, FileSpreadsheet, Bot, Globe, ChevronDown, ChevronUp } from "lucide-react";
 
 export default function CRMPage() {
   const [mounted, setMounted] = useState(false);
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [inboundLeads, setInboundLeads] = useState<any[]>([]);
+  const [inboundExpanded, setInboundExpanded] = useState(true);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [activeUser, setActiveUserState] = useState<User>(getActiveUser());
@@ -92,7 +94,7 @@ export default function CRMPage() {
         setActiveUserState(partnerUser);
       }
 
-      // Sync live inbound leads from Supabase
+      // Sync live leads from Supabase
       if (session.token) {
         fetch("/api/leads", {
           headers: { Authorization: `Bearer ${session.token}` },
@@ -102,6 +104,10 @@ export default function CRMPage() {
             if (data.success && Array.isArray(data.leads)) {
               setLeads(data.leads);
               saveStoredLeads(data.leads);
+            }
+            // Owner-only: inbound leads from chatbot & contact form
+            if (data.inbound_leads && Array.isArray(data.inbound_leads)) {
+              setInboundLeads(data.inbound_leads);
             }
           })
           .catch((err) => console.warn("[CRM] Initial lead sync notice:", err));
@@ -159,7 +165,7 @@ export default function CRMPage() {
       setActiveUserState(partnerUser);
     }
 
-    // Sync live inbound leads immediately after authentication
+    // Sync live leads immediately after authentication
     if (session.token) {
       fetch("/api/leads", {
         headers: { Authorization: `Bearer ${session.token}` },
@@ -169,6 +175,9 @@ export default function CRMPage() {
           if (data.success && Array.isArray(data.leads)) {
             setLeads(data.leads);
             saveStoredLeads(data.leads);
+          }
+          if (data.inbound_leads && Array.isArray(data.inbound_leads)) {
+            setInboundLeads(data.inbound_leads);
           }
         })
         .catch((err) => console.warn("[CRM] Auth lead sync notice:", err));
@@ -453,6 +462,108 @@ export default function CRMPage() {
 
         {/* Financial & Pipeline Stats Ribbon */}
         <StatsRibbon stats={stats} activeUser={activeUser} />
+
+        {/* ── ADMIN-ONLY: Inbound Intelligence Panel ── */}
+        {activeUser.role === "admin" && (
+          <div className="rounded-2xl border border-[#2952cc]/25 bg-gradient-to-br from-[#0a0f1e]/90 via-[#0e1530]/80 to-[#1a2040]/90 shadow-xl backdrop-blur-md overflow-hidden">
+            {/* Panel Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.07]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2952cc]/20 border border-[#2952cc]/40">
+                  <ShieldCheck className="h-4.5 w-4.5 text-[#6b8fff]" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white tracking-tight">Inbound Intelligence</h3>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    🔒 Owner-only · Leads from AI Chatbot &amp; Contact Form
+                  </p>
+                </div>
+                <span className="ml-2 rounded-full bg-[#2952cc]/30 border border-[#2952cc]/50 text-[#a0b4ff] text-[10px] font-bold px-2.5 py-0.5">
+                  {inboundLeads.length} lead{inboundLeads.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+              <button
+                onClick={() => setInboundExpanded((p) => !p)}
+                className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors text-xs"
+              >
+                {inboundExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                {inboundExpanded ? "Collapse" : "Expand"}
+              </button>
+            </div>
+
+            {/* Lead Rows */}
+            {inboundExpanded && (
+              <div className="divide-y divide-white/[0.05]">
+                {inboundLeads.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-slate-500">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-3">
+                      <Bot className="h-6 w-6 opacity-40" />
+                    </div>
+                    <p className="text-sm font-medium text-slate-400">No inbound leads yet</p>
+                    <p className="text-xs text-slate-600 mt-1">They will appear here once someone uses your chatbot or contact form</p>
+                  </div>
+                ) : (
+                  inboundLeads.map((lead: any) => {
+                    const isChatbot = lead.leadSource === "chatbot";
+                    return (
+                      <div
+                        key={lead.id}
+                        className="flex flex-col sm:flex-row sm:items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors group"
+                      >
+                        {/* Source Badge */}
+                        <div
+                          className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border shrink-0 ${
+                            isChatbot
+                              ? "bg-violet-500/15 border-violet-400/30 text-violet-300"
+                              : "bg-emerald-500/15 border-emerald-400/30 text-emerald-300"
+                          }`}
+                        >
+                          {isChatbot ? <Bot className="h-3 w-3" /> : <Globe className="h-3 w-3" />}
+                          {isChatbot ? "AI Chatbot" : "Contact Form"}
+                        </div>
+
+                        {/* Lead Info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-white text-sm truncate">{lead.clientName}</span>
+                            {lead.businessName && lead.businessName !== "Direct Client Project" && (
+                              <span className="text-slate-400 text-xs truncate">· {lead.businessName}</span>
+                            )}
+                          </div>
+                          <p className="text-slate-400 text-xs mt-0.5 line-clamp-1">{lead.requirement}</p>
+                        </div>
+
+                        {/* Contact */}
+                        <div className="flex items-center gap-3 shrink-0 text-xs text-slate-400">
+                          {lead.phone && lead.phone !== "Not provided" && (
+                            <a href={`tel:${lead.phone}`} className="hover:text-emerald-400 transition-colors font-medium">
+                              📞 {lead.phone}
+                            </a>
+                          )}
+                          {lead.email && (
+                            <a href={`mailto:${lead.email}`} className="hover:text-[#6b8fff] transition-colors hidden sm:inline">
+                              ✉ {lead.email}
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Timestamp */}
+                        <div className="shrink-0 text-[10px] text-slate-600 hidden md:block">
+                          {new Date(lead.createdAt).toLocaleString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Content View: Table vs Kanban */}
         {viewMode === "table" ? (
