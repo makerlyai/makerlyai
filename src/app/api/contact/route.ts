@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
-import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
+import { saveInboundLead } from "@/lib/crm/save-lead";
 
 export const runtime = "nodejs";
 
@@ -9,24 +9,8 @@ type ContactRequestBody = {
   email: string;
   phone: string;
   projectDetails: string;
+  timeSlot?: string;
 };
-
-type ContactResults = {
-  notion: boolean;
-  adminEmail: boolean;
-  clientEmail: boolean;
-};
-
-type EnvConfig =
-  | {
-      gmailUser: string;
-      gmailAppPassword: string;
-      notionApiKey: string;
-      notionDatabaseId: string;
-    }
-  | {
-      missing: string[];
-    };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -48,127 +32,76 @@ function validateContactPayload(
     email: normalizeField(rawPayload.email),
     phone: normalizeField(rawPayload.phone),
     projectDetails: normalizeField(rawPayload.projectDetails),
+    timeSlot: normalizeField(rawPayload.timeSlot || rawPayload.meetingTime),
   };
 
-  if (!data.name || !data.email || !data.phone || !data.projectDetails) {
-    return { error: "All fields are required." };
+  // Must have name and at least phone or email, plus projectDetails
+  if (!data.name || (!data.email && !data.phone) || !data.projectDetails) {
+    return { error: "Name, project details, and at least one contact method (phone or email) are required." };
   }
 
-  if (!EMAIL_PATTERN.test(data.email)) {
+  if (data.email && !EMAIL_PATTERN.test(data.email)) {
     return { error: "Please provide a valid email address." };
   }
 
   return { data };
 }
 
-function getEnvConfig(): EnvConfig {
-  const gmailUser = process.env.GMAIL_USER?.trim() ?? "";
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.trim() ?? "";
-  const notionApiKey = process.env.NOTION_API_KEY?.trim() ?? "";
-  const notionDatabaseId = process.env.NOTION_DATABASE_ID?.trim() ?? "";
-
-  const missing: string[] = [];
-
-  if (!gmailUser) {
-    missing.push("GMAIL_USER");
-  }
-
-  if (!gmailAppPassword) {
-    missing.push("GMAIL_APP_PASSWORD");
-  }
-
-  if (!notionApiKey) {
-    missing.push("NOTION_API_KEY");
-  }
-
-  if (!notionDatabaseId) {
-    missing.push("NOTION_DATABASE_ID");
-  }
-
-  if (missing.length > 0) {
-    return { missing };
-  }
-
-  return {
-    gmailUser,
-    gmailAppPassword,
-    notionApiKey,
-    notionDatabaseId,
-  };
-}
-
 async function saveLeadToNotion(
-  notion: Client,
-  notionDatabaseId: string,
   data: ContactRequestBody,
   createdAt: string,
 ) {
-  await notion.pages.create({
-    parent: {
-      database_id: notionDatabaseId,
-    },
-    properties: {
-      Name: {
-        title: [
-          {
-            text: {
-              content: data.name,
+  const notionApiKey = process.env.NOTION_API_KEY?.trim();
+  const notionDatabaseId = process.env.NOTION_DATABASE_ID?.trim();
+
+  if (!notionApiKey || !notionDatabaseId) return;
+
+  try {
+    const notion = new Client({ auth: notionApiKey });
+    await notion.pages.create({
+      parent: {
+        database_id: notionDatabaseId,
+      },
+      properties: {
+        Name: {
+          title: [
+            {
+              text: {
+                content: data.name,
+              },
             },
-          },
-        ],
-      },
-      Email: {
-        email: data.email,
-      },
-      Phone: {
-        phone_number: data.phone,
-      },
-      "Project Details": {
-        rich_text: [
-          {
-            text: {
-              content: data.projectDetails,
+          ],
+        },
+        Email: {
+          email: data.email || "not-provided@lead.makerlyai.in",
+        },
+        Phone: {
+          phone_number: data.phone || "",
+        },
+        "Project Details": {
+          rich_text: [
+            {
+              text: {
+                content: data.projectDetails,
+              },
             },
+          ],
+        },
+        Status: {
+          select: {
+            name: "New",
           },
-        ],
-      },
-      Status: {
-        select: {
-          name: "New",
+        },
+        "Created At": {
+          date: {
+            start: createdAt,
+          },
         },
       },
-      "Created At": {
-        date: {
-          start: createdAt,
-        },
-      },
-    },
-  });
-}
-
-function buildAdminNotificationText(data: ContactRequestBody) {
-  return [
-    "A new lead has been submitted through Makerlyai.",
-    "",
-    `Name: ${data.name}`,
-    `Email: ${data.email}`,
-    `Phone: ${data.phone}`,
-    "",
-    "Project Details:",
-    data.projectDetails,
-  ].join("\n");
-}
-
-function buildClientConfirmationText(name: string) {
-  return [
-    `Hello ${name},`,
-    "",
-    "Thank you for reaching out to MakerlyAI.",
-    "We will contact you soon within a few hours, and then within 24 hours your preview will be ready.",
-    "",
-    "Best regards,",
-    "MakerlyAI Team",
-  ].join("\n");
+    });
+  } catch (err) {
+    console.warn("[Notion] Optional Notion sync notice:", err);
+  }
 }
 
 export async function POST(request: Request) {
@@ -181,118 +114,44 @@ export async function POST(request: Request) {
         {
           success: false,
           message: validation.error,
-          results: {
-            notion: false,
-            adminEmail: false,
-            clientEmail: false,
-          } satisfies ContactResults,
         },
         { status: 400 },
       );
     }
 
-    const config = getEnvConfig();
-
-    if ("missing" in config) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: `Server configuration is incomplete. Missing: ${config.missing.join(", ")}`,
-          results: {
-            notion: false,
-            adminEmail: false,
-            clientEmail: false,
-          } satisfies ContactResults,
-          deployment: process.env.VERCEL_URL ?? null,
-        },
-        { status: 500 },
-      );
-    }
-
     const data = validation.data;
     const createdAt = new Date().toISOString();
-    const notion = new Client({ auth: config.notionApiKey });
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: config.gmailUser,
-        pass: config.gmailAppPassword.replace(/\s+/g, ""),
-      },
+
+    // 1. Save lead to Supabase (crm_leads + crm_activities) and dispatch dual email alerts
+    const leadResult = await saveInboundLead({
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      projectDetails: data.projectDetails,
+      timeSlot: data.timeSlot,
+      source: "Website Contact Form",
     });
 
-    const results: ContactResults = {
-      notion: false,
-      adminEmail: false,
-      clientEmail: false,
-    };
-
-    try {
-      await saveLeadToNotion(notion, config.notionDatabaseId, data, createdAt);
-      results.notion = true;
-    } catch (error) {
-      console.error("Failed to save lead to Notion.", error);
-    }
-
-    try {
-      await transporter.sendMail({
-        from: config.gmailUser,
-        to: "getmakerlyai@gmail.com",
-        subject: "New Lead - Makerlyai",
-        text: buildAdminNotificationText(data),
-        replyTo: data.email,
-      });
-      results.adminEmail = true;
-    } catch (error) {
-      console.error("Failed to send admin notification email.", error);
-    }
-
-    try {
-      await transporter.sendMail({
-        from: config.gmailUser,
-        to: data.email,
-        subject: "We received your request - Makerlyai",
-        text: buildClientConfirmationText(data.name),
-      });
-      results.clientEmail = true;
-    } catch (error) {
-      console.error("Failed to send client confirmation email.", error);
-    }
-
-    const success = results.notion || results.adminEmail || results.clientEmail;
-
-    if (!success) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "We could not process your request at this time.",
-          results,
-        },
-        { status: 500 },
-      );
-    }
+    // 2. Optionally sync with Notion if configured
+    await saveLeadToNotion(data, createdAt);
 
     return NextResponse.json(
       {
         success: true,
-        message: "Your request has been received successfully.",
-        results,
+        message: "Your project brief has been received successfully. Tousif Raza will review it within 24 hours.",
+        leadId: leadResult.leadId,
+        emailSent: leadResult.emailSent,
       },
       { status: 200 },
     );
-  } catch (error) {
-    console.error("Unexpected contact submission error.", error);
+  } catch (error: any) {
+    console.error("Unexpected contact submission error:", error);
 
     return NextResponse.json(
       {
         success: false,
-        message: "Unable to process the request.",
-        results: {
-          notion: false,
-          adminEmail: false,
-          clientEmail: false,
-        } satisfies ContactResults,
+        message: "Unable to process the request at this moment.",
+        error: error.message,
       },
       { status: 500 },
     );

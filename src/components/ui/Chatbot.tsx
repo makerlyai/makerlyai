@@ -2,14 +2,22 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User, Sparkles, Mic, Keyboard, VolumeX } from "lucide-react";
+import { X, Send, Bot, User, Sparkles, Mic, Keyboard, VolumeX, Volume2, Calendar, CheckCircle2 } from "lucide-react";
 import { VoiceAssistantOrb } from "./voice-assistant-orb";
 
 type Message = {
   id: string;
   role: "user" | "assistant";
   content: string;
+  leadCaptured?: boolean;
+  timeSlot?: string;
 };
+
+const MEETING_SLOTS = [
+  "⚡ Today Evening",
+  "⚡ Tomorrow Afternoon",
+  "⚡ Tomorrow Evening",
+];
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,11 +28,12 @@ export default function Chatbot() {
     {
       id: "welcome",
       role: "assistant",
-      content: "Hello! I'm Makerly AI's Voice Assistant. Tell me what kind of SaaS, AI agent, or custom web platform you want to build.",
+      content: "Hello! I'm Makerly AI's Voice Assistant. Tell me what kind of SaaS, AI agent, or custom web platform you want to build. We can set up a quick 15-minute call today evening or tomorrow afternoon!",
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasLeadCaptured, setHasLeadCaptured] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -44,7 +53,7 @@ export default function Chatbot() {
     setIsPlayingAudio(false);
   };
 
-  // Clean up speech synthesis on unmount and listen for external open events
+  // Clean up on unmount and listen for external open events
   useEffect(() => {
     const handleOpenChat = () => {
       setIsOpen(true);
@@ -58,24 +67,23 @@ export default function Chatbot() {
     };
   }, []);
 
-  // Voice playback with Sarvam TTS or browser synthesis
+  // Voice playback strictly with Sarvam Bulbul v3 API
   const speakText = async (text: string) => {
     if (mode !== "voice") return;
     stopAudio();
 
-    const cleanText = text.replace(/\[SHOW_TIME_SLOTS\]/g, "").trim();
+    const cleanText = text.replace(/\[SHOW_TIME_SLOTS\]/g, "").replace(/[*#_~`]/g, "").trim();
     if (!cleanText) return;
 
     try {
       setIsPlayingAudio(true);
-      // Try Sarvam TTS API
       const res = await fetch("/api/sarvam/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: cleanText,
           target_language_code: "en-IN",
-          speaker: "meera",
+          speaker: "priya",
         }),
       });
 
@@ -84,18 +92,19 @@ export default function Chatbot() {
         const audio = new Audio(data.audio);
         audioRef.current = audio;
         audio.onended = () => setIsPlayingAudio(false);
-        audio.onerror = () => {
-          setIsPlayingAudio(false);
-          fallbackSpeech(cleanText);
-        };
+        audio.onerror = () => setIsPlayingAudio(false);
         await audio.play();
+        return;
+      } else if (data.fallback) {
+        // Fallback only if Sarvam is unconfigured
+        fallbackSpeech(cleanText);
         return;
       }
     } catch (e) {
-      console.warn("Sarvam TTS fetch failed, using browser fallback", e);
+      console.warn("Sarvam TTS request notice:", e);
     }
 
-    fallbackSpeech(cleanText);
+    setIsPlayingAudio(false);
   };
 
   const fallbackSpeech = (cleanText: string) => {
@@ -103,18 +112,21 @@ export default function Chatbot() {
       setIsPlayingAudio(false);
       return;
     }
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.rate = 1.05;
-    utterance.pitch = 1.0;
-    utterance.onend = () => setIsPlayingAudio(false);
-    utterance.onerror = () => setIsPlayingAudio(false);
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onerror = () => setIsPlayingAudio(false);
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      setIsPlayingAudio(false);
+    }
   };
 
   // Toggle listening with barge-in
   const toggleListening = () => {
-    // Interruption handling: stop audio if currently playing
     stopAudio();
 
     if (isListening) {
@@ -141,7 +153,7 @@ export default function Chatbot() {
 
       recognition.continuous = false;
       recognition.interimResults = true;
-      recognition.lang = "en-IN"; // Supports English and Indian accents natively
+      recognition.lang = "en-IN";
 
       recognition.onstart = () => setIsListening(true);
 
@@ -157,7 +169,7 @@ export default function Chatbot() {
       };
 
       recognition.onerror = (event: any) => {
-        console.error("Speech recognition error:", event.error);
+        console.warn("Speech recognition notice:", event.error);
         setIsListening(false);
       };
 
@@ -187,7 +199,6 @@ export default function Chatbot() {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
-    // Barge in
     stopAudio();
 
     const userMsg: Message = {
@@ -214,7 +225,12 @@ export default function Chatbot() {
       });
 
       const data = await response.json();
-      const reply = data.reply || "I can help scope your build. Would you like to submit a quick project brief?";
+      const reply = data.reply || "I can help scope your build. What's your WhatsApp number or email so Tousif Raza can prepare your 48h preview?";
+      const leadCaptured = Boolean(data.leadCaptured);
+
+      if (leadCaptured) {
+        setHasLeadCaptured(true);
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -222,13 +238,15 @@ export default function Chatbot() {
           id: (Date.now() + 1).toString(),
           role: "assistant",
           content: reply,
+          leadCaptured,
+          timeSlot: data.timeSlot,
         },
       ]);
 
       speakText(reply);
     } catch (error: any) {
       const fallbackMsg =
-        "Our team delivers working previews in 48 hours. Fill out the brief form below to connect directly with Tousif Raza.";
+        "Our team delivers working previews in 48 hours. What is your WhatsApp number or email so founder Tousif Raza can review your project directly?";
       setMessages((prev) => [
         ...prev,
         {
@@ -280,7 +298,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-[420px] h-[540px] max-h-[calc(100vh-7rem)] bg-zinc-950/95 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100"
+            className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-[420px] h-[550px] max-h-[calc(100vh-7rem)] bg-zinc-950/95 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/[0.04]">
@@ -289,12 +307,12 @@ export default function Chatbot() {
                   <Sparkles size={18} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-white">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
                     <span className="font-logo font-bold">Makerly AI</span> Voice Assistant
                   </h3>
                   <p className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Sarvam AI Saarika &amp; Bulbul v3
+                    Sarvam AI Bulbul v3
                   </p>
                 </div>
               </div>
@@ -357,7 +375,7 @@ export default function Chatbot() {
 
             {/* Voice Orb Area (When in Voice Mode) */}
             {mode === "voice" && (
-              <div className="py-6 px-4 bg-gradient-to-b from-brand-blue/10 via-transparent to-transparent border-b border-white/10 flex flex-col items-center justify-center">
+              <div className="py-5 px-4 bg-gradient-to-b from-brand-blue/15 via-transparent to-transparent border-b border-white/10 flex flex-col items-center justify-center">
                 <VoiceAssistantOrb
                   isListening={isListening}
                   isPlayingAudio={isPlayingAudio}
@@ -371,7 +389,7 @@ export default function Chatbot() {
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex gap-2.5 max-w-[85%] ${
+                  className={`flex gap-2.5 max-w-[88%] ${
                     msg.role === "user" ? "ml-auto flex-row-reverse" : ""
                   }`}
                 >
@@ -382,14 +400,39 @@ export default function Chatbot() {
                   >
                     {msg.role === "user" ? <User size={12} /> : <Bot size={12} />}
                   </div>
-                  <div
-                    className={`p-3 rounded-2xl leading-relaxed ${
-                      msg.role === "user"
-                        ? "bg-brand-blue text-white rounded-tr-xs"
-                        : "bg-white/[0.06] text-slate-200 rounded-tl-xs border border-white/10"
-                    }`}
-                  >
-                    {msg.content}
+                  <div className="space-y-1.5">
+                    <div
+                      className={`p-3 rounded-2xl leading-relaxed ${
+                        msg.role === "user"
+                          ? "bg-brand-blue text-white rounded-tr-xs"
+                          : "bg-white/[0.06] text-slate-200 rounded-tl-xs border border-white/10"
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+
+                    {/* Lead Captured & Scheduled Badge */}
+                    {msg.leadCaptured && (
+                      <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-md">
+                        <CheckCircle2 size={12} />
+                        <span>Brief &amp; consultation scheduled with Tousif Raza ✓</span>
+                      </div>
+                    )}
+
+                    {/* Voice Replay button on assistant messages */}
+                    {msg.role === "assistant" && (
+                      <div className="flex items-center gap-2 pl-1">
+                        <button
+                          type="button"
+                          onClick={() => speakText(msg.content)}
+                          className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-cyan-300 transition-colors"
+                          title="Listen with Sarvam Bulbul"
+                        >
+                          <Volume2 size={11} />
+                          <span>Listen (Sarvam Bulbul)</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -415,6 +458,23 @@ export default function Chatbot() {
               <div ref={messagesEndRef} />
             </div>
 
+            {/* Quick Meeting Slot Chips */}
+            <div className="px-3 pt-2 pb-1 bg-white/[0.02] border-t border-white/5 flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+              <span className="text-[10px] uppercase font-mono text-slate-500 flex items-center gap-1 shrink-0">
+                <Calendar size={10} /> Call Slot:
+              </span>
+              {MEETING_SLOTS.map((slot) => (
+                <button
+                  key={slot}
+                  type="button"
+                  onClick={() => sendMessage(`I would like to schedule my consultation for ${slot.replace("⚡ ", "")}.`)}
+                  className="shrink-0 px-2.5 py-1 rounded-full bg-white/[0.05] hover:bg-brand-blue/20 hover:border-brand-blue/40 border border-white/10 text-[11px] font-medium text-slate-300 hover:text-white transition-all cursor-pointer"
+                >
+                  {slot}
+                </button>
+              ))}
+            </div>
+
             {/* Text Input Form */}
             <div className="p-3 border-t border-white/10 bg-white/[0.03]">
               <form onSubmit={handleSubmit} className="flex gap-2">
@@ -422,7 +482,7 @@ export default function Chatbot() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={mode === "voice" ? "Or type your inquiry..." : "Ask about MVP sprints, pricing, or tech stack..."}
+                  placeholder={mode === "voice" ? "Or type your inquiry..." : "Share your project, phone/email, or preferred time..."}
                   className="flex-1 bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue"
                 />
                 <button

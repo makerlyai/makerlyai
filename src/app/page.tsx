@@ -106,14 +106,6 @@ export default function Home() {
           style={{ opacity: opacityText }}
           className="relative z-20 text-center flex flex-col items-center gap-6 w-full max-w-5xl"
         >
-          {/* Upper badge title with TextEffect */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-brand-300">
-            <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
-            <TextEffect preset="fade-in-blur" speedReveal={1.2}>
-              Digital Product Studio &amp; Autonomous AI Systems
-            </TextEffect>
-          </div>
-
           {/* Main heading */}
           <motion.h1
             initial={{ opacity: 0, scale: 0.95 }}

@@ -67,25 +67,25 @@ export default function Header() {
           : "bg-transparent py-6"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative">
         
-        {/* Brand Logo - Encased in a perfectly crafted premium 'Glass Pill' container to frame the logo intentionally */}
+        {/* Brand Logo - Encased in a perfectly crafted premium 'Glass Pill' container with new M logo */}
         <div 
-          className="relative flex items-center justify-center cursor-pointer group bg-white md:backdrop-blur-3xl h-12 md:h-16 px-7 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
+          className="relative flex items-center justify-center cursor-pointer group bg-white md:backdrop-blur-3xl h-12 md:h-14 px-6 md:px-7 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           {/* Subtle reflection overlay */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-20 pointer-events-none" />
           
           <img 
-            src="/initialletterlogolandscape.png" 
+            src="/logoMupdated.svg" 
             alt="MakerlyAI Master Brand" 
-            className="h-8 md:h-12 w-auto object-contain relative z-10 mix-blend-multiply scale-[1.25] group-hover:scale-[1.3] transition-transform duration-500" 
+            className="h-8 md:h-11 w-auto object-contain relative z-10 transition-transform duration-500 group-hover:scale-110" 
           />
         </div>
 
-        {/* Desktop Sticky Anchor Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 backdrop-blur-xl shadow-inner">
+        {/* Desktop Sticky Anchor Navigation - Centered in middle */}
+        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 backdrop-blur-xl shadow-inner absolute left-1/2 -translate-x-1/2">
           {[
             { label: "Capabilities", id: "capabilities" },
             { label: "Process", id: "process" },

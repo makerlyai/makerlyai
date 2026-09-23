@@ -14,10 +14,10 @@ export default function Footer() {
     offset: ["start end", "end end"],
   });
 
-  // Parallax sliding motion between upward section and footer
-  const yReveal = useTransform(scrollYProgress, [0, 1], ["-35%", "0%"]);
+  // Smooth parallax motion without clipping
+  const yReveal = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
   // 3D Depth parallax on massive watermark typography
-  const textY = useTransform(scrollYProgress, [0, 1], ["20%", "0%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["10%", "0%"]);
 
   const platformLinks = [
     { name: "Instagram", url: "https://instagram.com/makerlyai" },
@@ -34,12 +34,12 @@ export default function Footer() {
   return (
     <footer
       ref={containerRef}
-      className="relative z-10 w-full min-h-[700px] md:min-h-[85vh] bg-[#f5f5f0] text-[#121212] overflow-hidden flex flex-col justify-between pt-16 md:pt-24 pb-12 sm:pb-16 md:pb-20"
+      className="relative z-10 w-full bg-[#f5f5f0] text-[#121212] overflow-hidden flex flex-col pt-20 md:pt-28 pb-4 sm:pb-6"
       style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
     >
       <motion.div
         style={{ y: yReveal }}
-        className="w-full h-full flex flex-col justify-between max-w-7xl mx-auto px-6 md:px-12 relative z-10"
+        className="w-full flex flex-col max-w-7xl mx-auto px-6 md:px-12 relative z-10"
       >
         {/* Top 2-Card Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 w-full items-start">
@@ -180,8 +180,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Massive Parallax Typography Watermark */}
-        <div className="w-full overflow-hidden mt-12 md:mt-16 pb-4 sm:pb-8 pointer-events-none select-none text-center flex items-center justify-center">
+        {/* Massive Parallax Typography Watermark - Shifted upward to eliminate dead vertical space */}
+        <div className="w-full overflow-hidden mt-6 md:mt-8 pb-1 sm:pb-2 pointer-events-none select-none text-center flex items-center justify-center">
           <motion.h1
             style={{ y: textY }}
             className="text-[7.8vw] sm:text-[8.2vw] md:text-[8.8vw] lg:text-[9.2vw] leading-none font-black tracking-tight text-[#121212]/[0.08] inline-block font-logo whitespace-nowrap px-4"

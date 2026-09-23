@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { saveInboundLead } from "@/lib/crm/save-lead";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
@@ -18,20 +19,16 @@ export async function POST(req: Request) {
 Your goal is to provide "Instant Build Estimates" AND actively book consultation sessions.
 Keep responses concise, highly professional, and perfectly natural. Never output json manually.
 
-Always guide the conversation towards booking a session. To book a session, you MUST collect these 4 pieces of information sequentially:
-1. Preferred Time Slot (If you need to ask this, you MUST unconditionally include the exact text "[SHOW_TIME_SLOTS]" in your message on a new line).
+Always guide the conversation towards booking a session. To book a session, you MUST collect:
+1. Preferred Time Slot: today evening, tomorrow afternoon, or tomorrow evening. (If asking this, include "[SHOW_TIME_SLOTS]" in your message).
 2. Full Name
-3. Email Address
-4. Phone Number
+3. Email Address OR Phone Number (at least one is required).
 
 CRITICAL RULES FOR BOOKING:
-- Do NOT call 'book_session' if any of the 4 pieces of information are missing, fake, or incomplete.
-- Do NOT guess or make up a phone number, email, or name. 
-- If the user hasn't provided their email, explicitly ASK for their email.
-- Once you have verified you have all 4 real pieces of information, immediately call the 'book_session' tool.
+- Once you have the contact details and time slot, call the 'book_session' tool.
 `;
 
-    const mappedHistory = history
+    const mappedHistory = (history || [])
       .filter((m: any) => m.id !== "welcome")
       .map((m: any) => ({ role: m.role, content: m.content }));
 
@@ -53,16 +50,16 @@ CRITICAL RULES FOR BOOKING:
             type: "function",
             function: {
               name: "book_session",
-              description: "Call this function to officially book the session and send the lead data to our database.",
+              description: "Call this function to officially book the session and save the lead to Supabase CRM and send email alerts.",
               parameters: {
                 type: "object",
                 properties: {
                   name: { type: "string", description: "The client's full name" },
                   email: { type: "string", description: "The client's email address" },
                   phone: { type: "string", description: "The client's phone number" },
-                  timeSlot: { type: "string", description: "The preferred time slot (e.g. Morning, Afternoon)" }
+                  timeSlot: { type: "string", description: "The preferred time slot (e.g. Tomorrow Afternoon, Today Evening)" }
                 },
-                required: ["name", "email", "phone", "timeSlot"]
+                required: ["name"]
               }
             }
           }
@@ -86,9 +83,19 @@ CRITICAL RULES FOR BOOKING:
     if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
       const toolCall = responseMessage.tool_calls[0];
       if (toolCall.function.name === "book_session") {
+        const args = JSON.parse(toolCall.function.arguments);
+        await saveInboundLead({
+          name: args.name,
+          email: args.email,
+          phone: args.phone,
+          timeSlot: args.timeSlot || "Tomorrow Afternoon",
+          projectDetails: `Consultation session booking requested for ${args.timeSlot || "Tomorrow Afternoon"}.`,
+          source: "AI Voice/Chat Assistant",
+        });
+
         return NextResponse.json({ 
-          reply: "Booking your session now...",
-          toolCall: JSON.parse(toolCall.function.arguments)
+          reply: `Thank you, ${args.name}! Your consultation session has been scheduled for ${args.timeSlot || "tomorrow"}. Tousif Raza and our engineering team have received your request and will reach out with your 48-hour prototype roadmap.`,
+          toolCall: args
         });
       }
     }
@@ -97,7 +104,7 @@ CRITICAL RULES FOR BOOKING:
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(
-      { reply: "My neural connection dropped. Please use the contact form to reach out directly!" },
+      { reply: "Our team delivers working previews in 48 hours. Please use the contact form to connect directly with Tousif Raza!" },
       { status: 500 }
     );
   }

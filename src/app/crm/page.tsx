@@ -10,6 +10,7 @@ import {
 } from "@/lib/crm/types";
 import {
   getStoredLeads,
+  saveStoredLeads,
   getStoredActivities,
   getStoredUsers,
   getActiveUser,
@@ -90,6 +91,21 @@ export default function CRMPage() {
         setActiveUser(partnerUser);
         setActiveUserState(partnerUser);
       }
+
+      // Sync live inbound leads from Supabase
+      if (session.token) {
+        fetch("/api/leads", {
+          headers: { Authorization: `Bearer ${session.token}` },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.leads)) {
+              setLeads(data.leads);
+              saveStoredLeads(data.leads);
+            }
+          })
+          .catch((err) => console.warn("[CRM] Initial lead sync notice:", err));
+      }
     } else {
       setActiveUserState(getActiveUser());
     }
@@ -141,6 +157,21 @@ export default function CRMPage() {
       };
       setActiveUser(partnerUser);
       setActiveUserState(partnerUser);
+    }
+
+    // Sync live inbound leads immediately after authentication
+    if (session.token) {
+      fetch("/api/leads", {
+        headers: { Authorization: `Bearer ${session.token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && Array.isArray(data.leads)) {
+            setLeads(data.leads);
+            saveStoredLeads(data.leads);
+          }
+        })
+        .catch((err) => console.warn("[CRM] Auth lead sync notice:", err));
     }
   };
 
