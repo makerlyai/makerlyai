@@ -39,6 +39,9 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const transcriptRef = useRef<string>("");
+  // Monotonically-increasing generation counter — every new speakText call
+  // gets a fresh generation ID; stale in-flight fetches compare and bail out.
+  const speakGenRef = useRef<number>(0);
 
   // Barge-in: immediately cancel audio playback if user interrupts
   const stopAudio = () => {
@@ -70,6 +73,9 @@ export default function Chatbot() {
   // Voice playback strictly with Sarvam Bulbul v3 API
   const speakText = async (text: string) => {
     if (mode !== "voice") return;
+
+    // Increment generation — any older in-flight call will see a mismatch and abort
+    const myGen = ++speakGenRef.current;
     stopAudio();
 
     const cleanText = text.replace(/\[SHOW_TIME_SLOTS\]/g, "").replace(/[*#_~`]/g, "").trim();
@@ -87,8 +93,13 @@ export default function Chatbot() {
         }),
       });
 
+      // If a newer speakText call has started while we awaited, drop this result
+      if (myGen !== speakGenRef.current) return;
+
       const data = await res.json();
       if (res.ok && data.success && data.audio) {
+        // One final check before touching the DOM
+        if (myGen !== speakGenRef.current) return;
         const audio = new Audio(data.audio);
         audioRef.current = audio;
         audio.onended = () => setIsPlayingAudio(false);
@@ -96,7 +107,7 @@ export default function Chatbot() {
         await audio.play();
         return;
       } else if (data.fallback) {
-        // Fallback only if Sarvam is unconfigured
+        if (myGen !== speakGenRef.current) return;
         fallbackSpeech(cleanText);
         return;
       }
@@ -104,7 +115,7 @@ export default function Chatbot() {
       console.warn("Sarvam TTS request notice:", e);
     }
 
-    setIsPlayingAudio(false);
+    if (myGen === speakGenRef.current) setIsPlayingAudio(false);
   };
 
   const fallbackSpeech = (cleanText: string) => {
@@ -301,23 +312,24 @@ export default function Chatbot() {
             className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-[420px] h-[550px] max-h-[calc(100vh-7rem)] bg-zinc-950/95 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/[0.04]">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-brand-blue/30 text-brand-300 border border-brand-blue/40 flex items-center justify-center">
+            <div className="relative flex items-center justify-between p-4 border-b border-white/10 bg-white/[0.04]">
+              <div className="flex items-center gap-3 min-w-0 flex-1 pr-2">
+                <div className="w-9 h-9 shrink-0 rounded-xl bg-brand-blue/30 text-brand-300 border border-brand-blue/40 flex items-center justify-center">
                   <Sparkles size={18} />
                 </div>
-                <div>
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
-                    <span className="font-logo font-bold">Makerly AI</span> Voice Assistant
+                <div className="min-w-0">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-white flex items-center gap-1.5 truncate">
+                    <span className="font-logo font-bold">Makerly AI</span>
+                    <span className="hidden sm:inline">Voice Assistant</span>
                   </h3>
                   <p className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
                     Sarvam AI Bulbul v3
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 shrink-0">
                 {/* Voice / Text Mode Switcher */}
                 <div className="flex items-center bg-black/60 rounded-full p-0.5 border border-white/15">
                   <button
@@ -332,7 +344,7 @@ export default function Chatbot() {
                     }`}
                   >
                     <Mic size={12} />
-                    <span>Voice</span>
+                    <span className="hidden xs:inline">Voice</span>
                   </button>
                   <button
                     onClick={() => {
@@ -346,7 +358,7 @@ export default function Chatbot() {
                     }`}
                   >
                     <Keyboard size={12} />
-                    <span>Chat</span>
+                    <span className="hidden xs:inline">Chat</span>
                   </button>
                 </div>
 
@@ -360,13 +372,14 @@ export default function Chatbot() {
                   </button>
                 )}
 
+                {/* Close button — always visible, large tap target */}
                 <button
                   onClick={() => {
                     stopAudio();
                     setIsOpen(false);
                   }}
-                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-slate-400 hover:text-white cursor-pointer"
-                  aria-label="Close"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-rose-500/30 hover:text-rose-300 transition-colors text-slate-300 cursor-pointer border border-white/10 hover:border-rose-400/30"
+                  aria-label="Close chatbot"
                 >
                   <X size={18} />
                 </button>
