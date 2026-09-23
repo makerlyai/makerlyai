@@ -6,7 +6,11 @@ export const runtime = "nodejs";
 
 function getMailTransporter() {
   const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || "zatxduufyirwtnpg";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+
+  if (!pass) {
+    throw new Error("GMAIL_APP_PASSWORD is not configured on the server.");
+  }
 
   return {
     user,
@@ -22,9 +26,44 @@ function getMailTransporter() {
   };
 }
 
-// GET: Fetch all authorized users & access requests from Supabase
-export async function GET() {
+async function verifyOwnerSession(request: Request): Promise<{ authorized: boolean; email?: string; error?: string }> {
+  const authHeader = request.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return { authorized: false, error: "Unauthorized: Missing authentication credentials." };
+  }
+
+  const token = authHeader.replace("Bearer ", "").trim();
+  if (!token) {
+    return { authorized: false, error: "Unauthorized: Empty authentication token." };
+  }
+
+  const now = new Date().toISOString();
+  const { data: session, error } = await supabase
+    .from("crm_sessions")
+    .select("*")
+    .eq("session_token", token)
+    .gt("expires_at", now)
+    .single();
+
+  if (error || !session) {
+    return { authorized: false, error: "Unauthorized: Invalid or expired session." };
+  }
+
+  if (session.role !== "owner") {
+    return { authorized: false, error: "Forbidden: Owner permissions required to manage access." };
+  }
+
+  return { authorized: true, email: session.email };
+}
+
+// GET: Fetch all authorized users & access requests from Supabase (Owner only)
+export async function GET(request: Request) {
   try {
+    const auth = await verifyOwnerSession(request);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, message: auth.error }, { status: 401 });
+    }
+
     const { data: users, error } = await supabase
       .from("crm_authorized_users")
       .select("*")
@@ -40,9 +79,14 @@ export async function GET() {
   }
 }
 
-// POST: Add, Approve, Revoke, or Delete authorized emails
+// POST: Add, Approve, Revoke, or Delete authorized emails (Owner only)
 export async function POST(request: Request) {
   try {
+    const auth = await verifyOwnerSession(request);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, message: auth.error }, { status: 401 });
+    }
+
     const body = await request.json();
     const email = body?.email?.trim().toLowerCase();
     const action = body?.action; // 'add' | 'approve' | 'reject' | 'revoke' | 'delete'

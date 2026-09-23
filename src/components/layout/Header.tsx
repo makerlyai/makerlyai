@@ -108,8 +108,9 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3">
           <ButtonWithIconDemo 
             text="Start Your Project" 
+            variant="primary"
             onClick={() => scrollToSection('contact')} 
-            className="!bg-brand-blue !text-white font-bold"
+            className="cursor-pointer"
           />
         </div>
 
@@ -178,8 +179,12 @@ export default function Header() {
             >
               <ButtonWithIconDemo 
                 text="Start Your Project" 
-                onClick={() => scrollToSection('contact')}
-                className="!bg-brand-blue !text-white w-full py-4 text-base font-bold cursor-pointer"
+                variant="primary"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  scrollToSection('contact');
+                }}
+                className="w-full justify-center py-4 text-base cursor-pointer"
               />
             </motion.div>
           </div>

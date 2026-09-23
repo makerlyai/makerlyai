@@ -44,10 +44,17 @@ export default function Chatbot() {
     setIsPlayingAudio(false);
   };
 
-  // Clean up speech synthesis on unmount
+  // Clean up speech synthesis on unmount and listen for external open events
   useEffect(() => {
+    const handleOpenChat = () => {
+      setIsOpen(true);
+    };
+
+    window.addEventListener("open-makerly-chat", handleOpenChat);
+
     return () => {
       stopAudio();
+      window.removeEventListener("open-makerly-chat", handleOpenChat);
     };
   }, []);
 
@@ -283,7 +290,7 @@ export default function Chatbot() {
                 </div>
                 <div>
                   <h3 className="font-bold text-xs uppercase tracking-wider text-white">
-                    Makerly AI Voice Assistant
+                    <span className="font-logo font-bold">Makerly AI</span> Voice Assistant
                   </h3>
                   <p className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />

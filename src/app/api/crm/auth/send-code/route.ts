@@ -13,7 +13,11 @@ function hashCode(code: string): string {
 
 function getMailTransporter() {
   const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || "zatxduufyirwtnpg";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+
+  if (!pass) {
+    throw new Error("GMAIL_APP_PASSWORD is not configured on the server.");
+  }
 
   return {
     user,
@@ -67,6 +71,25 @@ export async function POST(request: Request) {
           message: `Your access request is currently ${user.status.toUpperCase()}. Tousif Raza must approve your email before you can log in.`,
         },
         { status: 403 }
+      );
+    }
+
+    // Rate limit check: prevent rapid code spamming (minimum 45s between requests)
+    const fortyFiveSecondsAgo = new Date(Date.now() - 45 * 1000).toISOString();
+    const { data: recentCodes } = await supabase
+      .from("crm_auth_codes")
+      .select("created_at")
+      .eq("email", email)
+      .gt("created_at", fortyFiveSecondsAgo)
+      .limit(1);
+
+    if (recentCodes && recentCodes.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "A verification code was dispatched recently. Please wait 45 seconds before requesting another.",
+        },
+        { status: 429 }
       );
     }
 

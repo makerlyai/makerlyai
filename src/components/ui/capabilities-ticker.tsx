@@ -3,17 +3,109 @@
 import React from "react";
 import { InfiniteSlider } from "@/components/core/infinite-slider";
 
-const TECHNOLOGIES = [
-  { name: "Next.js 16", tag: "Full-Stack" },
-  { name: "Sarvam AI", tag: "Voice & Speech" },
-  { name: "Supabase", tag: "PostgreSQL & Auth" },
-  { name: "OpenAI", tag: "LLMs & Embeddings" },
-  { name: "Tailwind CSS", tag: "Design Systems" },
-  { name: "Stripe", tag: "Global Payments" },
-  { name: "TypeScript", tag: "Type-Safe Architecture" },
-  { name: "Python", tag: "FastAPI & Microservices" },
-  { name: "Vercel Edge", tag: "Sub-100ms CDN" },
-  { name: "Docker", tag: "Containerized Workflows" },
+type TechItem = {
+  name: string;
+  tag: string;
+  icon: React.ReactNode;
+};
+
+const TECHNOLOGIES: TechItem[] = [
+  { 
+    name: "Next.js 16", 
+    tag: "Full-Stack",
+    icon: (
+      <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.82 17.55l-7.38-9.9v9.9H8.5V6.45h2.1l7.14 9.57V6.45h1.92v11.1h-1.84z" />
+      </svg>
+    )
+  },
+  { 
+    name: "Sarvam AI", 
+    tag: "Voice & Speech",
+    icon: (
+      <svg className="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v20" />
+        <path d="M17 5v14" />
+        <path d="M22 10v4" />
+        <path d="M7 5v14" />
+        <path d="M2 10v4" />
+      </svg>
+    )
+  },
+  { 
+    name: "Supabase", 
+    tag: "PostgreSQL & Auth",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+        <path d="M13.447 21.684a.75.75 0 01-1.282-.553V13.5H3.75a.75.75 0 01-.6-1.2l9.75-11.25a.75.75 0 011.282.553V10.5h8.418a.75.75 0 01.6 1.2l-9.753 9.984z" fill="#3ECF8E" />
+      </svg>
+    )
+  },
+  { 
+    name: "OpenAI", 
+    tag: "LLMs & Embeddings",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.5045 4.5045 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.4097 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.6648zm-12.6413 4.1301L10.334 11.7l-2.0275-1.1714a.071.071 0 0 1-.038-.052V4.894a4.5045 4.5045 0 0 1 7.3755-3.4537l-.142.0805-4.7783 2.7582a.7948.7948 0 0 0-.3927.6813v6.7369zm1.2586-1.0789l2.451-1.4147 2.451 1.4147v2.8294l-2.451 1.4147-2.451-1.4147z" />
+      </svg>
+    )
+  },
+  { 
+    name: "Tailwind CSS", 
+    tag: "Design Systems",
+    icon: (
+      <svg className="w-4 h-4 text-[#38BDF8]" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
+      </svg>
+    )
+  },
+  { 
+    name: "Stripe", 
+    tag: "Global Payments",
+    icon: (
+      <svg className="w-4 h-4 text-[#635BFF]" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697.5 12.879.5 6.702.5 2.87 3.633 2.87 8.358c0 5.642 4.757 7.086 7.95 8.275 2.373.882 3.197 1.644 3.197 2.633 0 .972-.88 1.52-2.316 1.52-2.327 0-5.289-1.077-7.237-2.19l-.916 5.61C5.352 25.13 8.32 25.5 11.233 25.5c6.435 0 10.457-3.13 10.457-8.082 0-5.69-4.805-7.147-7.714-8.268z" />
+      </svg>
+    )
+  },
+  { 
+    name: "TypeScript", 
+    tag: "Type-Safe Architecture",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#3178C6" />
+        <path d="M11.75 16.5H9.25V9.5H6.5V7.5H14.5V9.5H11.75V16.5ZM19.5 9.5H16.25C15.84 9.5 15.5 9.84 15.5 10.25V11.25C15.5 11.66 15.84 12 16.25 12H18.25C18.94 12 19.5 12.56 19.5 13.25V15.25C19.5 15.94 18.94 16.5 18.25 16.5H14.5V14.5H17.75C18.16 14.5 18.5 14.16 18.5 13.75V12.75C18.5 12.34 18.16 12 17.75 12H15.75C15.06 12 14.5 11.44 14.5 10.75V8.75C14.5 8.06 15.06 7.5 15.75 7.5H19.5V9.5Z" fill="white" />
+      </svg>
+    )
+  },
+  { 
+    name: "Python", 
+    tag: "FastAPI & Microservices",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+        <path d="M11.91 2C6.9 2 7.23 4.17 7.23 4.17L7.24 6.42H12V7.17H5.06S2 6.82 2 11.83C2 16.84 4.67 16.63 4.67 16.63H6.26V14.38C6.26 14.38 6.12 11.72 8.84 11.72H13.43S15.93 11.84 15.93 9.42V4.54S16.27 2 11.91 2ZM9.34 3.42C9.8 3.42 10.17 3.79 10.17 4.25C10.17 4.71 9.8 5.08 9.34 5.08C8.88 5.08 8.51 4.71 8.51 4.25C8.51 3.79 8.88 3.42 9.34 3.42Z" fill="#387EB8" />
+        <path d="M12.09 22C17.1 22 16.77 19.83 16.77 19.83L16.76 17.58H12V16.83H18.94S22 17.18 22 12.17C22 7.16 19.33 7.37 19.33 7.37H17.74V9.62C17.74 9.62 17.88 12.28 15.16 12.28H10.57S8.07 12.16 8.07 14.58V19.46S7.73 22 12.09 22ZM14.66 20.58C14.2 20.58 13.83 20.21 13.83 19.75C13.83 19.29 14.2 18.92 14.66 18.92C15.12 18.92 15.49 19.29 15.49 19.75C15.49 20.21 15.12 20.58 14.66 20.58Z" fill="#FFE052" />
+      </svg>
+    )
+  },
+  { 
+    name: "Vercel Edge", 
+    tag: "Sub-100ms CDN",
+    icon: (
+      <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+        <path d="M12 1L24 22H0L12 1Z" />
+      </svg>
+    )
+  },
+  { 
+    name: "Docker", 
+    tag: "Containerized Workflows",
+    icon: (
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#2496ED">
+        <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.185.185 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.186.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.186.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.186.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.185-.186H5.136a.186.186 0 00-.186.185v1.888c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.76 9.89c-.565-.39-1.745-.609-2.834-.236-.21-.863-.824-1.636-1.577-2.197l-.372-.278-.27.382c-.66.938-.973 2.084-.878 3.238-.344.17-.674.382-.98.636l-.377.311.332.358c.78.84 1.764 1.34 2.87 1.455.514.053 1.037.03 1.547-.074.773-.157 1.488-.535 2.084-1.096l.462-.437-.087-.162z" />
+      </svg>
+    )
+  },
 ];
 
 export function CapabilitiesTicker() {
@@ -26,11 +118,13 @@ export function CapabilitiesTicker() {
         {TECHNOLOGIES.map((tech) => (
           <div
             key={tech.name}
-            className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300 hover:text-white hover:border-brand-blue/50 hover:bg-brand-blue/10 transition-all cursor-default"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300 hover:text-white hover:border-brand-blue/50 hover:bg-brand-blue/10 transition-all cursor-default group"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
-            <span className="font-bold text-white">{tech.name}</span>
-            <span className="text-[10px] text-slate-500">[{tech.tag}]</span>
+            <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded-md bg-white/5 border border-white/10 group-hover:scale-110 transition-transform">
+              {tech.icon}
+            </span>
+            <span className="font-bold text-white tracking-tight">{tech.name}</span>
+            <span className="text-[10px] text-slate-400">[{tech.tag}]</span>
           </div>
         ))}
       </InfiniteSlider>

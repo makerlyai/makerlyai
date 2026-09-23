@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 
@@ -7,6 +8,28 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: 'swap',
+});
+
+const lemonMilk = localFont({
+  src: [
+    {
+      path: "./fonts/LemonMilkbold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/LemonMilk.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/LemonMilklight.otf",
+      weight: "300",
+      style: "normal",
+    },
+  ],
+  variable: "--font-lemon-milk",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -170,7 +193,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${lemonMilk.variable} antialiased`}>
         <Header />
         {children}
       </body>

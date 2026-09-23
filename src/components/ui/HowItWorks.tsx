@@ -93,10 +93,6 @@ export function HowItWorks() {
                 {step.description}
               </p>
 
-              {/* Connecting line (hidden on last item) */}
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 md:-right-4 w-8 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              )}
             </motion.div>
           ))}
         </div>

@@ -6,7 +6,11 @@ export const runtime = "nodejs";
 
 function getMailTransporter() {
   const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || "zatxduufyirwtnpg";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+
+  if (!pass) {
+    throw new Error("GMAIL_APP_PASSWORD is not configured on the server.");
+  }
 
   return {
     user,
@@ -22,17 +26,26 @@ function getMailTransporter() {
   };
 }
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const name = body?.name?.trim();
-    const email = body?.email?.trim().toLowerCase();
-    const organization = body?.organization?.trim() || null;
-    const note = body?.note?.trim() || null;
+    const name = body?.name?.toString().trim().slice(0, 80);
+    const email = body?.email?.toString().trim().toLowerCase().slice(0, 100);
+    const organization = body?.organization ? body.organization.toString().trim().slice(0, 100) : null;
+    const note = body?.note ? body.note.toString().trim().slice(0, 500) : null;
 
     if (!name || !email) {
       return NextResponse.json(
         { success: false, message: "Full name and email are required." },
+        { status: 400 }
+      );
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      return NextResponse.json(
+        { success: false, message: "Please provide a valid email address." },
         { status: 400 }
       );
     }

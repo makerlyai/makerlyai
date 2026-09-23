@@ -28,7 +28,6 @@ import {
   ImageComparisonSlider,
 } from "@/components/core/image-comparison";
 import { TextEffect } from "@/components/core/text-effect";
-import { BorderTrail } from "@/components/core/border-trail";
 import { CaseStudyMetricCard } from "@/components/ui/case-study-metric-card";
 import { TrendingUp, BarChart3, Activity } from "lucide-react";
 
@@ -260,28 +259,26 @@ export function RealBuildsShowcase() {
 
         {/* Before / After Transformation using ImageComparison */}
         <div className="relative rounded-3xl border border-white/15 bg-white/[0.02] p-6 sm:p-10 backdrop-blur-xl overflow-hidden">
-          <BorderTrail size={120} />
-          
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5 space-y-4 text-left">
               <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-[10px] font-mono uppercase tracking-widest text-cyan-300">
-                Operational Transformation
+                Conversion &amp; UX Transformation
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-white">
-                Before Makerly AI vs. <br className="hidden sm:inline"/> After Custom Automation.
+                Low-Conversion Legacy <br className="hidden sm:inline"/> vs. High-Velocity SaaS.
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Drag the slider to compare manual agency operations against a custom AI agent and automated CRM infrastructure. Faster response, zero lost leads, and higher closing rates.
+                Drag the slider to compare an outdated, low-converting 2012-style portal against a modern 2026 SaaS interface engineered by Makerly AI. Real-time AI voice receptionist, sub-100ms load speeds, and 8.4%+ conversion benchmarks.
               </p>
 
               <div className="space-y-2 pt-2">
                 <div className="flex items-center gap-2 text-xs text-rose-300">
-                  <span className="w-2 h-2 rounded-full bg-rose-500" />
-                  <strong>Manual:</strong> 4hr lead lag, disjointed spreadsheets, lost follow-ups.
+                  <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
+                  <span><strong>Legacy Portal:</strong> 1.1% conversion, 4.2s slow load, cluttered forms, high bounce.</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-emerald-300">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <strong>Makerly AI:</strong> Instant voice reception, Supabase sync, 24/7 routing.
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span><strong>Makerly AI SaaS:</strong> 8.4% conversion, sub-100ms edge CDN, AI voice assistant, 99.98% uptime.</span>
                 </div>
               </div>
             </div>
@@ -290,22 +287,22 @@ export function RealBuildsShowcase() {
               <div className="rounded-2xl border border-white/10 overflow-hidden shadow-2xl bg-black">
                 <ImageComparison className="aspect-16/10 w-full">
                   <ImageComparisonImage
-                    src="/scene1.jpg"
-                    alt="Manual Spreadsheets & Chaos"
+                    src="/saas-low-conversion.jpg"
+                    alt="Outdated Low Conversion Web Portal"
                     position="left"
-                    className="filter grayscale contrast-125"
+                    className="object-cover w-full h-full"
                   />
                   <ImageComparisonImage
-                    src="/scene1.jpg"
-                    alt="Makerly AI High Tech Architecture"
+                    src="/saas-high-conversion.jpg"
+                    alt="High Converting Makerly AI SaaS Engine"
                     position="right"
-                    className="filter hue-rotate-180 brightness-110"
+                    className="object-cover w-full h-full"
                   />
                   <ImageComparisonSlider className="bg-brand-blue text-white" />
                 </ImageComparison>
                 <div className="flex justify-between items-center px-4 py-2 bg-black/90 text-[10px] font-mono text-slate-400 border-t border-white/10">
-                  <span>← Drag Left (Manual Setup)</span>
-                  <span>Drag Right (Makerly AI Architecture) →</span>
+                  <span>← Drag Left (Low Conv. Legacy 1.1%)</span>
+                  <span>Drag Right (Makerly High Conv. SaaS 8.4%) →</span>
                 </div>
               </div>
             </div>

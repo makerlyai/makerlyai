@@ -194,9 +194,9 @@ export default function AboutFounder() {
              <p>
                The hands that turn blueprints into reality. Tousif&apos;s expertise spans <strong className="font-bold text-foreground">full-stack execution, product development, and tech deployments</strong>—from architecture to production, every system is engineered for speed and scale.
              </p>
-             <p>
-               At MakerlyAI, the philosophy is simple: <strong className="font-bold text-foreground">Build products that feel premium, run blazingly fast, and scale reliably under real production workloads.</strong>
-             </p>
+              <p>
+                At <span className="font-logo font-bold">MakerlyAI</span>, the philosophy is simple: <strong className="font-bold text-foreground">Build products that feel premium, run blazingly fast, and scale reliably under real production workloads.</strong>
+              </p>
           </div>
 
           {/* Pull Quote — Glassmorphic Card */}

@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { Check, ShieldCheck, ArrowRight, Sparkles, HelpCircle } from "lucide-react";
-import { BorderTrail } from "@/components/core/border-trail";
 import { GlowEffect } from "@/components/core/glow-effect";
 import { TextEffect } from "@/components/core/text-effect";
 
@@ -101,8 +100,6 @@ export function PricingSection() {
                   : "bg-white/[0.03] border border-white/10 hover:border-white/20"
               }`}
             >
-              {tier.popular && <BorderTrail size={90} />}
-
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span

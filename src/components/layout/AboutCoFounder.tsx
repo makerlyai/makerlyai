@@ -265,7 +265,7 @@ export default function AboutCoFounder() {
               variants={fadeBlur}
               className="text-lg leading-relaxed text-foreground/70 md:text-xl"
             >
-              The strategic mind behind MakerlyAI&apos;s growth. Where vision
+              The strategic mind behind <span className="font-logo font-bold">MakerlyAI</span>&apos;s growth. Where vision
               meets execution, Soha transforms ideas into scalable
               businesses—turning blueprints into empires.
             </motion.p>

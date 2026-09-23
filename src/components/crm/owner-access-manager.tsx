@@ -61,7 +61,11 @@ export function OwnerAccessManager({
   const refreshUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/crm/auth/manage-access");
+      const res = await fetch("/api/crm/auth/manage-access", {
+        headers: {
+          Authorization: `Bearer ${currentSession.token}`,
+        },
+      });
       const data = await res.json();
       if (data.success && data.users) {
         setUsers(data.users);
@@ -98,7 +102,10 @@ export function OwnerAccessManager({
     try {
       const res = await fetch("/api/crm/auth/manage-access", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentSession.token}`,
+        },
         body: JSON.stringify({
           action: "add",
           email: newEmail.trim().toLowerCase(),
@@ -133,7 +140,10 @@ export function OwnerAccessManager({
     try {
       const res = await fetch("/api/crm/auth/manage-access", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentSession.token}`,
+        },
         body: JSON.stringify({ email, action }),
       });
       const data = await res.json();

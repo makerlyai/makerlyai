@@ -85,22 +85,19 @@ export default function Home() {
         }}
       />
 
-      {/* Lightweight Fixed Background */}
-      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
-        <div className="absolute inset-0 bg-background/60 md:bg-background/70 dark:bg-black/70 md:dark:bg-black/60 z-10 md:mix-blend-multiply" />
-        <img
-          src="/scene1.jpg"
-          alt="Cinematic Canvas"
-          decoding="async"
-          fetchPriority="high"
-          className="w-full h-full object-cover opacity-15 md:opacity-25 md:mix-blend-luminosity"
-        />
+      {/* Sleek Obsidian Tech Background */}
+      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[#06080d]" />
+        <div className="absolute -top-[30%] left-[20%] w-[600px] h-[600px] bg-brand-blue/15 rounded-full blur-[140px]" />
+        <div className="absolute top-[40%] -right-[10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-[20%] left-[10%] w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[160px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:32px_32px] opacity-40" />
       </div>
 
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative w-full min-h-[100dvh] md:h-screen flex flex-col items-center justify-center p-4 overflow-hidden"
+        className="relative w-full min-h-[88vh] md:min-h-screen flex flex-col items-center justify-center px-4 pt-28 sm:pt-32 md:pt-36 pb-16 sm:pb-20 md:pb-24 overflow-hidden"
       >
         {/* Background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[700px] md:h-[700px] bg-brand-blue/20 blur-[80px] md:blur-[100px] rounded-full pointer-events-none z-10" />
@@ -110,7 +107,7 @@ export default function Home() {
           className="relative z-20 text-center flex flex-col items-center gap-6 w-full max-w-5xl"
         >
           {/* Upper badge title with TextEffect */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-brand-300">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-brand-300">
             <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
             <TextEffect preset="fade-in-blur" speedReveal={1.2}>
               Digital Product Studio &amp; Autonomous AI Systems
@@ -122,9 +119,9 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95]"
           >
-            <span className="block text-white">Makerly AI</span>
+            <span className="block text-white font-logo tracking-wider">Makerly AI</span>
             <span className="text-brand-blue drop-shadow-[0_0_15px_rgba(26,75,156,0.5)]">
               builds what you grow.
             </span>
@@ -134,26 +131,28 @@ export default function Home() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="max-w-3xl text-balance text-base leading-7 text-white/80 md:text-lg"
+            className="max-w-2xl lg:max-w-3xl text-balance text-sm sm:text-base md:text-lg leading-relaxed text-white/80"
           >
             Software engineering studio for founders who move fast. We build custom SaaS products, Sarvam multilingual voice agents, web applications, and automated workflow engines with working previews in 48 hours.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-4 items-center justify-center"
+            className="mt-8 sm:mt-10 mb-6 flex flex-col sm:flex-row gap-5 sm:gap-6 items-center justify-center w-full"
           >
             <ButtonWithIconDemo
               text="Start Your Project"
+              variant="primary"
               onClick={() => scrollToSection("contact")}
-              className="!bg-brand-blue !text-white font-bold flex items-center justify-center border-none hover:!bg-brand-blue/90 shadow-lg shadow-brand-blue/30 cursor-pointer"
+              className="shadow-xl shadow-[#1450B4]/30 hover:shadow-[#1450B4]/50 hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer"
             />
             <ButtonWithIconDemo
               text="Explore Capabilities"
+              variant="secondary"
               onClick={() => scrollToSection("capabilities")}
-              className="!bg-white/5 !text-white font-semibold flex items-center justify-center border border-white/20 hover:!bg-white/10 cursor-pointer"
+              className="hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer"
             />
           </motion.div>
         </motion.div>
