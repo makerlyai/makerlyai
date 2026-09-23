@@ -91,6 +91,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: "/logoMupdated.svg",
+    shortcut: "/logoMupdated.svg",
+    apple: "/logoMupdated.svg",
+  },
 };
 
 export default function RootLayout({
