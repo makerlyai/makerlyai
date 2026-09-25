@@ -141,6 +141,79 @@ export default function Footer() {
               </div>
             </div>
 
+            {/* Core Software & App Solutions */}
+            <div className="pt-4 border-t border-black/10">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono font-bold">
+                  Core Solutions &amp; App Makers
+                </p>
+                <a href="/services" className="text-[11px] font-mono font-bold text-[#1450B4] hover:underline">
+                  All Services &rarr;
+                </a>
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-neutral-700">
+                <a href="/services/ai-receptionist-voice-agents" className="hover:text-[#1450B4] transition-colors font-medium">
+                  🎙️ AI Receptionists &amp; Voice Bots
+                </a>
+                <a href="/services/ai-agents-automation" className="hover:text-[#1450B4] transition-colors">
+                  Autonomous AI Agents
+                </a>
+                <a href="/services/food-delivery-restaurant-apps" className="hover:text-[#1450B4] transition-colors">
+                  🍕 Food App Maker
+                </a>
+                <a href="/services/travel-tourism-booking-apps" className="hover:text-[#1450B4] transition-colors">
+                  ✈️ Travel Agency App Maker
+                </a>
+                <a href="/services/custom-web-and-mobile-apps" className="hover:text-[#1450B4] transition-colors">
+                  Web &amp; Mobile Apps
+                </a>
+                <a href="/build-saas-india" className="hover:text-[#1450B4] transition-colors">
+                  24h SaaS MVPs
+                </a>
+              </div>
+            </div>
+
+            {/* Global & Regional Hubs & Entity Anchors */}
+            <div className="pt-4 border-t border-black/10">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono font-bold">
+                  Global Hubs &amp; Leadership
+                </p>
+                <a href="/locations" className="text-[11px] font-mono font-bold text-[#1450B4] hover:underline">
+                  All Locations &rarr;
+                </a>
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-neutral-700">
+                <a href="/locations/jamshedpur" className="hover:text-[#1450B4] transition-colors font-medium">
+                  📍 Jamshedpur HQ
+                </a>
+                <a href="/locations/jharkhand" className="hover:text-[#1450B4] transition-colors">
+                  Jharkhand
+                </a>
+                <a href="/locations/bihar" className="hover:text-[#1450B4] transition-colors">
+                  Bihar
+                </a>
+                <a href="/locations/west-bengal" className="hover:text-[#1450B4] transition-colors">
+                  Kolkata
+                </a>
+                <a href="/locations/bangalore" className="hover:text-[#1450B4] transition-colors">
+                  Bangalore
+                </a>
+                <a href="/locations/delhi-mumbai" className="hover:text-[#1450B4] transition-colors">
+                  Mumbai &amp; Delhi
+                </a>
+                <a href="/locations/usa-silicon-valley" className="hover:text-[#1450B4] transition-colors">
+                  USA
+                </a>
+                <a href="/locations/dubai-uae" className="hover:text-[#1450B4] transition-colors">
+                  Dubai
+                </a>
+                <a href="/founder/tousif-raza" className="hover:text-[#1450B4] font-bold text-[#1450B4] transition-colors">
+                  Tousif Raza (Founder) &rarr;
+                </a>
+              </div>
+            </div>
+
             {/* Legal & Governance Navigation */}
             <div className="pt-4 border-t border-black/10">
               <p className="text-[10px] uppercase tracking-widest mb-2 text-neutral-400 font-mono font-bold">
