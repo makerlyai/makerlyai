@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Sparkles, Code2, Palette, Rocket, ShieldCheck, Mail, CheckCircle2, ArrowRight, Laptop, Zap, Users } from "lucide-react";
+import CareersApplicationForm from "@/components/careers/CareersApplicationForm";
 
 export const metadata: Metadata = {
   title: "Careers & Open Roles | Makerly AI — Build With Us",
@@ -104,7 +105,7 @@ export default function CareersPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(careersSchema) }}
       />
-      <main className="relative min-h-screen bg-[#07090e] text-white selection:bg-brand-blue/30 py-16 px-4 md:px-8">
+      <main className="relative min-h-screen bg-[#07090e] text-white selection:bg-brand-blue/30 pt-32 pb-20 px-4 md:px-8">
         {/* Ambient atmospheric glows */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-600/10 rounded-full blur-[140px]" />
@@ -113,12 +114,12 @@ export default function CareersPage() {
 
         <div className="relative z-10 max-w-6xl mx-auto">
           {/* Back link */}
-          <div className="mb-8">
+          <div className="mb-10">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all shadow-sm"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4 text-cyan-400" />
               <span>Back to Homepage</span>
             </Link>
           </div>
@@ -169,14 +170,23 @@ export default function CareersPage() {
                 <strong className="text-cyan-300 font-mono">careers@makerlyai.in</strong>. Founder Tousif Raza reviews every submission personally within 48 hours.
               </p>
             </div>
-            <a
-              href="mailto:careers@makerlyai.in?subject=Application%20for%20Engineering%20Role%20-%20Makerly%20AI&body=Hi%20Tousif%2C%0A%0AI'm%20interested%20in%20joining%20Makerly%20AI.%20Here%20is%20my%20background%2C%20portfolio%2C%20and%20GitHub%3A%0A%0A-%20Role%3A%20%0A-%20Portfolio%2FGitHub%3A%20%0A-%20Key%20Project%20I'm%20proud%20of%3A%20%0A%0ALooking%20forward%20to%20connecting!"
-              className="shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-black font-bold text-sm hover:from-blue-400 hover:to-cyan-400 transition-all shadow-lg shadow-cyan-500/20"
-            >
-              <Mail className="w-4 h-4 fill-black" />
-              <span>Email careers@makerlyai.in</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href="#apply-form"
+                className="shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-black font-bold text-sm hover:from-blue-400 hover:to-cyan-400 transition-all shadow-lg shadow-cyan-500/20"
+              >
+                <Sparkles className="w-4 h-4 fill-black" />
+                <span>Fill Online Application</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="mailto:careers@makerlyai.in?subject=Fast-Track%20Engineering%20Application%20-%20Makerly%20AI"
+                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-white/15 bg-white/5 text-white font-medium text-sm hover:bg-white/10 transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Email Directly</span>
+              </a>
+            </div>
           </div>
 
           {/* Open Positions List */}
@@ -212,14 +222,23 @@ export default function CareersPage() {
                       <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight">{role.title}</h3>
                     </div>
 
-                    <a
-                      href={`mailto:careers@makerlyai.in?subject=Application%3A%20${encodeURIComponent(role.title)}%20-%20%5BYour%20Name%5D&body=Hi%20Tousif%2C%0A%0AI'm%20applying%20for%20the%20${encodeURIComponent(role.title)}%20role%20at%20Makerly%20AI.%0A%0A-%20Portfolio%2FGitHub%3A%20%0A-%20Years%20of%20Experience%3A%20%0A-%20Top%20Project%20Live%20URL%3A%20%0A%0ABest%20regards%2C`}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-bold text-xs hover:bg-slate-200 transition-all shrink-0 self-start md:self-auto"
-                    >
-                      <Mail className="w-3.5 h-3.5 fill-black" />
-                      <span>Apply for this role</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
+                    <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+                      <a
+                        href="#apply-form"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-black font-bold text-xs hover:opacity-90 transition-all shadow-md shadow-cyan-500/10 cursor-pointer"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Apply Online</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+                      <a
+                        href={`mailto:careers@makerlyai.in?subject=Application%3A%20${encodeURIComponent(role.title)}%20-%20%5BYour%20Name%5D`}
+                        title="Or email directly"
+                        className="p-2.5 rounded-full border border-white/10 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                      >
+                        <Mail className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
 
                   <p className="text-slate-300 text-sm md:text-base mb-6 leading-relaxed">
@@ -273,6 +292,13 @@ export default function CareersPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Online Application Form */}
+          <div className="mb-20">
+            <CareersApplicationForm
+              roles={OPEN_ROLES.map((r) => ({ id: r.id, title: r.title }))}
+            />
           </div>
 
           {/* How We Work Section */}

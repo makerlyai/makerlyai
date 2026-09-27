@@ -232,6 +232,142 @@ export async function sendCareersAutoReply(data: {
 }
 
 /**
+ * Sends a rich internal notification to Tousif Raza and careers@makerlyai.in
+ * when an engineering candidate submits an application.
+ */
+export async function sendCareersApplicantNotification(data: {
+  fullName: string;
+  email: string;
+  phone: string;
+  roleTitle: string;
+  experienceYears: string;
+  primaryTechStack: string;
+  githubUrl: string;
+  liveProjectUrl: string;
+  portfolioUrl?: string;
+  resumeUrl: string;
+  hardestProblem: string;
+  availability: string;
+  expectedSalary: string;
+}): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { transporter, config } = getTransporterForChannel("careers");
+
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:32px 16px;background-color:#07090e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;color:#f8fafc;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <table width="100%" style="max-width:620px;background:#0d1527;border-radius:20px;border:1px solid rgba(56,189,248,0.3);overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+          <tr>
+            <td style="height:4px;background:linear-gradient(90deg, #10b981, #38bdf8, #6366f1);"></td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <div style="font-size:11px;font-weight:800;color:#10b981;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;">
+                ⚡ NEW CANDIDATE APPLICATION &bull; MAKERLY AI
+              </div>
+              <h2 style="margin:0 0 8px;font-size:24px;color:#ffffff;letter-spacing:-0.02em;">
+                ${data.fullName}
+              </h2>
+              <div style="font-size:14px;color:#38bdf8;font-weight:700;margin-bottom:20px;">
+                Applied for: ${data.roleTitle}
+              </div>
+
+              <!-- Quick Contact Badges -->
+              <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-bottom:20px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size:13px;color:#cbd5e1;">
+                  <tr>
+                    <td width="30%" style="color:#94a3b8;font-weight:600;">Email:</td>
+                    <td><a href="mailto:${data.email}" style="color:#38bdf8;text-decoration:none;">${data.email}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="color:#94a3b8;font-weight:600;">Phone / WhatsApp:</td>
+                    <td><a href="https://wa.me/${data.phone.replace(/[^0-9]/g, '')}" style="color:#22c55e;text-decoration:none;">${data.phone}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="color:#94a3b8;font-weight:600;">Experience:</td>
+                    <td style="color:#ffffff;font-weight:700;">${data.experienceYears}</td>
+                  </tr>
+                  <tr>
+                    <td style="color:#94a3b8;font-weight:600;">Availability:</td>
+                    <td style="color:#ffffff;">${data.availability}</td>
+                  </tr>
+                  <tr>
+                    <td style="color:#94a3b8;font-weight:600;">Expected Comp:</td>
+                    <td style="color:#fcd34d;font-weight:700;">${data.expectedSalary}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Proof of Work Links -->
+              <div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">
+                Proof of Work &amp; Repositories
+              </div>
+              <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;">
+                <p style="margin:0 0 8px;"><strong>GitHub:</strong> <a href="${data.githubUrl}" target="_blank" style="color:#38bdf8;word-break:break-all;">${data.githubUrl}</a></p>
+                <p style="margin:0 0 8px;"><strong>Live Demo / App:</strong> <a href="${data.liveProjectUrl}" target="_blank" style="color:#10b981;word-break:break-all;">${data.liveProjectUrl}</a></p>
+                ${data.portfolioUrl ? `<p style="margin:0 0 8px;"><strong>Portfolio / LinkedIn:</strong> <a href="${data.portfolioUrl}" target="_blank" style="color:#cbd5e1;word-break:break-all;">${data.portfolioUrl}</a></p>` : ""}
+                <p style="margin:0;"><strong>Resume Link:</strong> <a href="${data.resumeUrl}" target="_blank" style="color:#f59e0b;word-break:break-all;">${data.resumeUrl}</a></p>
+              </div>
+
+              <!-- Tech Stack -->
+              <div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">
+                Core Tech Stack
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:20px;font-size:13px;color:#f1f5f9;">
+                ${data.primaryTechStack}
+              </div>
+
+              <!-- Hardest Problem Solved -->
+              <div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">
+                Hardest Technical Problem Solved
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;color:#cbd5e1;line-height:1.6;white-space:pre-wrap;">
+                ${data.hardestProblem}
+              </div>
+
+              <!-- Quick Action Button -->
+              <div style="text-align:center;padding:12px 0 20px;">
+                <a href="mailto:${data.email}?subject=Interview%20with%20Makerly%20AI%20-%20${encodeURIComponent(data.roleTitle)}" style="display:inline-block;padding:12px 24px;border-radius:10px;background:#38bdf8;color:#000000;font-weight:700;font-size:14px;text-decoration:none;">
+                  Reply &amp; Schedule Architecture Review
+                </a>
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;text-align:center;font-size:11px;color:#64748b;">
+                Received at ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST via Makerly AI Careers Portal
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
+
+    await transporter.sendMail({
+      from: `"${config.senderName}" <${config.email}>`,
+      to: "tousif@makerlyai.in",
+      cc: "careers@makerlyai.in",
+      replyTo: data.email,
+      subject: `[New Applicant] ${data.roleTitle} — ${data.fullName}`,
+      text: `New applicant for ${data.roleTitle}:\nName: ${data.fullName}\nEmail: ${data.email}\nPhone: ${data.phone}\nExperience: ${data.experienceYears}\nGitHub: ${data.githubUrl}\nLive Project: ${data.liveProjectUrl}\nResume: ${data.resumeUrl}\nTech Stack: ${data.primaryTechStack}\nHardest Problem: ${data.hardestProblem}\nAvailability: ${data.availability}\nExpected Comp: ${data.expectedSalary}`,
+      html,
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("[Careers Notification] Error dispatching internal alert:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+/**
  * Channel: support@makerlyai.in
  * Sends an automated ticket confirmation to clients.
  */

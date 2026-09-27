@@ -4,12 +4,14 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 import ButtonWithIconDemo from "@/components/ui/button-with-icon";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,9 +44,13 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
-  // Handle smooth scroll to section
+  // Handle smooth scroll to section or route back to homepage
   const scrollToSection = (id: string) => {
     setIsMobileMenuOpen(false);
+    if (pathname !== "/") {
+      router.push(`/#${id}`);
+      return;
+    }
     // Slight delay to allow menu animation to start closing
     setTimeout(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -70,9 +76,15 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative">
         
         {/* Brand Logo - Encased in a perfectly crafted premium 'Glass Pill' container with new M logo */}
-        <div 
+        <Link 
+          href="/"
           className="relative flex items-center justify-center cursor-pointer group bg-white md:backdrop-blur-3xl h-12 md:h-14 px-6 md:px-7 rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:scale-105 hover:bg-white overflow-hidden"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={(e) => {
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
         >
           {/* Subtle reflection overlay */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-20 pointer-events-none" />
@@ -82,7 +94,7 @@ export default function Header() {
             alt="MakerlyAI Master Brand" 
             className="h-8 md:h-11 w-auto object-contain relative z-10 transition-transform duration-500 group-hover:scale-110" 
           />
-        </div>
+        </Link>
 
         {/* Desktop Sticky Anchor Navigation - Centered in middle */}
         <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 backdrop-blur-xl shadow-inner absolute left-1/2 -translate-x-1/2">
@@ -149,6 +161,7 @@ export default function Header() {
               { label: "Real Builds", id: "work" },
               { label: "Pricing & Sprints", id: "pricing" },
               { label: "Architects & Team", id: "founder" },
+              { label: "Careers", id: "/careers", isRoute: true },
               { label: "FAQ", id: "faq" },
               { label: "CRM Workspace", id: "/crm", isRoute: true },
             ].map((link, idx) => (
@@ -158,12 +171,12 @@ export default function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.12 + (idx * 0.04) }}
                 onClick={() => {
+                  setIsMobileMenuOpen(false);
                   if (link.isRoute) {
-                    window.location.href = link.id;
+                    router.push(link.id);
                   } else {
                     scrollToSection(link.id);
                   }
-                  setIsMobileMenuOpen(false);
                 }}
                 className="text-2xl font-black text-white hover:text-brand-blue transition-colors duration-200 cursor-pointer"
               >

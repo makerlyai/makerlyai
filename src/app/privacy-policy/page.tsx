@@ -9,14 +9,14 @@ export const metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-black text-slate-100 py-20 px-6 sm:px-12">
+    <div className="min-h-screen bg-black text-slate-100 pt-32 pb-24 px-6 sm:px-12">
       <div className="max-w-4xl mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-brand-400 hover:text-white mb-10 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20 mb-10 transition-all shadow-sm"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Makerly AI
+          <ArrowLeft className="w-4 h-4 text-cyan-400" />
+          <span>Back to Homepage</span>
         </Link>
 
         <div className="flex items-center gap-3 mb-4">

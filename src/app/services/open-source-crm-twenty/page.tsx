@@ -167,13 +167,21 @@ export default function TwentyCRMServicePage() {
           </div>
         </div>
 
-        <Link
-          href="/services"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/50 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Solutions</span>
-        </Link>
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-semibold uppercase tracking-wider text-foreground/70 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 text-cyan-400" />
+            <span>Back to All Solutions</span>
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-semibold uppercase tracking-wider text-foreground/70 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <span>Back to Homepage</span>
+          </Link>
+        </div>
       </div>
     </main>
   );
