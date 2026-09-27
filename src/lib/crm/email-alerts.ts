@@ -11,26 +11,21 @@ export interface LeadAlertData {
 }
 
 export async function sendLeadAlertEmail(data: LeadAlertData): Promise<{ success: boolean; error?: string }> {
-  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || "tousif@makerlyai.in";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
-
-  if (!pass) {
-    console.error("[Lead Alert] SMTP/GMAIL credentials not set on server.");
-    return { success: false, error: "SMTP credentials missing" };
-  }
-
   const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
   const port = Number(process.env.SMTP_PORT?.trim()) || 465;
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass: pass.replace(/\s+/g, "") },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-  });
+  // Primary lead alert sender: hello@makerlyai.in (do NOT default to getmakerlyai)
+  const helloUser = process.env.HELLO_MAIL_USER?.trim() || "hello@makerlyai.in";
+  const helloPass = process.env.HELLO_APP_PASSWORD?.trim() || process.env.GMAIL_APP_PASSWORD?.trim();
+
+  // Fallback sender: getmakerlyai@gmail.com if hello@makerlyai.in fails
+  const fallbackUser = process.env.FALLBACK_LEAD_USER?.trim() || "getmakerlyai@gmail.com";
+  const fallbackPass = (process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim() || "").replace(/\s+/g, "");
+
+  if (!helloPass && !fallbackPass) {
+    console.error("[Lead Alert] Neither primary nor fallback SMTP credentials are configured on server.");
+    return { success: false, error: "SMTP credentials missing" };
+  }
 
   const cleanPhone = data.phone?.replace(/[^0-9+]/g, "") || "";
   const waPhone = cleanPhone.replace("+", "");
@@ -201,34 +196,98 @@ ${data.projectDetails}
 </html>
 `;
 
-  try {
-    // 1. Send Admin Alert to Tousif Raza & Team
-    await transporter.sendMail({
-      from: `"MakerlyAI Lead Radar" <${user}>`,
-      to: ["tousif@makerlyai.in", "iamtousifraza@gmail.com"],
-      subject: adminSubject,
-      text: `[NEW MAKERLYAI LEAD]\nSource: ${data.source}\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMeeting Slot: ${data.timeSlot || "Flexible"}\nTime: ${createdAt}\n\nProject Details:\n${data.projectDetails}\n\nOpen CRM: https://makerlyai.in/crm`,
-      html: adminHtml,
-      replyTo: data.email && !data.email.includes("@lead.makerlyai.in") ? data.email : undefined,
-    });
+  const adminRecipients = ["tousif@makerlyai.in", "iamtousifraza@gmail.com"];
+  let adminSent = false;
+  let activeTransporter: nodemailer.Transporter | null = null;
+  let activeSenderUser = helloUser;
 
-    // 2. Send Sleek Client Confirmation from hello@makerlyai.in using HELLO_APP_PASSWORD
-    if (data.email && !data.email.includes("@lead.makerlyai.in") && data.email.includes("@")) {
-      try {
-        const helloUser = process.env.HELLO_MAIL_USER?.trim() || "hello@makerlyai.in";
-        const helloPass = process.env.HELLO_APP_PASSWORD?.trim() || pass;
+  // 1. Primary Attempt: Send Lead Alert to Tousif & Team via hello@makerlyai.in
+  if (helloPass) {
+    try {
+      const helloTransporter = nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user: helloUser, pass: helloPass.replace(/\s+/g, "") },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+      });
 
-        const helloTransporter = nodemailer.createTransport({
-          host,
-          port,
-          secure: port === 465,
-          auth: { user: helloUser, pass: helloPass.replace(/\s+/g, "") },
-          connectionTimeout: 10000,
-          greetingTimeout: 10000,
-          socketTimeout: 10000,
-        });
+      await helloTransporter.sendMail({
+        from: `"MakerlyAI Lead Radar" <${helloUser}>`,
+        to: adminRecipients,
+        subject: adminSubject,
+        text: `[NEW MAKERLYAI LEAD]\nSource: ${data.source}\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMeeting Slot: ${data.timeSlot || "Flexible"}\nTime: ${createdAt}\n\nProject Details:\n${data.projectDetails}\n\nOpen CRM: https://makerlyai.in/crm`,
+        html: adminHtml,
+        replyTo: data.email && !data.email.includes("@lead.makerlyai.in") ? data.email : undefined,
+      });
 
-        const clientHtml = `
+      adminSent = true;
+      activeTransporter = helloTransporter;
+      activeSenderUser = helloUser;
+      console.log(`[Lead Alert] Lead notification successfully delivered via ${helloUser} to ${adminRecipients.join(", ")}`);
+    } catch (helloErr: any) {
+      console.warn(`[Lead Alert] Primary ${helloUser} failed to operate (${helloErr?.message || helloErr}). Triggering automatic fallback to ${fallbackUser}...`);
+    }
+  } else {
+    console.warn(`[Lead Alert] Primary password for ${helloUser} is not configured. Triggering automatic fallback to ${fallbackUser}...`);
+  }
+
+  // 2. Automatic Fallback Attempt: Send via getmakerlyai@gmail.com if hello@makerlyai.in failed
+  if (!adminSent) {
+    if (!fallbackPass) {
+      const errMsg = `Primary ${helloUser} failed and fallback ${fallbackUser} has no password configured.`;
+      console.error(`[Lead Alert] ${errMsg}`);
+      return { success: false, error: errMsg };
+    }
+
+    try {
+      const fallbackTransporter = nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user: fallbackUser, pass: fallbackPass },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+      });
+
+      await fallbackTransporter.sendMail({
+        from: `"MakerlyAI Lead Radar (Backup)" <${fallbackUser}>`,
+        to: adminRecipients,
+        subject: adminSubject,
+        text: `[NEW MAKERLYAI LEAD]\nSource: ${data.source}\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMeeting Slot: ${data.timeSlot || "Flexible"}\nTime: ${createdAt}\n\nProject Details:\n${data.projectDetails}\n\nOpen CRM: https://makerlyai.in/crm`,
+        html: adminHtml,
+        replyTo: data.email && !data.email.includes("@lead.makerlyai.in") ? data.email : undefined,
+      });
+
+      adminSent = true;
+      activeTransporter = fallbackTransporter;
+      activeSenderUser = fallbackUser;
+      console.log(`[Lead Alert] Lead notification successfully delivered via fallback ${fallbackUser} to ${adminRecipients.join(", ")}`);
+    } catch (fallbackErr: any) {
+      console.error(`[Lead Alert] Critical: Both primary (${helloUser}) and fallback (${fallbackUser}) failed:`, fallbackErr);
+      return { success: false, error: fallbackErr?.message || "Both primary and fallback email sending failed" };
+    }
+  }
+
+  // 3. Send Sleek Client Confirmation to prospect
+  if (data.email && !data.email.includes("@lead.makerlyai.in") && data.email.includes("@")) {
+    try {
+      const clientSenderUser = activeSenderUser === helloUser ? helloUser : fallbackUser;
+      const clientPass = (activeSenderUser === helloUser ? helloPass : fallbackPass) || "";
+      const clientTransporter = activeTransporter || nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user: clientSenderUser, pass: clientPass.replace(/\s+/g, "") },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+      });
+
+      const clientHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"></head>
@@ -274,22 +333,18 @@ ${data.projectDetails}
 </body>
 </html>
 `;
-        await helloTransporter.sendMail({
-          from: `"Makerly AI" <${helloUser}>`,
-          to: data.email,
-          replyTo: "tousif@makerlyai.in",
-          subject: "We received your project brief — Makerly AI",
-          text: `Hello ${data.name},\n\nThank you for reaching out to Makerly AI. Tousif Raza and our engineering team have received your project details.\n\nWe will review your requirements and reach out within 24 hours to schedule your consultation and share your 48h prototype roadmap.\n\nBest regards,\nTousif Raza\nFounder & Technical Architect, Makerly AI\nhttps://makerlyai.in\ntousif@makerlyai.in`,
-          html: clientHtml,
-        });
-      } catch (clientErr) {
-        console.warn("[Lead Alert] Client confirmation warning:", clientErr);
-      }
+      await clientTransporter.sendMail({
+        from: `"Makerly AI" <${clientSenderUser}>`,
+        to: data.email,
+        replyTo: "tousif@makerlyai.in",
+        subject: "We received your project brief — Makerly AI",
+        text: `Hello ${data.name},\n\nThank you for reaching out to Makerly AI. Tousif Raza and our engineering team have received your project details.\n\nWe will review your requirements and reach out within 24 hours to schedule your consultation and share your 48h prototype roadmap.\n\nBest regards,\nTousif Raza\nFounder & Technical Architect, Makerly AI\nhttps://makerlyai.in\ntousif@makerlyai.in`,
+        html: clientHtml,
+      });
+    } catch (clientErr) {
+      console.warn("[Lead Alert] Client confirmation warning:", clientErr);
     }
-
-    return { success: true };
-  } catch (err: any) {
-    console.error("[Lead Alert] Email dispatch failed:", err);
-    return { success: false, error: err.message };
   }
+
+  return { success: true };
 }
