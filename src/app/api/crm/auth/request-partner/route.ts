@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       const { user: mailSender, transporter } = getMailTransporter();
       await transporter.sendMail({
         from: `"MakerlyAI CRM" <${mailSender}>`,
-        to: ["tousif@makerlyai.in", "founder@makerlyai.in", "iamtousifraza@gmail.com"],
+        to: ["tousif@makerlyai.in", "iamtousifraza@gmail.com"],
         subject: `[MakerlyAI CRM] New Partner Access Request: ${name} (${email})`,
         text: `New CRM Partner Request:\n\nName: ${name}\nEmail: ${email}\nOrganization: ${organization || "N/A"}\nNote: ${note || "N/A"}\n\nLog in to https://makerlyai.in/crm to approve or reject this request.`,
         html: `

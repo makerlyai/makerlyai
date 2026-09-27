@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { AuthSession } from "@/lib/crm/auth-store";
+import { isOwnerEmail } from "@/lib/crm/auth-constants";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -385,8 +386,7 @@ export function OwnerAccessManager({
               </div>
 
               {approvedUsers.map((u) => {
-                const isPrimaryOwner =
-                  u.email === "tousif@makerlyai.in" || u.email === "iamtousifraza@gmail.com" || u.email === "founder@makerlyai.in" || u.email === "getmakerlyai@gmail.com";
+                const isPrimaryOwner = isOwnerEmail(u.email);
 
                 return (
                   <div

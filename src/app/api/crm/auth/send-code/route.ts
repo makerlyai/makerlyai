@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { supabase } from "@/lib/crm/supabase";
+import { isOwnerEmail } from "@/lib/crm/auth-constants";
 
 export const runtime = "nodejs";
 
@@ -12,8 +13,8 @@ function hashCode(code: string): string {
 }
 
 function getMailTransporter() {
-  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || "tousif@makerlyai.in";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
+  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || process.env.EMAIL_TOUSIF_USER?.trim() || "tousif@makerlyai.in";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim() || process.env.EMAIL_TOUSIF_APP_PASSWORD?.trim();
 
   if (!pass) {
     throw new Error("GMAIL_APP_PASSWORD or SMTP_PASSWORD is not configured on the server.");
@@ -48,33 +49,60 @@ export async function POST(request: Request) {
       );
     }
 
-    // STRICT OUTSIDER PROTECTION:
-    // Check if user is in Supabase authorized users and approved.
-    const { data: user, error: userError } = await supabase
+    // STRICT OUTSIDER PROTECTION & OWNER GUARANTEE:
+    // Check if user is in Supabase authorized users
+    let { data: user, error: userError } = await supabase
       .from("crm_authorized_users")
       .select("*")
       .eq("email", email)
       .single();
 
-    if (userError || !user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Access Denied: This email is not registered for CRM access. Please contact Tousif Raza or submit a Partner Access Request.",
-        },
-        { status: 403 }
-      );
-    }
+    // If email is an authorized owner, auto-provision and ensure approved status
+    if (isOwnerEmail(email)) {
+      if (!user || user.status !== "approved" || user.role !== "owner") {
+        const { data: upserted } = await supabase
+          .from("crm_authorized_users")
+          .upsert(
+            {
+              email,
+              name: "Tousif Raza",
+              role: "owner",
+              status: "approved",
+              approved_by: "system_owner",
+            },
+            { onConflict: "email" }
+          )
+          .select("*")
+          .single();
 
-    if (user.status !== "approved") {
-      return NextResponse.json(
-        {
-          success: false,
-          message: `Your access request is currently ${user.status.toUpperCase()}. Tousif Raza must approve your email before you can log in.`,
-        },
-        { status: 403 }
-      );
+        user = upserted || {
+          email,
+          name: "Tousif Raza",
+          role: "owner",
+          status: "approved",
+        };
+      }
+    } else {
+      if (userError || !user) {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              "Access Denied: This email is not registered for CRM access. Please contact Tousif Raza or submit a Partner Access Request.",
+          },
+          { status: 403 }
+        );
+      }
+
+      if (user.status !== "approved") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Your access request is currently ${user.status.toUpperCase()}. Tousif Raza must approve your email before you can log in.`,
+          },
+          { status: 403 }
+        );
+      }
     }
 
     // Rate limit check: prevent rapid code spamming (minimum 45s between requests)

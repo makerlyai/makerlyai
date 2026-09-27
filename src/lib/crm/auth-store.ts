@@ -1,7 +1,21 @@
 "use client";
 
-import { OWNER_EMAILS, OwnerEmail, isOwnerEmail } from "./auth-constants";
-export { OWNER_EMAILS, type OwnerEmail, isOwnerEmail };
+import { 
+  OWNER_EMAILS, 
+  OwnerEmail, 
+  isOwnerEmail, 
+  OWNER_ACCOUNTS, 
+  type OwnerAccount, 
+  MAKERLY_DOMAIN_EMAILS 
+} from "./auth-constants";
+export { 
+  OWNER_EMAILS, 
+  type OwnerEmail, 
+  isOwnerEmail, 
+  OWNER_ACCOUNTS, 
+  type OwnerAccount, 
+  MAKERLY_DOMAIN_EMAILS 
+};
 
 export interface AuthSession {
   isAuthorized: boolean;

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { supabase } from "@/lib/crm/supabase";
+import { isOwnerEmail } from "@/lib/crm/auth-constants";
 
 export const runtime = "nodejs";
 
@@ -177,7 +178,7 @@ export async function POST(request: Request) {
     // ACTION: DELETE FROM WHITELIST
     if (action === "delete" || action === "remove") {
       // Prevent deleting the owner
-      if (email === "iamtousifraza@gmail.com" || email === "tousif@makerlyai.in" || email === "founder@makerlyai.in" || email === "getmakerlyai@gmail.com") {
+      if (isOwnerEmail(email)) {
         return NextResponse.json(
           { success: false, message: "Primary owner account cannot be deleted." },
           { status: 400 }

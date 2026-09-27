@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import {
   OWNER_EMAILS,
+  OWNER_ACCOUNTS,
   setAuthSession,
   AuthSession,
 } from "@/lib/crm/auth-store";
@@ -319,15 +320,15 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
                       Select Authorized Owner Account
                     </label>
                     <div className="space-y-2">
-                      {OWNER_EMAILS.map((email) => (
+                      {OWNER_ACCOUNTS.map((account) => (
                         <div
-                          key={email}
+                          key={account.email}
                           onClick={() => {
-                            setSelectedOwnerEmail(email);
+                            setSelectedOwnerEmail(account.email);
                             setOwnerCustomEmail("");
                           }}
                           className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
-                            selectedOwnerEmail === email && !ownerCustomEmail
+                            selectedOwnerEmail === account.email && !ownerCustomEmail
                               ? "bg-brand-50/70 border-brand-300 ring-1 ring-brand-400/40 text-brand-950"
                               : "bg-white border-slate-200 hover:bg-slate-50 text-slate-800"
                           }`}
@@ -338,16 +339,20 @@ export function AuthGate({ onAuthorized }: AuthGateProps) {
                             </div>
                             <div>
                               <div className="text-xs font-bold flex items-center gap-1.5 text-slate-900">
-                                Tousif Raza
-                                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-brand-100 text-brand-800">
-                                  Owner
+                                {account.name}
+                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium ${
+                                  account.badge === "Primary Owner"
+                                    ? "bg-brand-100 text-brand-800"
+                                    : "bg-slate-100 text-slate-700"
+                                }`}>
+                                  {account.badge}
                                 </span>
                               </div>
-                              <div className="text-[11px] font-mono text-slate-500">{email}</div>
+                              <div className="text-[11px] font-mono text-slate-500">{account.email}</div>
                             </div>
                           </div>
                           <div className="w-4 h-4 rounded-full border flex items-center justify-center border-brand-500">
-                            {selectedOwnerEmail === email && !ownerCustomEmail && (
+                            {selectedOwnerEmail === account.email && !ownerCustomEmail && (
                               <div className="w-2 h-2 rounded-full bg-brand-600" />
                             )}
                           </div>

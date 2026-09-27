@@ -205,7 +205,7 @@ ${data.projectDetails}
     // 1. Send Admin Alert to Tousif Raza & Team
     await transporter.sendMail({
       from: `"MakerlyAI Lead Radar" <${user}>`,
-      to: ["tousif@makerlyai.in", "founder@makerlyai.in", "iamtousifraza@gmail.com"],
+      to: ["tousif@makerlyai.in", "iamtousifraza@gmail.com"],
       subject: adminSubject,
       text: `[NEW MAKERLYAI LEAD]\nSource: ${data.source}\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMeeting Slot: ${data.timeSlot || "Flexible"}\nTime: ${createdAt}\n\nProject Details:\n${data.projectDetails}\n\nOpen CRM: https://makerlyai.in/crm`,
       html: adminHtml,

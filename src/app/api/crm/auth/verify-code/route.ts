@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { supabase } from "@/lib/crm/supabase";
 import type { AuthSession } from "@/lib/crm/auth-store";
+import { isOwnerEmail } from "@/lib/crm/auth-constants";
 
 export const runtime = "nodejs";
 
@@ -32,20 +33,46 @@ export async function POST(request: Request) {
     }
 
     // 1. Verify user is in authorized users table and approved
-    const { data: user, error: userError } = await supabase
+    let { data: user, error: userError } = await supabase
       .from("crm_authorized_users")
       .select("*")
       .eq("email", email)
       .single();
 
-    if (userError || !user || user.status !== "approved") {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Access Denied: This account is not authorized for CRM access.",
-        },
-        { status: 403 }
-      );
+    if (isOwnerEmail(email)) {
+      if (!user || user.status !== "approved" || user.role !== "owner") {
+        const { data: upserted } = await supabase
+          .from("crm_authorized_users")
+          .upsert(
+            {
+              email,
+              name: "Tousif Raza",
+              role: "owner",
+              status: "approved",
+              approved_by: "system_owner",
+            },
+            { onConflict: "email" }
+          )
+          .select("*")
+          .single();
+
+        user = upserted || {
+          email,
+          name: "Tousif Raza",
+          role: "owner",
+          status: "approved",
+        };
+      }
+    } else {
+      if (userError || !user || user.status !== "approved") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Access Denied: This account is not authorized for CRM access.",
+          },
+          { status: 403 }
+        );
+      }
     }
 
     // 2. Fetch latest unused, unexpired code for this email
