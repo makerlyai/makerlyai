@@ -36,6 +36,7 @@ export function isOwnerEmail(email: string): boolean {
 // All verified operational domain accounts for Makerly AI
 export const MAKERLY_DOMAIN_EMAILS = [
   "tousif@makerlyai.in",
+  "security@makerlyai.in",
   "hello@makerlyai.in",
   "support@makerlyai.in",
   "billing@makerlyai.in",

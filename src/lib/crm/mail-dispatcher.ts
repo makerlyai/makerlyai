@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export type MailChannel = "primary" | "hello" | "support" | "billing" | "careers";
+export type MailChannel = "primary" | "hello" | "support" | "billing" | "careers" | "security";
 
 interface ChannelConfig {
   email: string;
@@ -18,6 +18,12 @@ export function getChannelCredentials(channel: MailChannel): ChannelConfig {
   const masterPass = process.env.GMAIL_APP_PASSWORD?.trim() || "";
 
   switch (channel) {
+    case "security":
+      return {
+        email: process.env.SECURITY_MAIL_USER?.trim() || "security@makerlyai.in",
+        senderName: "Makerly AI Security",
+        password: process.env.SECURITY_APP_PASSWORD?.trim() || masterPass,
+      };
     case "hello":
       return {
         email: process.env.HELLO_MAIL_USER?.trim() || "hello@makerlyai.in",
@@ -441,3 +447,104 @@ export async function sendSupportAutoReply(data: {
     return { success: false, error: err.message };
   }
 }
+
+/**
+ * Channel: security@makerlyai.in
+ * Sends an automated 6-digit OTP security code for CRM access or identity verification.
+ */
+export async function sendSecurityOtpCode(data: {
+  recipientEmail: string;
+  recipientName: string;
+  code: string;
+  isOwner?: boolean;
+}): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { transporter, config } = getTransporterForChannel("security");
+    const isOwner = Boolean(data.isOwner);
+
+    const subject = isOwner
+      ? `MakerlyAI Security • Owner Authorization Code: ${data.code}`
+      : `MakerlyAI Security • Partner Verification Code: ${data.code}`;
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${subject}</title>
+</head>
+<body style="margin: 0; padding: 24px; background-color: #0b0f19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #f8fafc;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 520px; background-color: #0d1527; border: 1px solid rgba(56,189,248,0.3); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+          <tr>
+            <td style="height: 4px; background: linear-gradient(90deg, #38bdf8, #2563eb, #10b981);"></td>
+          </tr>
+          <tr>
+            <td style="padding: 28px 32px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px;">
+                MAKERLY AI &bull; SECURITY PROTOCOL
+              </div>
+              <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">
+                ${isOwner ? "Owner CRM Security Verification" : "Partner CRM Access Code"}
+              </h1>
+              <p style="margin: 6px 0 0; font-size: 13px; color: #94a3b8;">
+                Dispatched from security@makerlyai.in &bull; makerlyai.in/crm
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 32px;">
+              <p style="margin: 0 0 16px; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
+                Hello <strong>${data.recipientName}</strong>,
+              </p>
+              <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
+                A secure sign-in request was initiated for your authorized account (<span style="font-family: monospace; color: #38bdf8; font-weight: 600;">${data.recipientEmail}</span>).
+              </p>
+              <div style="background-color: rgba(56,189,248,0.08); border: 1.5px dashed rgba(56,189,248,0.4); border-radius: 14px; padding: 22px; text-align: center; margin-bottom: 24px;">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #38bdf8; font-weight: 800; margin-bottom: 8px;">
+                  Your 6-Digit Authorization Code
+                </div>
+                <div style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; font-size: 38px; font-weight: 900; letter-spacing: 0.25em; color: #ffffff;">
+                  ${data.code}
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: #94a3b8;">
+                  ⏱️ Valid for 10 minutes &bull; Single-use only &bull; Do not share
+                </div>
+              </div>
+              <p style="margin: 0 0 12px; font-size: 13px; line-height: 1.6; color: #94a3b8;">
+                Enter this code on the CRM login screen to complete identity verification and access the workspace.
+              </p>
+              <p style="margin: 0; font-size: 11px; line-height: 1.6; color: #64748b;">
+                If you did not request this code, no action is required. Your account remains protected with zero unauthorized access.
+              </p>
+              <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; margin-top: 24px; text-align: center; font-size: 11px; color: #64748b;">
+                Makerly AI Security Pod &bull; <a href="mailto:security@makerlyai.in" style="color: #38bdf8; text-decoration: none;">security@makerlyai.in</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+
+    await transporter.sendMail({
+      from: `"${config.senderName}" <${config.email}>`,
+      to: data.recipientEmail,
+      replyTo: "security@makerlyai.in",
+      subject,
+      text: `Hello ${data.recipientName},\n\nYour MakerlyAI CRM authorization code is: ${data.code}\n\nValid for 10 minutes. Do not share this code.\n\nMakerly AI Security Pod\nsecurity@makerlyai.in`,
+      html,
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("[Security Dispatcher] Error dispatching OTP email:", err);
+    return { success: false, error: err.message };
+  }
+}
+
