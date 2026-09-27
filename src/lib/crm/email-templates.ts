@@ -18,7 +18,7 @@ Are you open to a brief 15-minute discovery call this Thursday or Friday to walk
 
 Best regards,
 MakerlyAI Growth & Engineering Team
-makerlyai.in | getmakerlyai@gmail.com`,
+makerlyai.in | tousif@makerlyai.in`,
   },
   {
     id: "followup",
@@ -37,7 +37,7 @@ Would you be available for a quick sync later this week?
 
 Best regards,
 MakerlyAI Partnerships
-makerlyai.in | getmakerlyai@gmail.com`,
+makerlyai.in | tousif@makerlyai.in`,
   },
   {
     id: "proposal",
@@ -58,7 +58,7 @@ You can review the full milestone timeline and commercial schedule here. Let's s
 
 Best regards,
 MakerlyAI Executive Team
-makerlyai.in | getmakerlyai@gmail.com`,
+makerlyai.in | tousif@makerlyai.in`,
   },
 ];
 

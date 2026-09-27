@@ -25,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
+      url: `${baseUrl}/careers`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.90,
+    },
+    {
       url: `${baseUrl}/crm`,
       lastModified: now,
       changeFrequency: "daily",
@@ -82,6 +88,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/services/mvp-development-for-startups`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/services/open-source-crm-twenty`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.95,

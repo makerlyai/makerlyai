@@ -78,9 +78,44 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">5. Your Rights</h2>
+            <h2 className="text-xl font-bold text-white">5. Age Restrictions & Minor Protection (COPPA & Global Standards)</h2>
             <p>
-              You may request an export or permanent deletion of your contact records and submitted project data at any time by emailing our data officer at <a href="mailto:contact@makerlyai.in" className="text-brand-400 underline">contact@makerlyai.in</a> or <a href="mailto:getmakerlyai@gmail.com" className="text-brand-400 underline">getmakerlyai@gmail.com</a>.
+              Makerly AI services and websites are strictly intended for business enterprises and individuals who are at least 18 years of age (or the age of legal majority in their jurisdiction). We do not knowingly solicit, collect, or process personal data from children under the age of 18 (or under 16 in the EEA/UK). If you become aware that a minor has provided us with personal data, please contact us immediately, and we will permanently delete such information from all production systems.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">6. European & UK Data Protection (GDPR / UK-GDPR)</h2>
+            <p>
+              For users located within the European Economic Area (EEA), the United Kingdom, or Switzerland, processing of personal data is governed under Regulation (EU) 2016/679 (GDPR). Our lawful bases include Legitimate Interest (responding to inquiries, delivering architectural proposals) and Contractual Necessity (executing software development sprints).
+            </p>
+            <p>Under the GDPR, you maintain statutory rights to:</p>
+            <ul className="list-disc pl-6 space-y-1.5 text-slate-400">
+              <li><strong>Right of Access & Portability:</strong> Request confirmation and an export copy of all personal records.</li>
+              <li><strong>Right to Rectification:</strong> Correct any inaccurate or incomplete details.</li>
+              <li><strong>Right to Erasure ("Right to Be Forgotten"):</strong> Request immediate permanent purging of your records.</li>
+              <li><strong>Right to Restrict or Object:</strong> Restrict processing or object to processing under legitimate interests.</li>
+              <li><strong>Right to Lodge a Complaint:</strong> File a grievance with your local supervisory data protection authority.</li>
+            </ul>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">7. California Privacy Rights (CCPA / CPRA)</h2>
+            <p>
+              Under the California Consumer Privacy Act as amended by the California Privacy Rights Act (CPRA), California residents enjoy specific privacy disclosures:
+            </p>
+            <ul className="list-disc pl-6 space-y-1.5 text-slate-400">
+              <li><strong>Right to Know & Access:</strong> The categories of personal information collected, sources, and commercial purposes.</li>
+              <li><strong>Right to Delete:</strong> Deletion of collected personal information subject to legal audit retention exceptions.</li>
+              <li><strong>No Sale or Sharing:</strong> <em>Makerly AI does not sell, rent, or share personal data or sensitive personal information with third parties for cross-context behavioral advertising.</em></li>
+              <li><strong>Non-Discrimination:</strong> We will never discriminate against you, alter pricing, or degrade service quality for exercising your privacy rights.</li>
+            </ul>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">8. Exercising Your Global Privacy Rights</h2>
+            <p>
+              To exercise any statutory privacy rights under GDPR, CCPA, DPDP Act (India), or other global privacy regulations, submit your request to our Data Protection Officer at <a href="mailto:tousif@makerlyai.in" className="text-brand-400 underline">tousif@makerlyai.in</a> or <a href="mailto:support@makerlyai.in" className="text-brand-400 underline">support@makerlyai.in</a>. We verify and respond to all authenticated requests within 30 days without charge.
             </p>
           </section>
         </div>

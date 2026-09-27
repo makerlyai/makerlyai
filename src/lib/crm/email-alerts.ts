@@ -11,18 +11,21 @@ export interface LeadAlertData {
 }
 
 export async function sendLeadAlertEmail(data: LeadAlertData): Promise<{ success: boolean; error?: string }> {
-  const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || "tousif@makerlyai.in";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
 
   if (!pass) {
-    console.error("[Lead Alert] GMAIL_APP_PASSWORD is not set on the server.");
-    return { success: false, error: "GMAIL_APP_PASSWORD missing" };
+    console.error("[Lead Alert] SMTP/GMAIL credentials not set on server.");
+    return { success: false, error: "SMTP credentials missing" };
   }
 
+  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT?.trim()) || 465;
+
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host,
+    port,
+    secure: port === 465,
     auth: { user, pass: pass.replace(/\s+/g, "") },
     connectionTimeout: 10000,
     greetingTimeout: 10000,
@@ -202,16 +205,29 @@ ${data.projectDetails}
     // 1. Send Admin Alert to Tousif Raza & Team
     await transporter.sendMail({
       from: `"MakerlyAI Lead Radar" <${user}>`,
-      to: ["getmakerlyai@gmail.com", "iamtousifraza@gmail.com"],
+      to: ["tousif@makerlyai.in", "founder@makerlyai.in", "iamtousifraza@gmail.com"],
       subject: adminSubject,
       text: `[NEW MAKERLYAI LEAD]\nSource: ${data.source}\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nMeeting Slot: ${data.timeSlot || "Flexible"}\nTime: ${createdAt}\n\nProject Details:\n${data.projectDetails}\n\nOpen CRM: https://makerlyai.in/crm`,
       html: adminHtml,
       replyTo: data.email && !data.email.includes("@lead.makerlyai.in") ? data.email : undefined,
     });
 
-    // 2. Send Sleek Client Confirmation if a valid email was provided
+    // 2. Send Sleek Client Confirmation from hello@makerlyai.in using HELLO_APP_PASSWORD
     if (data.email && !data.email.includes("@lead.makerlyai.in") && data.email.includes("@")) {
       try {
+        const helloUser = process.env.HELLO_MAIL_USER?.trim() || "hello@makerlyai.in";
+        const helloPass = process.env.HELLO_APP_PASSWORD?.trim() || pass;
+
+        const helloTransporter = nodemailer.createTransport({
+          host,
+          port,
+          secure: port === 465,
+          auth: { user: helloUser, pass: helloPass.replace(/\s+/g, "") },
+          connectionTimeout: 10000,
+          greetingTimeout: 10000,
+          socketTimeout: 10000,
+        });
+
         const clientHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -247,7 +263,7 @@ ${data.projectDetails}
               <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;margin-top:20px;">
                 <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#ffffff;">Tousif Raza</p>
                 <p style="margin:0;font-size:12px;color:#94a3b8;">Founder &amp; Technical Architect, Makerly AI</p>
-                <p style="margin:6px 0 0;font-size:12px;"><a href="https://makerlyai.in" style="color:#38bdf8;text-decoration:none;">makerlyai.in</a> &bull; <a href="https://wa.me/918102308736" style="color:#22c55e;text-decoration:none;">WhatsApp: +91 81023 08736</a></p>
+                <p style="margin:6px 0 0;font-size:12px;"><a href="https://makerlyai.in" style="color:#38bdf8;text-decoration:none;">makerlyai.in</a> &bull; <a href="mailto:tousif@makerlyai.in" style="color:#38bdf8;text-decoration:none;">tousif@makerlyai.in</a> &bull; <a href="https://wa.me/918102308736" style="color:#22c55e;text-decoration:none;">WhatsApp: +91 81023 08736</a></p>
               </div>
             </td>
           </tr>
@@ -258,11 +274,12 @@ ${data.projectDetails}
 </body>
 </html>
 `;
-        await transporter.sendMail({
-          from: `"Tousif Raza | MakerlyAI" <${user}>`,
+        await helloTransporter.sendMail({
+          from: `"Makerly AI" <${helloUser}>`,
           to: data.email,
-          subject: "We received your project brief - MakerlyAI",
-          text: `Hello ${data.name},\n\nThank you for reaching out to MakerlyAI. Tousif Raza and our engineering team have received your project details.\n\nWe will review your requirements and reach out within 24 hours to schedule your consultation and share your 48h prototype roadmap.\n\nBest regards,\nTousif Raza\nFounder & Technical Architect, MakerlyAI\nhttps://makerlyai.in`,
+          replyTo: "tousif@makerlyai.in",
+          subject: "We received your project brief — Makerly AI",
+          text: `Hello ${data.name},\n\nThank you for reaching out to Makerly AI. Tousif Raza and our engineering team have received your project details.\n\nWe will review your requirements and reach out within 24 hours to schedule your consultation and share your 48h prototype roadmap.\n\nBest regards,\nTousif Raza\nFounder & Technical Architect, Makerly AI\nhttps://makerlyai.in\ntousif@makerlyai.in`,
           html: clientHtml,
         });
       } catch (clientErr) {

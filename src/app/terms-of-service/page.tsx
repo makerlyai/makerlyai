@@ -65,10 +65,63 @@ export default function TermsOfServicePage() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">5. Satisfaction Guarantee</h2>
+            <h2 className="text-xl font-bold text-white">5. Age Eligibility & User Warranty</h2>
             <p>
-              Our preview sprint satisfaction guarantee is governed strictly under our <Link href="/refund-policy" className="text-brand-400 underline">Refund Policy</Link>.
+              By accessing our site, requesting software development estimates, or entering into contracts with Makerly AI, you represent and warrant that you are at least 18 years of age (or the legal age of majority in your jurisdiction) and possess full legal capacity to enter into binding agreements. If you represent a legal entity, you warrant that you are duly authorized to bind such entity.
             </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">6. Satisfaction Guarantee & Refund Policy</h2>
+            <p>
+              Our preview sprint satisfaction guarantee is governed strictly under our <Link href="/refund-policy" className="text-brand-400 underline">Refund Policy</Link>. In the event that a 24-48h working preview does not meet your specifications, no completion fees are owed, and the deposit refund terms specified in the SOW shall govern.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">7. Complete Disclaimer of Warranties ("AS-IS")</h2>
+            <p>
+              EXCEPT AS EXPLICITLY SET FORTH IN A FORMAL STATEMENT OF WORK, ALL CODE, SOFTWARE, ARCHITECTURES, ARTIFICIAL INTELLIGENCE MODELS, INTEGRATIONS, AND CONSULTATIONS ARE PROVIDED ON AN "AS-IS" AND "AS-AVAILABLE" BASIS. MAKERLY AI DISCLAIMS ALL EXPRESS OR IMPLIED WARRANTIES, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ACCURACY, OR CONTINUOUS UNINTERRUPTED OPERATION. THIRD-PARTY APIS AND AI FOUNDATION MODELS (SUCH AS OPENAI, GROQ, ANTHROPIC, OR SARVAM) OPERATE INDEPENDENTLY, AND MAKERLY AI IS NOT LIABLE FOR UPSTREAM OUTAGES OR BEHAVIORAL SHIFTS IN THIRD-PARTY AI PROVIDERS.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">8. Strict Limitation of Liability & Cap on Damages</h2>
+            <p>
+              TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE GLOBAL LAW, UNDER NO CIRCUMSTANCES SHALL MAKERLY AI, ITS FOUNDERS, EMPLOYEES, CONTRACTORS, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES—INCLUDING BUT NOT LIMITED TO LOSS OF REVENUE, LOSS OF PROFITS, DATA LOSS, REPUTATIONAL DAMAGE, WORK STOPPAGE, OR BUSINESS INTERRUPTION—ARISING FROM OR RELATED TO YOUR USE OF DELIVERABLES OR ENGAGEMENT WITH US, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+            </p>
+            <p>
+              IN NO EVENT SHALL MAKERLY AI'S TOTAL AGGREGATE LIABILITY ARISING FROM ALL CLAIMS UNDER CONTRACT, TORT (INCLUDING NEGLIGENCE), OR OTHERWISE EXCEED THE TOTAL AMOUNT ACTUALLY PAID BY YOU TO MAKERLY AI IN THE THREE (3) MONTHS PRECEDING THE CLAIM, OR USD $500 (WHICHEVER IS LESS).
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">9. Mutual Indemnification</h2>
+            <p>
+              You agree to defend, indemnify, and hold harmless Makerly AI and its representatives from and against any third-party claims, liabilities, damages, judgments, or expenses (including reasonable attorney fees) arising from: (a) content, assets, or software logic provided or directed by you; (b) any breach of these Terms; or (c) violation of applicable third-party rights or global laws.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">10. Governing Law, Binding Arbitration & Class Action Waiver</h2>
+            <p>
+              These Terms and any project engagements are governed exclusively by the laws of India, without regard to conflict of law principles. Any dispute, claim, or controversy arising out of or relating to these Terms shall be resolved exclusively through final and binding arbitration administered in Jamshedpur / Jharkhand, India, or conducted virtually by a mutually agreed arbitrator.
+            </p>
+            <p className="font-semibold text-white">
+              YOU EXPRESSLY AGREE THAT ALL DISPUTES MUST BE BROUGHT IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white">11. Notices, Billing & Support Inquiries</h2>
+            <p>
+              All formal notices, invoice queries, and contract communications should be addressed to our relevant operational channels:
+            </p>
+            <ul className="space-y-1 font-mono text-xs text-slate-300">
+              <li>• Invoicing &amp; Milestone Payments: <a href="mailto:billing@makerlyai.in" className="text-brand-400 underline">billing@makerlyai.in</a></li>
+              <li>• Client Support &amp; Active Sprints: <a href="mailto:support@makerlyai.in" className="text-brand-400 underline">support@makerlyai.in</a></li>
+              <li>• Founder &amp; Executive Management: <a href="mailto:tousif@makerlyai.in" className="text-brand-400 underline">tousif@makerlyai.in</a></li>
+            </ul>
           </section>
         </div>
       </div>

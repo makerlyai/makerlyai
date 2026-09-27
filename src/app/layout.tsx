@@ -171,12 +171,26 @@ export default function RootLayout({
                 name: "Soha Shaikh",
                 jobTitle: "Co-Founder & Business Architect",
               },
-              contactPoint: {
-                "@type": "ContactPoint",
-                email: "getmakerlyai@gmail.com",
-                contactType: "sales",
-                availableLanguage: ["English", "Hindi"],
-              },
+              contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  email: "hello@makerlyai.in",
+                  contactType: "sales",
+                  availableLanguage: ["English", "Hindi"],
+                },
+                {
+                  "@type": "ContactPoint",
+                  email: "support@makerlyai.in",
+                  contactType: "customer support",
+                  availableLanguage: ["English", "Hindi"],
+                },
+                {
+                  "@type": "ContactPoint",
+                  email: "tousif@makerlyai.in",
+                  contactType: "executive management",
+                  availableLanguage: ["English", "Hindi"],
+                }
+              ],
               areaServed: [
                 { "@type": "City", name: "Jamshedpur" },
                 { "@type": "City", name: "Ranchi" },

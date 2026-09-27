@@ -22,7 +22,7 @@ export interface SaveLeadResult {
 /**
  * Universally captures an inbound lead from Contact Form or AI Chatbot,
  * persists it directly into Supabase (crm_leads + crm_activities),
- * and dispatches luxury lead alert emails to getmakerlyai@gmail.com and iamtousifraza@gmail.com.
+ * and dispatches luxury lead alert emails to tousif@makerlyai.in and iamtousifraza@gmail.com.
  */
 export async function saveInboundLead(input: InboundLeadInput): Promise<SaveLeadResult> {
   const clientName = (input.name?.trim() || "Inbound Prospect").slice(0, 100);
@@ -92,7 +92,7 @@ export async function saveInboundLead(input: InboundLeadInput): Promise<SaveLead
     console.warn("[CRM Supabase] Database execution notice:", dbErr);
   }
 
-  // 2. Dispatch luxury email alerts to both getmakerlyai@gmail.com and iamtousifraza@gmail.com
+  // 2. Dispatch luxury email alerts to both tousif@makerlyai.in and iamtousifraza@gmail.com
   let emailSent = false;
   try {
     const emailRes = await sendLeadAlertEmail({

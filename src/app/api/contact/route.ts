@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import { NextResponse } from "next/server";
 import { saveInboundLead } from "@/lib/crm/save-lead";
+import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -14,8 +15,14 @@ type ContactRequestBody = {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function sanitizeInput(str: string): string {
+  return str
+    .replace(/[<>]/g, "") // Strip raw tags to eliminate XSS injections
+    .trim();
+}
+
 function normalizeField(value: unknown): string {
-  return typeof value === "string" ? value.trim() : "";
+  return typeof value === "string" ? sanitizeInput(value) : "";
 }
 
 function validateContactPayload(
@@ -106,6 +113,24 @@ async function saveLeadToNotion(
 
 export async function POST(request: Request) {
   try {
+    // 0. Enforce Rate Limiting (max 5 submissions per 60 seconds per IP)
+    const ip = getClientIp(request);
+    const rateCheck = checkRateLimit(`contact_${ip}`, { limit: 5, windowSeconds: 60 });
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Too many requests. Please wait a moment before sending another message.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateCheck.reset - Math.floor(Date.now() / 1000)),
+          },
+        }
+      );
+    }
+
     const payload = await request.json();
     const validation = validateContactPayload(payload);
 

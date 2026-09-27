@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { saveInboundLead } from "@/lib/crm/save-lead";
+import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -82,6 +83,18 @@ function extractIntakeData(messages: any[]) {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`sarvam_chat_${ip}`, { limit: 20, windowSeconds: 60 });
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        {
+          reply: "You are speaking too quickly. Please pause for a moment.",
+          error: "Rate limit exceeded",
+        },
+        { status: 429 }
+      );
+    }
+
     const { messages } = await req.json();
 
     const {

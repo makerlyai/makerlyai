@@ -3,8 +3,8 @@ import { Lead, User, Activity } from "./types";
 export const SEED_USERS: User[] = [
   {
     id: "user-owner-1",
-    name: "MakerlyAI (Tousif Raza)",
-    email: "getmakerlyai@gmail.com",
+    name: "Tousif Raza (Founder)",
+    email: "tousif@makerlyai.in",
     role: "admin",
     approved: true,
   },

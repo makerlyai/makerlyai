@@ -24,10 +24,9 @@ export default function Footer() {
     { name: "X", url: "https://x.com/makerlyai" },
     { name: "LinkedIn", url: "https://linkedin.com/company/makerlyai" },
     { name: "GitHub", url: "https://github.com/makerlyai" },
-    { name: "YouTube", url: "https://youtube.com/@makerlyai" },
-    { name: "Reddit", url: "https://reddit.com/u/makerlyai" },
-    { name: "Telegram", url: "https://t.me/makerlyai" },
-    { name: "Gmail", url: "mailto:getmakerlyai@gmail.com" },
+    { name: "Careers", url: "/careers" },
+    { name: "Support", url: "mailto:support@makerlyai.in" },
+    { name: "Founder", url: "mailto:tousif@makerlyai.in" },
     { name: "Partner CRM", url: "/crm" },
   ];
 
@@ -90,11 +89,21 @@ export default function Footer() {
               </button>
 
               <a
-                href="mailto:getmakerlyai@gmail.com"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/15 bg-black/5 text-xs font-mono text-neutral-700 hover:text-black hover:border-black/30 transition-colors"
+                href="mailto:tousif@makerlyai.in"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/15 bg-black/5 text-xs font-mono text-neutral-800 hover:text-black hover:border-black/40 transition-colors"
+                title="Direct Founder Reachout"
               >
                 <Mail className="w-3.5 h-3.5 text-neutral-600" />
-                <span>getmakerlyai@gmail.com</span>
+                <span>Founder: tousif@makerlyai.in</span>
+              </a>
+
+              <a
+                href="mailto:support@makerlyai.in"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/15 bg-black/5 text-xs font-mono text-neutral-800 hover:text-black hover:border-black/40 transition-colors"
+                title="Client Support"
+              >
+                <Mail className="w-3.5 h-3.5 text-neutral-600" />
+                <span>Support: support@makerlyai.in</span>
               </a>
             </div>
 
@@ -237,6 +246,12 @@ export default function Footer() {
                   className="hover:text-black transition-colors underline decoration-black/20 hover:decoration-black"
                 >
                   Refund &amp; Guarantee
+                </a>
+                <a
+                  href="/careers"
+                  className="hover:text-black transition-colors underline decoration-black/20 hover:decoration-black"
+                >
+                  Careers
                 </a>
                 <a
                   href="/crm"

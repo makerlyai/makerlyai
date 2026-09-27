@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`tts_${ip}`, { limit: 20, windowSeconds: 60 });
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { success: false, fallback: true, message: "Too many voice requests. Switching to client audio." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
-    const text = body?.text;
+    const rawText = body?.text;
+    const text = typeof rawText === "string" ? rawText.replace(/[<>]/g, "").trim().slice(0, 500) : "";
     const target_language_code = body?.target_language_code || "en-IN";
     const requestedSpeaker = body?.speaker || "priya";
     const speaker = requestedSpeaker === "meera" ? "priya" : requestedSpeaker;

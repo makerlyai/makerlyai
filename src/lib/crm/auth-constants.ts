@@ -1,4 +1,6 @@
 export const OWNER_EMAILS = [
+  "tousif@makerlyai.in",
+  "founder@makerlyai.in",
   "iamtousifraza@gmail.com",
   "getmakerlyai@gmail.com",
 ] as const;

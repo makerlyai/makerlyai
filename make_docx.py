@@ -87,7 +87,7 @@ stats.add_run("100%  ").bold = True
 stats.add_run("Satisfaction guarantee")
 
 spacer()
-body("EMAIL    getmakerlyai@gmail.com")
+body("EMAIL    founder@makerlyai.in")
 body("WEB      makerlyai.in")
 body("LOCATION  Jamshedpur, Jharkhand, India")
 
@@ -242,7 +242,7 @@ hr()
 h1("Ready to build your digital empire?")
 body("Let's start the conversation. Share your vision and we'll deliver the first working preview within 24 hours.")
 spacer()
-body("EMAIL    getmakerlyai@gmail.com")
+body("EMAIL    founder@makerlyai.in")
 body("WEB      makerlyai.in")
 body("Social:  Instagram  |  X (Twitter)  |  LinkedIn  |  GitHub  |  YouTube  |  Telegram")
 spacer()

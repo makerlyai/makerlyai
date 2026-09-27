@@ -127,7 +127,7 @@ export function submitAccessRequest(data: {
   return {
     success: true,
     request: newRequest,
-    message: "Authorization request submitted to Tousif Raza (iamtousifraza@gmail.com / getmakerlyai@gmail.com).",
+    message: "Authorization request submitted to Tousif Raza (tousif@makerlyai.in).",
   };
 }
 

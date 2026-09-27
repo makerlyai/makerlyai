@@ -386,7 +386,7 @@ export function OwnerAccessManager({
 
               {approvedUsers.map((u) => {
                 const isPrimaryOwner =
-                  u.email === "iamtousifraza@gmail.com" || u.email === "getmakerlyai@gmail.com";
+                  u.email === "tousif@makerlyai.in" || u.email === "iamtousifraza@gmail.com" || u.email === "founder@makerlyai.in" || u.email === "getmakerlyai@gmail.com";
 
                 return (
                   <div

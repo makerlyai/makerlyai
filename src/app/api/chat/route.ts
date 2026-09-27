@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
 import { saveInboundLead } from "@/lib/crm/save-lead";
+import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    const { message, history } = await req.json();
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`chat_${ip}`, { limit: 15, windowSeconds: 60 });
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { reply: "You are sending messages too quickly. Please pause for a moment." },
+        { status: 429 }
+      );
+    }
+
+    const { message: rawMessage, history } = await req.json();
+    const message = typeof rawMessage === "string" ? rawMessage.replace(/[<>]/g, "").trim() : "";
 
     const groqApiKey = process.env.GROQ_API_KEY;
     if (!groqApiKey || groqApiKey === "your-groq-api-key-here") {

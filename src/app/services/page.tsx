@@ -58,6 +58,12 @@ const serviceOfferings = [
     desc: "Next.js web platforms and React Native iOS/Android apps built with fluid 60fps animations, sub-second load times, and secure cloud databases.",
   },
   {
+    title: "Open-Source CRM & Twenty Implementation",
+    slug: "/services/open-source-crm-twenty",
+    badge: "Salesforce Alternative",
+    desc: "Self-hosted Twenty CRM deployed on your own PostgreSQL cloud. 100% data sovereignty, $0 per-seat software fees, and native AI voice/chat sync.",
+  },
+  {
     title: "SaaS MVP Development in 24 Hours",
     slug: "/build-saas-india",
     badge: "Rapid Prototyping",

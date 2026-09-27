@@ -32,7 +32,13 @@ export default function ContactPage() {
         name: "Tousif Raza",
       },
       telephone: "+918102308736",
-      email: "tousifraza369@gmail.com",
+      email: "tousif@makerlyai.in",
+      contactPoint: [
+        { "@type": "ContactPoint", email: "hello@makerlyai.in", contactType: "sales" },
+        { "@type": "ContactPoint", email: "support@makerlyai.in", contactType: "customer support" },
+        { "@type": "ContactPoint", email: "tousif@makerlyai.in", contactType: "founder executive" },
+        { "@type": "ContactPoint", email: "careers@makerlyai.in", contactType: "careers" }
+      ],
       address: {
         "@type": "PostalAddress",
         addressLocality: "Jamshedpur",
@@ -109,18 +115,61 @@ export default function ContactPage() {
                     </div>
                   </a>
 
+                  {/* Direct Founder Email */}
                   <a
-                    href="mailto:tousifraza369@gmail.com"
-                    className="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-white hover:bg-white/[0.08] transition-all group"
+                    href="mailto:tousif@makerlyai.in"
+                    className="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.04] border border-blue-500/30 text-white hover:bg-blue-500/10 transition-all group"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-brand-blue/20 border border-brand-blue/40 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-brand-blue/20 border border-brand-blue/50 flex items-center justify-center shrink-0">
                       <Mail className="w-5 h-5 text-cyan-400" />
                     </div>
                     <div>
-                      <div className="text-xs text-slate-400 font-medium uppercase tracking-wider">Email Briefs</div>
-                      <div className="text-sm font-bold text-white group-hover:text-cyan-300">tousifraza369@gmail.com</div>
+                      <div className="text-xs text-blue-400 font-semibold uppercase tracking-wider">Founder Direct (Tousif Raza)</div>
+                      <div className="text-sm font-bold text-white group-hover:text-cyan-300">tousif@makerlyai.in</div>
                     </div>
                   </a>
+
+                  {/* General Inquiries */}
+                  <a
+                    href="mailto:hello@makerlyai.in"
+                    className="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-white hover:bg-white/[0.08] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center shrink-0">
+                      <Mail className="w-5 h-5 text-cyan-300" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-400 font-medium uppercase tracking-wider">Inbound Inquiries &amp; Briefs</div>
+                      <div className="text-sm font-bold text-white group-hover:text-cyan-300">hello@makerlyai.in</div>
+                    </div>
+                  </a>
+
+                  {/* Client Support */}
+                  <a
+                    href="mailto:support@makerlyai.in"
+                    className="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-white hover:bg-white/[0.08] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0">
+                      <Mail className="w-5 h-5 text-amber-300" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-400 font-medium uppercase tracking-wider">Client Support &amp; Active Sprints</div>
+                      <div className="text-sm font-bold text-white group-hover:text-amber-300">support@makerlyai.in</div>
+                    </div>
+                  </a>
+
+                  {/* Careers */}
+                  <Link
+                    href="/careers"
+                    className="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.04] border border-emerald-500/30 text-white hover:bg-emerald-500/10 transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-emerald-400 font-medium uppercase tracking-wider">Careers &amp; Engineering Roles</div>
+                      <div className="text-sm font-bold text-white group-hover:text-emerald-300">careers@makerlyai.in &rarr;</div>
+                    </div>
+                  </Link>
 
                   <a
                     href="tel:+918102308736"

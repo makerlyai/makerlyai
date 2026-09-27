@@ -5,19 +5,22 @@ import { supabase } from "@/lib/crm/supabase";
 export const runtime = "nodejs";
 
 function getMailTransporter() {
-  const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || "tousif@makerlyai.in";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
 
   if (!pass) {
-    throw new Error("GMAIL_APP_PASSWORD is not configured on the server.");
+    throw new Error("GMAIL_APP_PASSWORD or SMTP_PASSWORD is not configured on the server.");
   }
+
+  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT?.trim()) || 465;
 
   return {
     user,
     transporter: nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      host,
+      port,
+      secure: port === 465,
       auth: { user, pass },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
@@ -174,7 +177,7 @@ export async function POST(request: Request) {
     // ACTION: DELETE FROM WHITELIST
     if (action === "delete" || action === "remove") {
       // Prevent deleting the owner
-      if (email === "iamtousifraza@gmail.com" || email === "getmakerlyai@gmail.com") {
+      if (email === "iamtousifraza@gmail.com" || email === "tousif@makerlyai.in" || email === "founder@makerlyai.in" || email === "getmakerlyai@gmail.com") {
         return NextResponse.json(
           { success: false, message: "Primary owner account cannot be deleted." },
           { status: 400 }

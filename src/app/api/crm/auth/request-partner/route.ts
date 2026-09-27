@@ -5,19 +5,22 @@ import { supabase } from "@/lib/crm/supabase";
 export const runtime = "nodejs";
 
 function getMailTransporter() {
-  const user = process.env.GMAIL_USER?.trim() || "getmakerlyai@gmail.com";
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim();
+  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim() || "tousif@makerlyai.in";
+  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
 
   if (!pass) {
-    throw new Error("GMAIL_APP_PASSWORD is not configured on the server.");
+    throw new Error("GMAIL_APP_PASSWORD or SMTP_PASSWORD is not configured on the server.");
   }
+
+  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT?.trim()) || 465;
 
   return {
     user,
     transporter: nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      host,
+      port,
+      secure: port === 465,
       auth: { user, pass },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
@@ -95,7 +98,7 @@ export async function POST(request: Request) {
       const { user: mailSender, transporter } = getMailTransporter();
       await transporter.sendMail({
         from: `"MakerlyAI CRM" <${mailSender}>`,
-        to: ["iamtousifraza@gmail.com", "getmakerlyai@gmail.com"],
+        to: ["tousif@makerlyai.in", "founder@makerlyai.in", "iamtousifraza@gmail.com"],
         subject: `[MakerlyAI CRM] New Partner Access Request: ${name} (${email})`,
         text: `New CRM Partner Request:\n\nName: ${name}\nEmail: ${email}\nOrganization: ${organization || "N/A"}\nNote: ${note || "N/A"}\n\nLog in to https://makerlyai.in/crm to approve or reject this request.`,
         html: `

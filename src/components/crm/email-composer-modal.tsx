@@ -196,7 +196,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
               {/* Footer CTA */}
               <div className="flex items-center justify-between border-t border-white/[0.08] pt-4">
                 <div className="text-[11px] text-slate-500">
-                  Sent as: <strong className="text-slate-300">{activeUser.name}</strong> (getmakerlyai@gmail.com)
+                  Sent as: <strong className="text-slate-300">{activeUser.name}</strong> (tousif@makerlyai.in)
                 </div>
                 <div className="flex items-center gap-2">
                   <button
