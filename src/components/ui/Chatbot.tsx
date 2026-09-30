@@ -126,7 +126,18 @@ export default function Chatbot() {
     try {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.rate = 1.0;
+      const voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) {
+        const preferredVoice = voices.find(v => 
+          (v.lang.includes("en-IN") || v.name.includes("India") || v.name.includes("Heera") || v.name.includes("Neerja") || v.name.includes("Ravi"))
+        ) || voices.find(v => 
+          (v.name.includes("Natural") || v.name.includes("Online") || v.name.includes("Google") || v.name.includes("Samantha")) && v.lang.startsWith("en")
+        ) || voices.find(v => v.lang.startsWith("en"));
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
+      }
+      utterance.rate = 1.02;
       utterance.pitch = 1.0;
       utterance.onend = () => setIsPlayingAudio(false);
       utterance.onerror = () => setIsPlayingAudio(false);

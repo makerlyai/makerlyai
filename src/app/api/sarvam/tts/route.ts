@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Text is required" }, { status: 400 });
     }
 
-    const apiKey = process.env.SARVAM_API_KEY;
+    const apiKey = process.env.SARVAM_API_KEY?.trim().replace(/^['"]|['"]$/g, "");
 
     if (!apiKey) {
       // Return fallback flag indicating client should use browser synthesis
