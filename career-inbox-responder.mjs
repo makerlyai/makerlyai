@@ -15,6 +15,7 @@ dotenv.config({ path: '.env.local' });
 import Imap from 'imap';
 import { simpleParser } from 'mailparser';
 import nodemailer from 'nodemailer';
+import fs from 'fs';
 
 // ── Config ──────────────────────────────────────────────────────
 const {
@@ -25,34 +26,53 @@ const {
   GROQ_API_KEY,
 } = process.env;
 
-const GROQ_MODEL = 'openai/gpt-oss-120b';
-const GROQ_URL   = 'https://api.groq.com/openai/v1/chat/completions';
+const PRIMARY_MODEL  = 'openai/gpt-oss-120b';
+const FALLBACK_MODEL = 'openai/gpt-oss-20b';
+const GROQ_URL       = 'https://api.groq.com/openai/v1/chat/completions';
 
-// ── Groq helper ─────────────────────────────────────────────────
-async function groqChat(systemPrompt, userMessage) {
-  const res = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${GROQ_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      temperature: 0.7,
-      max_tokens: 1024,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user',   content: userMessage },
-      ],
-    }),
-  });
+// ── Groq helper with automatic 429 backoff retry & fallback ───────
+async function groqChat(systemPrompt, userMessage, retries = 3) {
+  let model = PRIMARY_MODEL;
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Groq API ${res.status}: ${err}`);
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY.trim()}`,
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0.7,
+          max_tokens: 1024,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user',   content: userMessage },
+          ],
+        }),
+      });
+
+      if (res.status === 429) {
+        console.log(`   ⏳ Groq 429 rate limit on ${model}. Pausing 4s before retry (${attempt}/${retries})...`);
+        await new Promise(r => setTimeout(r, 4000));
+        // Switch to secondary model on retry to bypass tier token exhaustion
+        model = FALLBACK_MODEL;
+        continue;
+      }
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`Groq API ${res.status}: ${err}`);
+      }
+
+      const data = await res.json();
+      return data.choices[0].message.content.trim();
+    } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise(r => setTimeout(r, 3000));
+    }
   }
-  const data = await res.json();
-  return data.choices[0].message.content.trim();
 }
 
 // ── Intent classifier ───────────────────────────────────────────
@@ -278,6 +298,15 @@ async function main() {
     return;
   }
 
+  // Persistent tracking of candidates already replied to
+  const CACHE_FILE = '.replied-candidates.json';
+  let repliedCache = new Set();
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      repliedCache = new Set(JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')));
+    }
+  } catch (e) {}
+
   // Deduplicate by sender email (keep the latest email from each candidate)
   const candidateMap = new Map();
   for (const email of incoming) {
@@ -294,6 +323,16 @@ async function main() {
   let skipped = 0;
 
   for (const email of uniqueEmails) {
+    const fromAddress = email.from.toLowerCase().trim();
+
+    // Check if already replied
+    if (repliedCache.has(fromAddress)) {
+      console.log(`\n📩 From: ${email.fromName || email.from} (${email.from})`);
+      console.log(`   ⏩ Candidate already replied to in a previous session — skipped.`);
+      skipped++;
+      continue;
+    }
+
     const shortBody = (email.text || '').substring(0, 300).replace(/\s+/g, ' ');
 
     console.log(`\n📩 From: ${email.fromName || email.from}`);
@@ -347,13 +386,18 @@ async function main() {
       const msgId = await sendReply(email.from, email.subject, replyText, email.fromName || '');
       console.log(`   ✅ Sent! Message ID: ${msgId}`);
       replied++;
+      // Save to cache
+      repliedCache.add(fromAddress);
+      try {
+        fs.writeFileSync(CACHE_FILE, JSON.stringify(Array.from(repliedCache), null, 2), 'utf8');
+      } catch (e) {}
     } catch (err) {
       console.log(`   ❌ Send failed: ${err.message}`);
       skipped++;
     }
 
-    // Small delay between emails to respect SMTP and Groq rate limits
-    await new Promise(r => setTimeout(r, 2000));
+    // Delay between emails to respect SMTP and Groq rate limits
+    await new Promise(r => setTimeout(r, 3500));
   }
 
   console.log('\n' + '═'.repeat(60));

@@ -42,5 +42,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local candidate reply cache
+.replied-candidates.json
+
 # build media and video output
 brag-output/
