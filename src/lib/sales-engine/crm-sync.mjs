@@ -167,3 +167,51 @@ export function getPipelineStats() {
 
   return stats;
 }
+
+/**
+ * Updates status of a lead and syncs to CRM
+ */
+export async function updateLeadStatusInCRM(leadId, newStatus) {
+  const leads = loadCachedLeads();
+  const lead = leads.find(l => l.id === leadId);
+  if (!lead) return null;
+
+  lead.status = newStatus;
+  lead.updatedAt = new Date().toISOString();
+  saveCachedLeads(leads);
+
+  if (supabase) {
+    try {
+      await supabase
+        .from('crm_leads')
+        .update({ status: mapStatusToSupabase(newStatus) })
+        .eq('email', lead.email);
+    } catch {}
+  }
+  return lead;
+}
+
+/**
+ * Attaches generated proposal to a lead
+ */
+export async function saveLeadProposal(leadId, proposal) {
+  const leads = loadCachedLeads();
+  const lead = leads.find(l => l.id === leadId);
+  if (!lead) return null;
+
+  lead.proposal = proposal;
+  lead.status = 'Proposal Sent';
+  lead.updatedAt = new Date().toISOString();
+  saveCachedLeads(leads);
+  return lead;
+}
+
+/**
+ * Deletes or archives a lead from the CRM cache
+ */
+export function deleteLeadFromCRM(leadId) {
+  const leads = loadCachedLeads();
+  const filtered = leads.filter(l => l.id !== leadId);
+  saveCachedLeads(filtered);
+  return true;
+}

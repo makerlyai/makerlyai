@@ -33,6 +33,13 @@ NICHE_QUERIES = {
         'corporate gifting company Mumbai Delhi website contact',
         'industrial equipment manufacturer Gujarat website contact',
         'private diagnostic healthcare lab chain Bangalore website'
+    ],
+    "b2b": [
+        'B2B consulting firm Bangalore corporate website contact',
+        'logistics supply chain enterprise software solutions India contact',
+        'corporate B2B service provider India decision maker website',
+        'commercial equipment distributor supplier India corporate office',
+        'B2B industrial procurement marketplace India contact'
     ]
 }
 
@@ -138,7 +145,7 @@ def search_with_scrapling(query: str, max_results: int = 10) -> List[Dict[str, A
 
 def main():
     parser = argparse.ArgumentParser(description="MakerlyAI Scrapling Lead Harvester")
-    parser.add_argument("--niche", type=str, default="d2c", choices=["d2c", "saas", "high-ticket"], help="Target niche")
+    parser.add_argument("--niche", type=str, default="d2c", choices=["d2c", "saas", "high-ticket", "b2b"], help="Target niche")
     parser.add_argument("--query", type=str, default=None, help="Custom search query override")
     parser.add_argument("--limit", type=int, default=10, help="Max leads to discover")
     parser.add_argument("--out", type=str, default=None, help="Output JSON path")

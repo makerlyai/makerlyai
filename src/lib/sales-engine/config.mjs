@@ -113,6 +113,26 @@ export const SALES_ENGINE_CONFIG = {
       ],
       makerlyValueProp: 'Custom client portal & automated B2B lead capture engine that turns enterprise inquiries into booked consultations and trackable pipeline.',
       dealValueRange: { min: 99000, max: 300000, default: 180000 }
+    },
+
+    b2b: {
+      name: 'B2B Enterprise & Corporate Services',
+      tag: 'b2b',
+      targetRoles: ['Managing Director', 'CEO', 'Founder', 'VP Sales', 'Head of Business Development', 'Partner'],
+      searchKeywords: [
+        'B2B consulting firm Bangalore OR Mumbai corporate website contact',
+        'logistics supply chain enterprise software solutions India contact',
+        'commercial equipment distributor supplier India corporate office',
+        'corporate B2B service provider India decision maker website',
+        'B2B industrial procurement platform India contact'
+      ],
+      corePainPoints: [
+        'Manual quotation and RFP response processes delaying deal velocity by 2-3 weeks',
+        'Outdated static corporate website failing enterprise client procurement security & capability checks',
+        'Lack of automated client onboarding portals and self-serve quote calculators losing high-ticket accounts'
+      ],
+      makerlyValueProp: 'Custom enterprise B2B portals, automated quotation engines, and autonomous AI workflow agents that shorten deal cycles from 30 days to 48 hours.',
+      dealValueRange: { min: 150000, max: 350000, default: 220000 }
     }
   },
 
