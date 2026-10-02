@@ -50,11 +50,15 @@ export function saveCachedLeads(leads) {
  * Upserts a lead into both local cache and Supabase CRM
  */
 export async function syncLeadToCRM(lead) {
+  if (!lead.id) {
+    lead.id = `lead-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  }
+
   const leads = loadCachedLeads();
   const existingIdx = leads.findIndex(l => 
-    (l.email && lead.email && l.email.toLowerCase() === lead.email.toLowerCase()) ||
-    (l.websiteUrl && lead.websiteUrl && l.websiteUrl === lead.websiteUrl) ||
-    l.id === lead.id
+    (lead.email && l.email && l.email.toLowerCase() === lead.email.toLowerCase()) ||
+    (lead.websiteUrl && l.websiteUrl && l.websiteUrl.toLowerCase() === lead.websiteUrl.toLowerCase()) ||
+    (lead.id && l.id && l.id === lead.id)
   );
 
   const updatedLead = {
