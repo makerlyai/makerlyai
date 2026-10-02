@@ -45,5 +45,8 @@ next-env.d.ts
 # local candidate reply cache
 .replied-candidates.json
 
+# sales engine runtime caches
+.sales-engine-*.json
+
 # build media and video output
 brag-output/
