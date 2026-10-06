@@ -103,23 +103,20 @@ First, determine their actual first name (look in the sign-off, subject line, or
 
 COMPANY SITUATION:
 - MakerlyAI is currently operating as a compact, focused core engineering team.
-- We are not actively hiring or onboarding new roles at this immediate moment.
-- We genuinely review every single application and hold exceptional talent in very high regard.
+- We genuinely review every application and recognize great craft and initiative.
 
 REQUIREMENTS FOR YOUR REPLY:
 1. Greet them warmly and personally by their real first name (e.g. "Hi [First Name],").
-2. Explicitly acknowledge the specific role/skills they reached out about (e.g., Full-Stack AI Engineer, RAG, agentic workflows, etc.) so it's clear their email was actually read with attention.
-3. Express genuine appreciation for their background, projects, and the initiative to connect with MakerlyAI.
-4. Transparently share that we are currently keeping our core team compact and are not actively bringing on new roles right now.
-5. Emphasize that their profile and portfolio are being retained in our active talent pipeline, and when relevant project or expansion openings arise, we will reach out to them directly.
-6. End with encouraging, positive words for their ongoing projects and career journey.
+2. Compliment their background and highlight that they clearly have impressive skills and valuable experience (mention specific tools/skills from their email if provided, e.g., AI/LLM systems, full-stack dev, React/Node, UI/UX, etc.).
+3. Clearly state that we do not have an active open requirement matching their profile right at this moment.
+4. Assure them that we have saved their profile and portfolio in our priority talent roster, and we will definitely reach out and let them know as soon as new requirements or project needs open up.
+5. End on an encouraging, inspiring note wishing them continued success in their work and projects.
 
 STRICT CONSTRAINTS:
-- Do NOT sound like an automated robot or boiler-plate rejection template. Keep it conversational, warm, and professional.
+- Keep the tone sincere, warm, appreciative, and ultra-professional (zero boilerplate corporate jargon).
 - Do NOT mention any individual founder or personal names (do not mention Tousif). Only sign off and speak collectively as Team MakerlyAI.
-- Do NOT promise a guaranteed job offer or definite timeline.
-- Do NOT mention company limitations negatively (e.g., no "budget constraints" or "small company issues").
-- Length: Around 140 - 220 words.
+- Do NOT promise a guaranteed job offer or definite date.
+- Length: Around 130 - 190 words.
 - Sign off cleanly as:
 Warm regards,
 Team MakerlyAI

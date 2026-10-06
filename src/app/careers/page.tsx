@@ -4,15 +4,15 @@ import { ArrowLeft, Sparkles, Code2, Palette, Rocket, ShieldCheck, Mail, CheckCi
 import CareersApplicationForm from "@/components/careers/CareersApplicationForm";
 
 export const metadata: Metadata = {
-  title: "Careers & Open Roles | Makerly AI — Build With Us",
+  title: "Careers & Talent Roster | Makerly AI — Build With Us",
   description:
-    "Join the engineering pod at Makerly AI. We build autonomous AI agents, enterprise SaaS, and high-velocity digital products. Direct reachout to careers@makerlyai.in.",
+    "All job openings at Makerly AI are currently closed. However, you can still submit the form to join our talent roster — we will contact you directly as soon as new requirements open up.",
   alternates: {
     canonical: "https://makerlyai.in/careers",
   },
   openGraph: {
-    title: "Careers at Makerly AI | Ship Ambitious Software",
-    description: "Explore open engineering and design roles. Remote-first, high autonomy, ship daily.",
+    title: "Careers & Talent Roster at Makerly AI",
+    description: "Active job openings are currently closed. Submit your proof of work to join our future talent roster.",
     url: "https://makerlyai.in/careers",
   },
 };
@@ -23,6 +23,7 @@ const OPEN_ROLES = [
     title: "Full-Stack AI Engineer",
     department: "Engineering Pod",
     type: "Full-Time / Contract",
+    statusText: "Closed for Now · Roster Open",
     location: "Remote (India / Global)",
     experience: "1 - 4 Years",
     tagline: "Ship autonomous LLM agents, realtime voice pipelines, and high-performance Next.js architectures.",
@@ -44,6 +45,7 @@ const OPEN_ROLES = [
     title: "Founding UI/UX Product Designer",
     department: "Design & Interaction",
     type: "Full-Time / Contract",
+    statusText: "Closed for Now · Roster Open",
     location: "Remote",
     experience: "1 - 3 Years",
     tagline: "Define the visual identity, micro-interactions, and design systems for global venture-backed startups.",
@@ -64,6 +66,7 @@ const OPEN_ROLES = [
     title: "Technical Growth & Operations Architect",
     department: "Growth & Client Delivery",
     type: "Full-Time",
+    statusText: "Closed for Now · Roster Open",
     location: "Remote / Hybrid (India)",
     experience: "1 - 3 Years",
     tagline: "Drive inbound project qualification, architectural proposal synthesis, and CRM execution.",
@@ -125,10 +128,10 @@ export default function CareersPage() {
           </div>
 
           {/* Hero Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/40 bg-blue-500/10 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-5">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-bold uppercase tracking-wider mb-5">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Join the Engineering Pod</span>
+              <span>Talent Roster &bull; Open for Future Intake</span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6">
               Build Ambitious Products. <br />
@@ -137,8 +140,7 @@ export default function CareersPage() {
               </span>
             </h1>
             <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-              At <strong className="text-white">Makerly AI</strong>, we don’t do slow corporate sprints or red tape. We build
-              autonomous AI tools, high-velocity SaaS applications, and intelligent systems for ambitious founders across the world.
+              At <strong className="text-white">Makerly AI</strong>, we build autonomous AI tools, high-velocity SaaS applications, and intelligent systems for ambitious founders across the world.
             </p>
 
             {/* Quick stats pills */}
@@ -155,6 +157,32 @@ export default function CareersPage() {
                 <Users className="w-4 h-4 text-emerald-400" />
                 <span>Direct Founder Access</span>
               </div>
+            </div>
+          </div>
+
+          {/* Prominent Status Notice: Openings Closed For Now */}
+          <div className="mb-14 p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-slate-900/80 to-cyan-950/40 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400" />
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="space-y-2.5">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span>Notice &bull; Active Openings Currently Paused</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  All Current Job Openings Are Closed For Now
+                </h2>
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                  Our core engineering and product teams are currently operating at full capacity. We are not actively onboarding new roles right at this moment. <strong className="text-white">However, you can still submit the form below if you are interested!</strong> We continuously review exceptional craft and will reach out to you directly as soon as new requirements or project expansions arise.
+                </p>
+              </div>
+              <a
+                href="#apply-form"
+                className="shrink-0 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400 text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all shadow-lg shadow-amber-500/10"
+              >
+                <span>Submit to Talent Roster</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
@@ -194,9 +222,11 @@ export default function CareersPage() {
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <h2 className="text-2xl font-black text-white flex items-center gap-3">
                 <Code2 className="w-6 h-6 text-cyan-400" />
-                <span>Open Positions ({OPEN_ROLES.length})</span>
+                <span>Engineering &amp; Design Roles</span>
               </h2>
-              <span className="text-xs font-mono text-slate-400">All Roles Open for Direct Intake</span>
+              <span className="text-xs font-mono text-amber-300 bg-amber-500/15 border border-amber-500/30 px-3 py-1 rounded-full">
+                Active Openings Closed &bull; Talent Roster Open
+              </span>
             </div>
 
             <div className="grid grid-cols-1 gap-8">
@@ -204,11 +234,14 @@ export default function CareersPage() {
                 <div
                   key={role.id}
                   id={role.id}
-                  className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-10 backdrop-blur-xl hover:border-blue-500/40 transition-all shadow-xl"
+                  className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-10 backdrop-blur-xl hover:border-amber-500/30 transition-all shadow-xl"
                 >
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
                     <div>
                       <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                        <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          {role.statusText}
+                        </span>
                         <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/30">
                           {role.department}
                         </span>
@@ -225,14 +258,14 @@ export default function CareersPage() {
                     <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
                       <a
                         href="#apply-form"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-black font-bold text-xs hover:opacity-90 transition-all shadow-md shadow-cyan-500/10 cursor-pointer"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400 text-black font-bold text-xs hover:opacity-90 transition-all shadow-md shadow-amber-500/10 cursor-pointer"
                       >
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>Apply Online</span>
+                        <Sparkles className="w-3.5 h-3.5 fill-black" />
+                        <span>Join Talent Roster</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </a>
                       <a
-                        href={`mailto:careers@makerlyai.in?subject=Application%3A%20${encodeURIComponent(role.title)}%20-%20%5BYour%20Name%5D`}
+                        href={`mailto:careers@makerlyai.in?subject=Talent%20Roster%3A%20${encodeURIComponent(role.title)}%20-%20%5BYour%20Name%5D`}
                         title="Or email directly"
                         className="p-2.5 rounded-full border border-white/10 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
                       >

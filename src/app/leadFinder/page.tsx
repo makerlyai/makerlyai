@@ -202,13 +202,14 @@ export default function LeadFinderPage() {
       const res = await fetch("/api/leadFinder/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "send_otp", email: emailInput, purpose }),
+        body: JSON.stringify({ action: "send_otp", email: emailInput.trim().toLowerCase(), purpose }),
       });
       const data = await res.json();
 
       if (data.success) {
         setOtpSent(true);
-        setAuthSuccess(`6-digit authorization code dispatched to ${emailInput}`);
+        setOtpInput("");
+        setAuthSuccess(`6-digit authorization code dispatched to ${emailInput.trim().toLowerCase()}`);
       } else {
         setAuthError(data.message || "Failed to dispatch security code.");
       }
@@ -227,7 +228,7 @@ export default function LeadFinderPage() {
       const res = await fetch("/api/leadFinder/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "verify_otp", email: emailInput, code: otpInput }),
+        body: JSON.stringify({ action: "verify_otp", email: emailInput.trim().toLowerCase(), code: otpInput.trim() }),
       });
       const data = await res.json();
 
@@ -253,7 +254,7 @@ export default function LeadFinderPage() {
       const res = await fetch("/api/leadFinder/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login_password", email: emailInput, password: passwordInput }),
+        body: JSON.stringify({ action: "login_password", email: emailInput.trim().toLowerCase(), password: passwordInput.trim() }),
       });
       const data = await res.json();
 
@@ -282,9 +283,9 @@ export default function LeadFinderPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "set_or_reset_password",
-          email: emailInput,
-          code: otpInput,
-          newPassword: newPasswordInput,
+          email: emailInput.trim().toLowerCase(),
+          code: otpInput.trim(),
+          newPassword: newPasswordInput.trim(),
         }),
       });
       const data = await res.json();
@@ -889,6 +890,15 @@ export default function LeadFinderPage() {
                   >
                     {isSubmittingAuth ? <RefreshCw className="w-4 h-4 animate-spin mx-auto" /> : "Save New Master Password"}
                   </button>
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={() => handleSendOtp("reset")}
+                      className="text-xs text-slate-500 hover:text-cyan-400 transition-colors"
+                    >
+                      Didn&apos;t receive code? Resend code
+                    </button>
+                  </div>
                 </>
               )}
             </div>

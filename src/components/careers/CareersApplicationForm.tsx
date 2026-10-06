@@ -82,15 +82,15 @@ export default function CareersApplicationForm({
           <CheckCircle2 className="w-8 h-8 text-emerald-400" />
         </div>
         <span className="inline-block px-3.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-4">
-          Application Received
+          Talent Roster Intake Received
         </span>
         <h3 className="text-2xl md:text-4xl font-black text-white mb-4 tracking-tight">
-          Proof of Work Dispatched to Tousif Raza
+          Proof of Work Saved to Talent Roster
         </h3>
         <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto leading-relaxed mb-8">
-          Thank you, <strong className="text-white">{formData.fullName}</strong>. An automated confirmation has been sent to{" "}
+          Thank you, <strong className="text-white">{formData.fullName}</strong>. An automated confirmation has been dispatched to{" "}
           <strong className="text-cyan-300">{formData.email}</strong> from <span className="font-mono text-emerald-400">careers@makerlyai.in</span>.
-          We personally review your GitHub repository and live project within <strong className="text-white">48 hours</strong>.
+          While all immediate job openings are closed for now, we retain and review your GitHub repository and portfolio. We will contact you directly as soon as relevant project requirements or team expansions arise!
         </p>
         <button
           onClick={() => {
@@ -113,29 +113,29 @@ export default function CareersApplicationForm({
           }}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all"
         >
-          Submit Another Application
+          Submit Another Profile
         </button>
       </div>
     );
   }
 
   return (
-    <div id="apply-form" className="scroll-mt-32 rounded-3xl border border-blue-500/30 bg-gradient-to-b from-blue-950/20 via-slate-950/60 to-black/80 p-6 md:p-12 backdrop-blur-2xl shadow-2xl">
+    <div id="apply-form" className="scroll-mt-32 rounded-3xl border border-amber-500/30 bg-gradient-to-b from-amber-950/20 via-slate-950/60 to-black/80 p-6 md:p-12 backdrop-blur-2xl shadow-2xl">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/40 bg-blue-500/10 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Fast-Track Engineering Intake</span>
+            <span>Openings Closed &bull; Talent Roster Intake Open</span>
           </div>
           <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight">
-            Apply to the Makerly AI Pod
+            Submit Your Profile to Makerly AI
           </h2>
-          <p className="text-slate-300 text-sm mt-1">
-            Zero HR fluff. Submit your real code, production projects, and engineering solutions.
+          <p className="text-slate-300 text-sm mt-1 max-w-2xl">
+            All active job openings are closed for now. However, you can still submit your form if you are interested—we continuously review submissions and will contact you directly if something comes up!
           </p>
         </div>
-        <div className="text-xs font-mono text-slate-400 bg-white/5 border border-white/10 px-4 py-2 rounded-xl self-start md:self-auto">
-          Reviewed directly by Founder Tousif Raza
+        <div className="text-xs font-mono text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-4 py-2 rounded-xl self-start md:self-auto">
+          Intake Saved for Future Requirements
         </div>
       </div>
 
@@ -400,23 +400,23 @@ export default function CareersApplicationForm({
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-slate-400 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Direct intake &bull; 48-hour founder review commitment</span>
+            <span>Talent Roster intake &bull; Reviewed directly by Founder Tousif Raza</span>
           </div>
 
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 text-black font-extrabold text-sm uppercase tracking-wider hover:opacity-90 transition-all shadow-xl shadow-cyan-500/20 disabled:opacity-50 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400 text-black font-extrabold text-sm uppercase tracking-wider hover:opacity-90 transition-all shadow-xl shadow-amber-500/10 disabled:opacity-50 cursor-pointer"
           >
             {status === "submitting" ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Dispatching Proof of Work...</span>
+                <span>Saving to Talent Roster...</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Engineering Application</span>
+                <span>Submit to Talent Roster</span>
               </>
             )}
           </button>

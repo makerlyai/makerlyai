@@ -189,26 +189,26 @@ export async function sendCareersAutoReply(data: {
           <tr>
             <td style="padding:32px;">
               <div style="font-size:12px;font-weight:800;color:#10b981;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">
-                MAKERLY AI &bull; TALENT INTAKE
+                MAKERLY AI &bull; TALENT ROSTER INTAKE
               </div>
               <h2 style="margin:0 0 16px;font-size:22px;color:#ffffff;letter-spacing:-0.02em;">
-                Application Received ${data.roleTitle ? `— ${data.roleTitle}` : ""}
+                Profile Saved to Talent Roster ${data.roleTitle ? `— ${data.roleTitle}` : ""}
               </h2>
               <p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin:0 0 16px;">
                 Hello <strong>${data.applicantName || "there"}</strong>,<br/><br/>
-                Thank you for applying to join the engineering pod at <strong>Makerly AI</strong>.
+                Thank you for sharing your portfolio and proof of work with <strong>Makerly AI</strong>.
               </p>
               <p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin:0 0 16px;">
-                We prioritize shipping speed and proof of work over bureaucratic hiring processes. Founder <strong>Tousif Raza</strong> personally reviews every submitted portfolio, GitHub repo, and project demo within <strong>48 hours</strong>.
+                Please note that all immediate job openings are currently closed as our core engineering pod is operating at full capacity. However, we have recorded your details, projects, and repositories in our <strong>Priority Talent Roster</strong>.
               </p>
               <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px 18px;margin-bottom:18px;">
                 <div style="font-size:13px;color:#ffffff;">
-                  ⚡ If your work matches our active sprint requirements, we will schedule a 20-minute architecture deep-dive directly with the founder.
+                  ⚡ You have impressive skills, and our team continuously reviews exceptional talent. We will reach out to you directly as soon as new project requirements or team expansions arise!
                 </div>
               </div>
               <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;margin-top:20px;">
-                <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#ffffff;">Tousif Raza</p>
-                <p style="margin:0;font-size:12px;color:#94a3b8;">Founder &amp; Technical Architect, Makerly AI</p>
+                <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#ffffff;">Team Makerly AI</p>
+                <p style="margin:0;font-size:12px;color:#94a3b8;">Talent &amp; Engineering Operations, Makerly AI</p>
                 <p style="margin:6px 0 0;font-size:12px;"><a href="https://makerlyai.in/careers" style="color:#10b981;text-decoration:none;">makerlyai.in/careers</a> &bull; <a href="mailto:careers@makerlyai.in" style="color:#38bdf8;text-decoration:none;">careers@makerlyai.in</a></p>
               </div>
             </td>
@@ -225,8 +225,8 @@ export async function sendCareersAutoReply(data: {
       from: `"${config.senderName}" <${config.email}>`,
       to: data.applicantEmail,
       replyTo: "careers@makerlyai.in",
-      subject: `Application Received — Makerly AI Engineering Pod`,
-      text: `Hello ${data.applicantName},\n\nThank you for applying to Makerly AI. Tousif Raza personally reviews all portfolios and GitHub repositories within 48 hours.\n\nBest regards,\nTousif Raza\nFounder & Technical Architect\nhttps://makerlyai.in/careers`,
+      subject: `Profile Saved to Talent Roster — Makerly AI`,
+      text: `Hello ${data.applicantName},\n\nThank you for sharing your portfolio with Makerly AI.\n\nPlease note that all immediate job openings are currently closed for now as our core team operates at full capacity. However, you have impressive skills and your profile has been added to our priority talent roster. We will review your work and reach out directly as soon as new requirements or project opportunities arise.\n\nWarm regards,\nTeam Makerly AI\nhttps://makerlyai.in/careers`,
       html,
     });
 
