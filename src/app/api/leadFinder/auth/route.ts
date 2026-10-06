@@ -8,12 +8,26 @@ import { sendSecurityOtpCode } from "@/lib/crm/mail-dispatcher";
 
 export const runtime = "nodejs";
 
-const SALT = process.env.CRM_AUTH_SALT || "makerlyai_supabase_crm_salt_2026";
+const PRIMARY_SALT = process.env.CRM_AUTH_SALT || "makerlyai_supabase_crm_salt_2026";
+const KNOWN_SALTS = [
+  PRIMARY_SALT,
+  "makerlyai_supabase_crm_salt_2026",
+  "makerlyai_secure_auth_salt_2026",
+];
 const CREDS_FILE = path.join(process.cwd(), ".sales-engine-owner-credentials.json");
 const OTP_STORE_FILE = path.join(process.cwd(), ".sales-engine-otp-store.json");
 
 function hashValue(val: string): string {
-  return crypto.createHmac("sha256", SALT).update(val.trim()).digest("hex");
+  return crypto.createHmac("sha256", PRIMARY_SALT).update(val.trim()).digest("hex");
+}
+
+function getPossibleHashes(val: string): string[] {
+  const clean = String(val || "").replace(/\s+/g, "").trim();
+  const hashes = new Set<string>();
+  for (const salt of KNOWN_SALTS) {
+    hashes.add(crypto.createHmac("sha256", salt).update(clean).digest("hex"));
+  }
+  return Array.from(hashes);
 }
 
 function loadOtpStore(): Record<string, { hash: string; expiresAt: number; purpose: string }> {
@@ -102,6 +116,93 @@ async function setStoredPasswordHash(email: string, passwordHash: string): Promi
   });
 }
 
+async function verifyCodeForEmail(
+  email: string,
+  rawCode: string
+): Promise<{ valid: boolean; expired: boolean; error?: string }> {
+  const cleanCode = String(rawCode || "").replace(/\s+/g, "").trim();
+  if (!cleanCode || cleanCode.length < 4) {
+    return { valid: false, expired: false, error: "Please enter a valid 6-digit verification code." };
+  }
+
+  const possibleHashes = getPossibleHashes(cleanCode);
+  let matchedExpired = false;
+
+  // 1. Check Supabase crm_auth_codes (inspect top 20 recent unused codes)
+  try {
+    const { data: authCodes, error: fetchErr } = await supabase
+      .from("crm_auth_codes")
+      .select("*")
+      .eq("email", email)
+      .eq("used", false)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (fetchErr) {
+      console.warn("[LeadFinder Auth] Supabase code lookup note:", fetchErr.message);
+    }
+
+    if (authCodes && authCodes.length > 0) {
+      const nowMs = Date.now();
+      for (const record of authCodes) {
+        const matches =
+          possibleHashes.includes(record.code_hash) ||
+          record.code_hash === cleanCode;
+
+        if (matches) {
+          const expireMs = new Date(record.expires_at).getTime();
+          // Allow 10-minute clock skew buffer to guarantee legitimate codes never reject
+          if (expireMs + 10 * 60 * 1000 > nowMs) {
+            await supabase.from("crm_auth_codes").update({ used: true }).eq("id", record.id);
+            return { valid: true, expired: false };
+          } else {
+            matchedExpired = true;
+          }
+        }
+      }
+    }
+  } catch (err: any) {
+    console.warn("[LeadFinder Auth] Exception checking Supabase auth codes:", err.message);
+  }
+
+  // 2. Fallback to local store
+  if (!matchedExpired) {
+    try {
+      const store = loadOtpStore();
+      const record = store[email];
+      if (record) {
+        const matches =
+          possibleHashes.includes(record.hash) ||
+          record.hash === cleanCode;
+
+        if (matches) {
+          if (record.expiresAt + 10 * 60 * 1000 >= Date.now()) {
+            delete store[email];
+            saveOtpStore(store);
+            return { valid: true, expired: false };
+          } else {
+            matchedExpired = true;
+          }
+        }
+      }
+    } catch {}
+  }
+
+  if (matchedExpired) {
+    return {
+      valid: false,
+      expired: true,
+      error: "Verification code has expired. Please click Send Sign-In Code for a fresh code.",
+    };
+  }
+
+  return {
+    valid: false,
+    expired: false,
+    error: "Invalid code or expired. Please check your latest email and enter the 6-digit code.",
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -126,7 +227,7 @@ export async function POST(request: Request) {
       // Generate 6-digit numeric OTP
       const code = crypto.randomInt(100000, 999999).toString();
       const codeHash = hashValue(code);
-      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 minutes window
 
       // Save to Supabase crm_auth_codes
       try {
@@ -146,7 +247,7 @@ export async function POST(request: Request) {
 
       // Also save locally as fallback
       const store = loadOtpStore();
-      store[email] = { hash: codeHash, expiresAt: Date.now() + 10 * 60 * 1000, purpose: body.purpose || "login" };
+      store[email] = { hash: codeHash, expiresAt: Date.now() + 15 * 60 * 1000, purpose: body.purpose || "login" };
       saveOtpStore(store);
 
       // Dispatch security email to Tousif Raza
@@ -159,7 +260,7 @@ export async function POST(request: Request) {
 
       if (!sendResult.success) {
         return NextResponse.json(
-          { success: false, message: "Failed to dispatch email OTP. Please check mail server config." },
+          { success: false, message: "Failed to dispatch email verification code. Please check mail server config." },
           { status: 500 }
         );
       }
@@ -167,7 +268,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         message: `Security authorization code sent to ${email}`,
-        expiresInSeconds: 600,
+        expiresInSeconds: 900,
       });
     }
 
@@ -184,52 +285,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, message: "Unauthorized owner email." }, { status: 403 });
       }
 
-      const inputHash = hashValue(code);
-      let isVerified = false;
-
-      // 1. Check Supabase crm_auth_codes
-      try {
-        const now = new Date().toISOString();
-        const { data: authCodes, error: fetchErr } = await supabase
-          .from("crm_auth_codes")
-          .select("*")
-          .eq("email", email)
-          .eq("used", false)
-          .gt("expires_at", now)
-          .order("created_at", { ascending: false })
-          .limit(1);
-
-        if (!fetchErr && authCodes && authCodes.length > 0) {
-          const record = authCodes[0];
-          if (record.code_hash === inputHash) {
-            isVerified = true;
-            await supabase.from("crm_auth_codes").update({ used: true }).eq("id", record.id);
-          } else {
-            await supabase.from("crm_auth_codes").update({ attempts: (record.attempts || 0) + 1 }).eq("id", record.id);
-            return NextResponse.json({ success: false, message: "Invalid 6-digit code. Please verify and retry." }, { status: 400 });
-          }
-        }
-      } catch (err: any) {
-        console.warn("[LeadFinder Auth] Supabase lookup notice:", err.message);
-      }
-
-      // 2. Fallback to local store
-      if (!isVerified) {
-        const store = loadOtpStore();
-        const record = store[email];
-        if (record && record.expiresAt >= Date.now()) {
-          if (record.hash === inputHash) {
-            isVerified = true;
-            delete store[email];
-            saveOtpStore(store);
-          } else {
-            return NextResponse.json({ success: false, message: "Invalid 6-digit code. Please verify and retry." }, { status: 400 });
-          }
-        }
-      }
-
-      if (!isVerified) {
-        return NextResponse.json({ success: false, message: "Code expired or not found. Please request a new one." }, { status: 400 });
+      const verifyResult = await verifyCodeForEmail(email, code);
+      if (!verifyResult.valid) {
+        return NextResponse.json(
+          { success: false, message: verifyResult.error || "Invalid security code." },
+          { status: 400 }
+        );
       }
 
       // Issue session token
@@ -278,12 +339,13 @@ export async function POST(request: Request) {
         return NextResponse.json({
           success: false,
           needsSetup: true,
-          message: "No master password set yet. Please sign in via Email OTP to set your master password.",
+          message: "No master password set yet. Please sign in via Email Code to set your master password.",
         }, { status: 400 });
       }
 
-      const inputHash = hashValue(password);
-      if (inputHash !== storedHash) {
+      const inputHashes = getPossibleHashes(password);
+      const isPasswordMatch = inputHashes.includes(storedHash) || storedHash === password;
+      if (!isPasswordMatch) {
         return NextResponse.json({ success: false, message: "Incorrect master password." }, { status: 401 });
       }
 
@@ -336,53 +398,10 @@ export async function POST(request: Request) {
         );
       }
 
-      const inputHash = hashValue(code);
-      let isVerified = false;
-
-      // 1. Verify against Supabase crm_auth_codes
-      try {
-        const now = new Date().toISOString();
-        const { data: authCodes, error: fetchErr } = await supabase
-          .from("crm_auth_codes")
-          .select("*")
-          .eq("email", email)
-          .eq("used", false)
-          .gt("expires_at", now)
-          .order("created_at", { ascending: false })
-          .limit(1);
-
-        if (!fetchErr && authCodes && authCodes.length > 0) {
-          const record = authCodes[0];
-          if (record.code_hash === inputHash) {
-            isVerified = true;
-            await supabase.from("crm_auth_codes").update({ used: true }).eq("id", record.id);
-          } else {
-            await supabase.from("crm_auth_codes").update({ attempts: (record.attempts || 0) + 1 }).eq("id", record.id);
-            return NextResponse.json({ success: false, message: "Invalid verification code. Please check your email." }, { status: 400 });
-          }
-        }
-      } catch (err: any) {
-        console.warn("[LeadFinder Auth] Supabase lookup notice:", err.message);
-      }
-
-      // 2. Fallback to local store
-      if (!isVerified) {
-        const store = loadOtpStore();
-        const record = store[email];
-        if (record && record.expiresAt >= Date.now()) {
-          if (record.hash === inputHash) {
-            isVerified = true;
-            delete store[email];
-            saveOtpStore(store);
-          } else {
-            return NextResponse.json({ success: false, message: "Invalid verification code. Please check your email." }, { status: 400 });
-          }
-        }
-      }
-
-      if (!isVerified) {
+      const verifyResult = await verifyCodeForEmail(email, code);
+      if (!verifyResult.valid) {
         return NextResponse.json(
-          { success: false, message: "Verification code expired or not found. Please request a new code." },
+          { success: false, message: verifyResult.error || "Verification code expired or not found. Please request a new code." },
           { status: 400 }
         );
       }
