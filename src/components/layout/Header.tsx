@@ -16,8 +16,9 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Suppress marketing navigation header on CRM workspace
-  if (pathname?.toLowerCase().startsWith("/crm")) {
+  // Suppress marketing navigation header on CRM and LeadFinder workspaces
+  const lowerPath = pathname?.toLowerCase() || "";
+  if (lowerPath.startsWith("/crm") || lowerPath.startsWith("/leadfinder")) {
     return null;
   }
 

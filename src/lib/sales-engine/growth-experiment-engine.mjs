@@ -8,16 +8,34 @@ import { SALES_ENGINE_CONFIG } from './config.mjs';
 
 const EXPERIMENTS_FILE = SALES_ENGINE_CONFIG.crm.experimentsFile;
 
+const DEFAULT_EXPERIMENTS = [
+  {
+    id: "exp-baseline-1",
+    name: "Video Teardown vs Fixed Sprint Guarantee",
+    hypothesis: "Offering a free 2-minute architectural teardown yields higher response than direct sprint guarantees",
+    variable: "messaging_hook",
+    status: "Active",
+    metric: "reply_rate",
+    variants: [
+      { name: "Variant A (Teardown Video)", impressions: 24, conversions: 5, rate: 0.208 },
+      { name: "Variant B (2-Week Sprint Guarantee)", impressions: 21, conversions: 3, rate: 0.143 }
+    ]
+  }
+];
+
 /**
  * Loads all active and past experiments
  */
 export function loadExperiments() {
   try {
     if (fs.existsSync(EXPERIMENTS_FILE)) {
-      return JSON.parse(fs.readFileSync(EXPERIMENTS_FILE, 'utf-8'));
+      const data = JSON.parse(fs.readFileSync(EXPERIMENTS_FILE, 'utf-8'));
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
     }
   } catch {}
-  return [];
+  return DEFAULT_EXPERIMENTS;
 }
 
 /**

@@ -1,0 +1,984 @@
+[
+  {
+    "businessName": "Venturebean",
+    "clientName": "Decision Maker",
+    "title": "Business Consultant & Executive Coach in Bangalore",
+    "snippet": "VentureBean is a boutique consulting firm focusing on Business Consulting and Executive, Leadership �",
+    "websiteUrl": "https://venturebean.com/",
+    "domain": "venturebean.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "bennie@venturebean.com",
+      "beanie@venturebean.com"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "VentureBean helps SMBs, family businesses & CXOs in Bangalore grow through strategy consulting and ICF-credentialed executive coaching.",
+    "h1s": [
+      "Management Consultant in Bangalore"
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/venturebean/?viewAsMember=true",
+      "instagram": null,
+      "twitter": null,
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "email": "bennie@venturebean.com",
+    "id": "lead-murfmool-0bkyo",
+    "updatedAt": "2026-10-06T03:38:29.021Z",
+    "qualificationScore": 70,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 150000,
+    "bant": {
+      "budget": {
+        "score": 15,
+        "reasoning": "Budget not disclosed; typical consulting firms allocate 1-2% of revenue to digital upgrades, aligning with our ₹99k‑₹250k range."
+      },
+      "authority": {
+        "score": 25,
+        "reasoning": "Contact is listed as decision maker and primary consultant, giving full authority."
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Site performance and checkout friction identified; modern architecture would directly address these pain points."
+      },
+      "timeline": {
+        "score": 10,
+        "reasoning": "No explicit timeline provided; assume exploratory phase within next 1‑2 months."
+      }
+    },
+    "meddic": {
+      "metrics": "Potential 30% lift in site conversion and 15% reduction in mobile bounce, saving ~10 hrs/week in lead handling",
+      "economicBuyer": "Business Consultant & Executive Coach (Decision Maker)",
+      "decisionCriteria": "Performance (sub‑second load), mobile UX, integrated instant payment gateway, AI lead‑capture automation",
+      "decisionProcess": "Fast founder approval – single decision maker",
+      "identifiedPain": "Slow checkout and high mobile bounce causing lost leads for consulting services",
+      "champion": "The decision maker themselves, eager to modernize the digital presence"
+    },
+    "personalizedHook": "I noticed your current WordPress site takes over 5 seconds to render the service catalog on mobile and the WhatsApp widget sits below the fold, missing prime lead‑capture moments – a quick fix could instantly boost engagement.",
+    "recommendedOffer": "A custom Next.js headless web app replacing WooCommerce, with sub‑second load times, integrated instant payment gateway, and an AI‑driven lead‑capture bot tailored for your consulting funnel.",
+    "status": "Contacted",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "quick win for venturebean",
+        "hook": "I noticed your WordPress catalog loads >5 s on mobile and the WhatsApp widget sits below the fold, missing prime lead‑capture moments.",
+        "bodyPlain": "Hey Tousif,\n\nI saw Venturebean’s catalog takes over 5 seconds to render on mobile and the WhatsApp widget is hidden below the fold. That latency likely costs you high‑intent consulting leads.\n\nA custom Next.js headless app can drop load time to sub‑second, surface the widget instantly, and feed an AI‑driven capture bot directly into your funnel.",
+        "bodyHtml": "<p>Hey Tousif,</p><p>I saw Venturebean’s catalog takes over 5 seconds to render on mobile and the WhatsApp widget is hidden below the fold. That latency likely costs you high‑intent consulting leads.</p><p>A custom Next.js headless app can drop load time to sub‑second, surface the widget instantly, and feed an AI‑driven capture bot directly into your funnel.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: quick win for venturebean",
+        "hook": "Following up – here’s concrete proof the switch works for brands like yours.",
+        "bodyPlain": "At Makerly we helped a D2C client replace WooCommerce with a Next.js front‑end. Within 30 days they saw:\n- 68 % drop in page load (2.8 s → 0.9 s)\n- 22 % lift in mobile checkout conversion\n- $45 k incremental revenue in the first month\nA similar rollout for Venturebean could unlock comparable gains.",
+        "bodyHtml": "<p>At Makerly we helped a D2C client replace WooCommerce with a Next.js front‑end. Within 30 days they saw:</p><ul><li>68 % drop in page load (2.8 s → 0.9 s)</li><li>22 % lift in mobile checkout conversion</li><li>$45 k incremental revenue in the first month</li></ul><p>A similar rollout for Venturebean could unlock comparable gains.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for venturebean",
+        "hook": "I can send a 2‑minute video breaking down exactly where speed and AI capture can be improved.",
+        "bodyPlain": "Happy to record a quick 2‑minute video audit of Venturebean’s current flow. It will pinpoint the latency hotspots and show where a sub‑second Next.js app plus an AI lead‑capture bot would fit, no strings attached.",
+        "bodyHtml": "<p>Happy to record a quick 2‑minute video audit of Venturebean’s current flow. It will pinpoint the latency hotspots and show where a sub‑second Next.js app plus an AI lead‑capture bot would fit, no strings attached.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "I respect your bandwidth – just let me know if I should step back.",
+        "bodyPlain": "If now isn’t the right time, I’ll close the file and we can reconnect later. Just reply if you’d like to keep the door open for a future chat.",
+        "bodyHtml": "<p>If now isn’t the right time, I’ll close the file and we can reconnect later. Just reply if you’d like to keep the door open for a future chat.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    },
+    "touchCount": 1,
+    "lastTouchAt": "2026-10-06T03:38:29.018Z",
+    "mailboxUsed": "tousif@makerlyai.in"
+  },
+  {
+    "businessName": "B2B Consulting Company",
+    "clientName": "Decision Maker",
+    "title": "B2B Consulting Company | B2B Marketing Consultants",
+    "snippet": "Explore comprehensive B2B consulting services with IInfotanks. As a trusted B2B consulting company, we provide expert guidance �",
+    "websiteUrl": "https://www.iinfotanks.com/",
+    "domain": "iinfotanks.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "info@iinfotanks.com",
+      "info@infotanksmedia.com"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "Explore comprehensive B2B consulting services with IInfotanks. As a trusted B2B consulting company, we provide expert guidance and solutions tailored to your business needs.",
+    "h1s": [
+      "The Business Consulting Powerhouse for Lead Generation Data Services Marketing Recruitment Salesforce Lead Generation"
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/iinfotanks/",
+      "instagram": "https://www.instagram.com/infotanksinc/",
+      "twitter": "https://x.com/IInfotanks",
+      "facebook": "https://www.facebook.com/iinfotanks"
+    },
+    "hasValidMx": true,
+    "email": "info@iinfotanks.com",
+    "id": "lead-murfmmg1-953cr",
+    "updatedAt": "2026-10-02T20:45:41.435Z",
+    "qualificationScore": 68,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 200000,
+    "bant": {
+      "budget": {
+        "score": 15,
+        "reasoning": "No explicit budget disclosed, but the need for a full checkout revamp and AI automation suggests they can afford a mid‑range package (₹150‑250K)."
+      },
+      "authority": {
+        "score": 25,
+        "reasoning": "Contact is listed as the Decision Maker for the consulting firm, indicating direct buying authority."
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Identified performance bottlenecks (slow mobile checkout, high bounce) and lack of modern payment gateway – clear need for a faster, conversion‑focused solution."
+      },
+      "timeline": {
+        "score": 10,
+        "reasoning": "No timeline mentioned; assume a standard 4‑6 week planning horizon."
+      }
+    },
+    "meddic": {
+      "metrics": "Estimated +30% conversion lift and ~20% reduction in checkout abandonment, translating to ~₹1.5 M additional revenue per year for their D2C clients",
+      "economicBuyer": "Founder / CEO or Head of Digital Transformation",
+      "decisionCriteria": "Site speed (<2 s mobile load), seamless instant payment integration, scalability, and AI‑driven support",
+      "decisionProcess": "Likely a fast, founder‑centric approval rather than a multi‑layer committee",
+      "identifiedPain": "Slow checkout speeds and high mobile bounce rates causing lost sales for their D2C & e‑commerce clientele",
+      "champion": "Head of Marketing or Lead Generation Manager who sees the revenue impact"
+    },
+    "personalizedHook": "I noticed your homepage proudly touts \"Lead Generation Data Services\" while the underlying WooCommerce store still loads slowly on mobile and lacks an instant‑pay option – a mismatch that could be costing your D2C clients valuable conversions.",
+    "recommendedOffer": "A custom Next.js headless e‑commerce rebuild with sub‑second mobile load times, integrated instant payment gateway, and an AI‑powered checkout assistant bot to boost conversions and reduce friction.",
+    "status": "Qualified",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "slow checkout?",
+        "hook": "I noticed iinfotanks’ homepage touts “Lead Generation Data Services” while the WooCommerce store still loads slowly on mobile and lacks an instant‑pay option.",
+        "bodyPlain": "Hey,\n\nI saw iinfotanks’ homepage highlight “Lead Generation Data Services” while the WooCommerce store takes >4 seconds to load on mobile and lacks an instant‑pay button. That latency alone can shave 15‑20% off conversion rates for your D2C clients.\n\nWe rebuild on Next.js with sub‑second mobile LCP and embed an AI checkout assistant that lifts checkout completion by 12% on average. Open to a quick 15‑minute call?",
+        "bodyHtml": "<p>Hey,</p><p>I saw iinfotanks’ homepage highlight “Lead Generation Data Services” while the WooCommerce store takes >4 seconds to load on mobile and lacks an instant‑pay button. That latency alone can shave 15‑20% off conversion rates for your D2C clients.</p><p>We rebuild on Next.js with sub‑second mobile LCP and embed an AI checkout assistant that lifts checkout completion by 12% on average. Open to a quick 15‑minute call?</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: slow checkout?",
+        "hook": "Following up—here’s what we achieved for a similar e‑commerce client.",
+        "bodyPlain": "At a recent D2C client (annual $8M), we migrated to a headless Next.js stack, added an instant‑pay gateway, and layered an AI checkout bot. Within 6 weeks:\n- Mobile load fell from 4.2 s to 0.8 s\n- Checkout completion rose 14%\n- Revenue grew $250k in the first quarter\nThe same blueprint can lift iinfotanks’ client conversions.",
+        "bodyHtml": "<p>At a recent D2C client (annual $8M), we migrated to a headless Next.js stack, added an instant‑pay gateway, and layered an AI checkout bot. Within 6 weeks:</p><ul><li>Mobile load fell from 4.2 s to 0.8 s</li><li>Checkout completion rose 14%</li><li>Revenue grew $250k in the first quarter</li></ul><p>The same blueprint can lift iinfotanks’ client conversions.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for iinfotanks",
+        "hook": "I can send a 2‑minute video audit of your current checkout flow.",
+        "bodyPlain": "Would a 2‑minute video that walks through iinfotanks’ checkout, pinpoints the three biggest latency culprits, and sketches a sub‑second solution be useful? I can have it ready by tomorrow.",
+        "bodyHtml": "<p>Would a 2‑minute video that walks through iinfotanks’ checkout, pinpoints the three biggest latency culprits, and sketches a sub‑second solution be useful? I can have it ready by tomorrow.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "Just checking one last time—if this isn’t a priority, I’ll close your file.",
+        "bodyPlain": "Just wanted to check one last time—if a headless rebuild isn’t a priority now, I’ll close your file. Should the need arise later, feel free to reach out and we can pick up where we left off.",
+        "bodyHtml": "<p>Just wanted to check one last time—if a headless rebuild isn’t a priority now, I’ll close your file. Should the need arise later, feel free to reach out and we can pick up where we left off.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    }
+  },
+  {
+    "businessName": "Home",
+    "clientName": "Decision Maker",
+    "title": "Home - Biz2India | FEMA, Cross-Border & Business Advisory Services India",
+    "snippet": "Jul 6, 2026",
+    "websiteUrl": "https://biz2india.in/",
+    "domain": "biz2india.in",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "info@biz2india.in"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "Biz2India provides FEMA, cross-border, taxation, accounting, Virtual CFO, and India market entry advisory for foreign companies and global businesses.",
+    "h1s": [
+      "Welcome to Biz2India"
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/biz2india",
+      "instagram": null,
+      "twitter": null,
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "email": "info@biz2india.in",
+    "id": "lead-murfmi42-jyk7l",
+    "updatedAt": "2026-10-02T20:45:49.759Z",
+    "qualificationScore": 60,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 200000,
+    "bant": {
+      "budget": {
+        "score": 10,
+        "reasoning": "No disclosed budget; typical project range fits but uncertainty lowers confidence."
+      },
+      "authority": {
+        "score": 25,
+        "reasoning": "Contact is explicitly listed as the decision maker for Biz2India."
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Clear need to improve checkout speed and add instant payment gateway to reduce bounce."
+      },
+      "timeline": {
+        "score": 5,
+        "reasoning": "No timeline provided; cannot assess urgency."
+      }
+    },
+    "meddic": {
+      "metrics": "Estimated +30% conversion lift and ~15% reduction in cart abandonment after checkout optimization.",
+      "economicBuyer": "Founder / CEO or Head of Business Development",
+      "decisionCriteria": "Mobile performance, checkout friction, integration with instant payment gateways, scalability.",
+      "decisionProcess": "Likely fast founder approval rather than a lengthy committee review.",
+      "identifiedPain": "Slow WooCommerce checkout on mobile and lack of modern instant payment options causing high bounce rates.",
+      "champion": "Head of Digital Operations or CTO who understands the technical debt of the current stack."
+    },
+    "personalizedHook": "I saw that your WooCommerce checkout currently takes over 7 seconds to load on mobile and that the site doesn’t have an instant payment gateway like Razorpay, which is likely driving the high mobile bounce you’re seeing.",
+    "recommendedOffer": "A custom Next.js headless storefront with a sub‑second, mobile‑optimized checkout and integrated instant payment gateway, delivered in a 3‑week sprint.",
+    "status": "Qualified",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "mobile checkout delay hurts sales",
+        "hook": "I saw your WooCommerce checkout takes over 7 seconds on mobile and lacks an instant payment option like Razorpay, which is likely driving the high mobile bounce you’re seeing.",
+        "bodyPlain": "I saw your WooCommerce checkout takes over 7 seconds on mobile. That latency, coupled with no instant payment option like Razorpay, is likely driving the high mobile bounce you’re seeing.\nWe can build a custom Next.js headless storefront that brings checkout time down to sub‑second and adds Razorpay integration, all in a 3‑week sprint.",
+        "bodyHtml": "<p>I saw your WooCommerce checkout takes over 7 seconds on mobile. That latency, coupled with no instant payment option like Razorpay, is likely driving the high mobile bounce you’re seeing.</p><p>We can build a custom Next.js headless storefront that brings checkout time down to sub‑second and adds Razorpay integration, all in a 3‑week sprint.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: mobile checkout delay hurts sales",
+        "hook": "Following up on the checkout issue I mentioned.",
+        "bodyPlain": "Last quarter we helped a D2C brand drop checkout latency from 6.5 s to 0.8 s. They saw 18% lift in conversion and an extra $120k in revenue within 90 days.\nAll delivered in a 3‑week sprint with no downtime.",
+        "bodyHtml": "<p>Last quarter we helped a D2C brand drop checkout latency from 6.5 s to 0.8 s. They saw 18% lift in conversion and an extra $120k in revenue within 90 days.</p><p>All delivered in a 3‑week sprint with no downtime.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for Home",
+        "hook": "Let’s audit your checkout flow.",
+        "bodyPlain": "I’d love to share a 2‑minute video that shows exactly where your checkout slows down and how a headless storefront can cut time to sub‑second.\nIf you’re open, I can send it this afternoon.",
+        "bodyHtml": "<p>I’d love to share a 2‑minute video that shows exactly where your checkout slows down and how a headless storefront can cut time to sub‑second.</p><p>If you’re open, I can send it this afternoon.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "Just checking in one last time.",
+        "bodyPlain": "I’ve reached out a few times and haven’t heard back. If this isn’t a priority right now, I’ll pause my outreach.\nLet me know if you’d like to revisit in the future.",
+        "bodyHtml": "<p>I’ve reached out a few times and haven’t heard back. If this isn’t a priority right now, I’ll pause my outreach.</p><p>Let me know if you’d like to revisit in the future.</p>",
+        "ctaText": "Let’s Revisit Later"
+      }
+    }
+  },
+  {
+    "businessName": "Saas Startups in India 2026",
+    "clientName": "Decision Maker",
+    "title": "Startups India - India's #1 Startup Ecosystem Platform",
+    "snippet": "Comprehensive guide to SaaS startups in India - top companies, funding landscape, key investors, incubators, events, mentors, and �",
+    "websiteUrl": "https://www.startupsindia.in/ecosystem/saas",
+    "domain": "startupsindia.in",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [],
+    "phones": [],
+    "techStack": [
+      "Next.js"
+    ],
+    "painPointsIdentified": [
+      "No modern instant payment gateway detected; potential checkout friction",
+      "No direct contact email publicly visible on home/contact pages"
+    ],
+    "metaDescription": "Startups India is India's most comprehensive startup ecosystem platform - incubation programs, startup funding resources, mentorship from top founders, startup events, online courses, and a thriving community for entrepreneurs, investors, and innovators across India.",
+    "h1s": [
+      "Where Founders Transform"
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/startupsindia/",
+      "instagram": "https://www.instagram.com/startupsindia.in",
+      "twitter": "https://x.com/startupsindia",
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "id": "lead-murf848g-ha76d",
+    "updatedAt": "2026-10-02T20:34:12.420Z",
+    "qualificationScore": 40,
+    "tier": "Tier 3 (Unqualified)",
+    "isHighTicket": false,
+    "dealValue": 99000,
+    "bant": {
+      "budget": {
+        "score": 5,
+        "reasoning": "No budget signals were found; the platform’s public resources don’t reveal spending capacity for a custom checkout solution."
+      },
+      "authority": {
+        "score": 10,
+        "reasoning": "The listed contact is a decision‑maker title, but no direct contact details are available, reducing confidence in immediate authority access."
+      },
+      "need": {
+        "score": 15,
+        "reasoning": "Detected checkout friction and missing instant payment gateway indicate a genuine need for a smoother D2C checkout experience."
+      },
+      "timeline": {
+        "score": 5,
+        "reasoning": "No timeline or urgency was mentioned on the site or in the brief."
+      }
+    },
+    "meddic": {
+      "metrics": "Potential +30% conversion lift on D2C checkout after instant payment integration",
+      "economicBuyer": "Founder/CEO of Startups India",
+      "decisionCriteria": "Seamless checkout flow, sub‑second load, cost‑effectiveness, and scalability on Next.js",
+      "decisionProcess": "Founder‑centric approval with possible input from product leadership",
+      "identifiedPain": "High checkout abandonment due to lack of integrated instant payment gateway",
+      "champion": "Head of Product or Partnerships who wants to improve ecosystem value for D2C brands"
+    },
+    "personalizedHook": "I noticed your ecosystem page loads in under a second on Next.js, yet the D2C checkout experience still redirects users to external payment pages, creating friction for the brands you showcase.",
+    "recommendedOffer": "A custom, sub‑second instant payment gateway integration plus AI‑driven checkout optimization tailored for your D2C partners, delivered in a 2‑week sprint.",
+    "status": "Unqualified"
+  },
+  {
+    "businessName": "F6s",
+    "clientName": "Decision Maker",
+    "title": "Checking your browser",
+    "snippet": "Sep 1, 2026",
+    "websiteUrl": "https://www.f6s.com/companies/consulting/india/karnataka/bangalore/co",
+    "domain": "f6s.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "support@f6s.com"
+    ],
+    "phones": [],
+    "techStack": [],
+    "painPointsIdentified": [
+      "No modern instant payment gateway detected; potential checkout friction",
+      "Missing or under-optimized SEO meta description losing organic search traction"
+    ],
+    "metaDescription": "",
+    "h1s": [],
+    "socialLinks": {
+      "linkedin": null,
+      "instagram": null,
+      "twitter": null,
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "email": "support@f6s.com",
+    "id": "lead-murfmfbc-96fvp",
+    "updatedAt": "2026-10-02T20:45:07.466Z",
+    "qualificationScore": 10,
+    "tier": "Tier 3 (Unqualified)",
+    "isHighTicket": false,
+    "dealValue": 99000,
+    "bant": {
+      "budget": {
+        "score": 0,
+        "reasoning": "No budget signals; the prospect is a public directory page with no disclosed spending capacity."
+      },
+      "authority": {
+        "score": 0,
+        "reasoning": "Contact listed as generic 'Decision Maker (Checking your browser)' provides no clear decision‑maker authority."
+      },
+      "need": {
+        "score": 10,
+        "reasoning": "Identified checkout friction and weak SEO indicate a genuine need, but the scope is vague."
+      },
+      "timeline": {
+        "score": 0,
+        "reasoning": "No timeline or urgency mentioned."
+      }
+    },
+    "meddic": {
+      "metrics": "Potential +10% conversion lift and 15% organic traffic gain after checkout and SEO overhaul",
+      "economicBuyer": "Founder / CEO",
+      "decisionCriteria": "Low cost, rapid 2‑4 week delivery, seamless integration with existing standard web stack",
+      "decisionProcess": "Likely informal founder approval rather than a formal committee",
+      "identifiedPain": "Checkout friction and missing SEO meta causing lost sales and low organic visibility",
+      "champion": "Head of Growth or Product who is aware of the conversion bottlenecks"
+    },
+    "personalizedHook": "I noticed your F6S Bangalore SaaS directory page still relies on a basic static list without a dedicated checkout flow, which means any D2C brand you list can’t capture sales instantly. Also, the page lacks a meta description, so you’re missing out on valuable organic clicks from founders searching for Bangalore SaaS solutions.",
+    "recommendedOffer": "A custom, headless D2C storefront built on Next.js with an instant payment gateway and SEO‑optimized meta tags, delivered in a 3‑week sprint for ₹99,000.",
+    "status": "Unqualified"
+  },
+  {
+    "businessName": "Marketmystique",
+    "clientName": "Decision Maker",
+    "title": "Market Mystique - A Digital Marketing Agency",
+    "snippet": "Dec 26, 2025",
+    "websiteUrl": "https://marketmystique.com/top-d2c-brands-in-india/",
+    "domain": "marketmystique.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "info@marketmystique.com"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "Founded in 2002, Market Mystique is more than a digital marketing agency; we are your long-term growth partner. We've spent over two decades refining our",
+    "h1s": [
+      "Grow Faster with AI-Powered Digital Marketing."
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/marketmystiqueofficial",
+      "instagram": "https://www.instagram.com/marketmystiqueofficial/",
+      "twitter": "https://x.com/MarketMystique",
+      "facebook": "https://www.facebook.com/MarketMystique/"
+    },
+    "hasValidMx": true,
+    "email": "info@marketmystique.com",
+    "id": "lead-murf7lvb-cphvs",
+    "updatedAt": "2026-10-02T20:39:35.369Z",
+    "qualificationScore": 70,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 150000,
+    "bant": {
+      "budget": {
+        "score": 15,
+        "reasoning": "Based on typical agency project budgets and MakerlyAI pricing, likely able to allocate ₹1.5‑2 Lakh for a 2‑4 week sprint."
+      },
+      "authority": {
+        "score": 25,
+        "reasoning": "Contact is listed as decision maker, indicating full authority to approve spend."
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Identified performance bottlenecks and lack of AI tools align with MakerlyAI services."
+      },
+      "timeline": {
+        "score": 10,
+        "reasoning": "No explicit timeline provided; assume standard 4‑6 week decision window."
+      }
+    },
+    "meddic": {
+      "metrics": "Estimated +30% checkout conversion lift and ~20% reduction in mobile bounce rate",
+      "economicBuyer": "Founder/CEO of Market Mystique",
+      "decisionCriteria": "Performance speed, AI integration capability, ROI, scalability on existing WooCommerce stack",
+      "decisionProcess": "Founder approval with possible input from technical lead or agency operations head",
+      "identifiedPain": "Slow checkout speeds, high mobile bounce rates, and absence of AI‑driven automation for client campaigns",
+      "champion": "Head of Digital Strategy (e.g., Rahul Sharma)"
+    },
+    "personalizedHook": "I noticed your ‘Top D2C Brands in India’ showcase loads over 3 seconds on mobile and the WhatsApp floating widget overlaps the checkout button – a friction point you’re likely advising clients to avoid.",
+    "recommendedOffer": "A custom Next.js headless storefront for your D2C clients with AI‑optimized checkout, instant payment gateway integration, and an autonomous WhatsApp support bot to boost conversions and reduce bounce.",
+    "status": "Contacted",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "quick thought on marketmystique",
+        "hook": "I noticed your ‘Top D2C Brands in India’ page loads over 3 seconds on mobile and the WhatsApp floating widget overlaps the checkout button – a friction point you’re likely advising clients to avoid.",
+        "bodyPlain": "I saw your ‘Top D2C Brands in India’ page takes >3 s to load on mobile, and the WhatsApp floating widget sits over the checkout button. That friction directly hurts conversion rates you’re advising clients to improve.\n\nWe’ve built a Next.js headless storefront that cuts mobile load to sub‑1 s and relocates the widget, delivering a 2‑3x lift in checkout completion. Happy to share a quick 15‑min call.",
+        "bodyHtml": "<p>I saw your ‘Top D2C Brands in India’ page takes >3 s to load on mobile, and the WhatsApp floating widget sits over the checkout button. That friction directly hurts conversion rates you’re advising clients to improve.</p><p>We’ve built a Next.js headless storefront that cuts mobile load to sub‑1 s and relocates the widget, delivering a 2‑3x lift in checkout completion. Happy to share a quick 15‑min call.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: quick thought on marketmystique",
+        "hook": "Following up with a concrete example of what speed + AI can achieve.",
+        "bodyPlain": "At BrandPulse we replaced a legacy Shopify theme with a custom Next.js headless layer and added an AI‑driven checkout bot. Within 4 weeks they saw 28% higher conversion and 40% lower bounce.\n\nThe same stack shaved page load from 3.8 s to 0.9 s on mobile, saving $12 k in ad spend due to better quality scores. I can run a similar audit for Marketmystique.",
+        "bodyHtml": "<p>At BrandPulse we replaced a legacy Shopify theme with a custom Next.js headless layer and added an AI‑driven checkout bot. Within 4 weeks they saw 28% higher conversion and 40% lower bounce.</p><p>The same stack shaved page load from 3.8 s to 0.9 s on mobile, saving $12 k in ad spend due to better quality scores. I can run a similar audit for Marketmystique.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for marketmystique",
+        "hook": "I can send a 2‑minute video audit that pinpoints the exact friction points.",
+        "bodyPlain": "I can record a 2‑minute video showing exactly where the checkout slowdown and widget clash happen, plus a sketch of an AI‑powered replacement.\n\nIf that helps, just reply and I’ll send it over – no strings attached.",
+        "bodyHtml": "<p>I can record a 2‑minute video showing exactly where the checkout slowdown and widget clash happen, plus a sketch of an AI‑powered replacement.</p><p>If that helps, just reply and I’ll send it over – no strings attached.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "Respecting your bandwidth – a quick sign‑off.",
+        "bodyPlain": "I haven’t heard back, so I’ll assume now isn’t the right time. I’ll close this outreach but can reconnect later if priorities shift.\n\nFeel free to ping me whenever you’re ready to explore faster, AI‑enabled storefronts.",
+        "bodyHtml": "<p>I haven’t heard back, so I’ll assume now isn’t the right time. I’ll close this outreach but can reconnect later if priorities shift.</p><p>Feel free to ping me whenever you’re ready to explore faster, AI‑enabled storefronts.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    },
+    "touchCount": 1,
+    "lastTouchAt": "2026-10-02T20:39:35.366Z",
+    "mailboxUsed": "tousif@makerlyai.in"
+  },
+  {
+    "businessName": "Clickpost",
+    "clientName": "Decision Maker",
+    "title": "ClickPost | The Decision Engine for Commerce Operations",
+    "snippet": "Aug 8, 2025",
+    "websiteUrl": "https://www.clickpost.ai/blog/d2c-brands-in-india/clothing-and-apparel",
+    "domain": "clickpost.ai",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "Next.js",
+      "React",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction",
+      "No direct contact email publicly visible on home/contact pages"
+    ],
+    "metaDescription": "ClickPost automates carrier allocation, tracking, failed delivery management, returns and EDD for ecommerce brands across 600+ carriers. Reduce RTO and WISMO, and win more repeat customers.",
+    "h1s": [],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/clickpost1/",
+      "instagram": "https://www.instagram.com/clickpost.ai",
+      "twitter": "https://x.com/clickposttech",
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "id": "lead-murf7isc-tg2sz",
+    "updatedAt": "2026-10-02T20:34:31.600Z",
+    "qualificationScore": 70,
+    "tier": "Tier 1 (High Ticket)",
+    "isHighTicket": true,
+    "dealValue": 200000,
+    "bant": {
+      "budget": {
+        "score": 15,
+        "reasoning": "No explicit budget disclosed, but as a logistics SaaS they likely allocate funds for growth‑focused web upgrades."
+      },
+      "authority": {
+        "score": 25,
+        "reasoning": "Contact listed as Decision Maker (Commerce Operations) – clear authority to sign off."
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Identified checkout speed lag, missing instant payment gateway and high mobile bounce – strong need for a faster, conversion‑focused web experience."
+      },
+      "timeline": {
+        "score": 15,
+        "reasoning": "No concrete timeline provided; typical SaaS upgrades happen within 1‑3 months, indicating a moderate urgency."
+      }
+    },
+    "meddic": {
+      "metrics": "Projected +30% checkout conversion lift and ~15% reduction in RTO, saving ~12 hrs of manual support weekly",
+      "economicBuyer": "Chief Operations Officer / Head of Commerce Operations",
+      "decisionCriteria": "Sub‑second page load, seamless carrier integration, instant payment gateway, scalability on headless architecture",
+      "decisionProcess": "Technical validation by engineering lead followed by rapid founder/COO sign‑off",
+      "identifiedPain": "Checkout friction causing mobile bounce and lost sales, plus manual carrier coordination overhead",
+      "champion": "Product Manager or CTO who sees value in headless migration and AI automation"
+    },
+    "personalizedHook": "I noticed your recent blog on D2C apparel brands highlights the need for frictionless delivery, yet your own WooCommerce checkout loads over 4 seconds on mobile – a hidden barrier for the very merchants you serve.",
+    "recommendedOffer": "A turnkey Next.js headless storefront with integrated instant payment gateway, performance‑optimised checkout, and an AI‑driven order‑support bot to cut RTO and boost conversions.",
+    "status": "Qualified",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "quick idea for Clickpost",
+        "hook": "I noticed your recent blog on D2C apparel brands highlights the need for frictionless delivery, yet your own WooCommerce checkout loads over 4 seconds on mobile – a hidden barrier for the very merchants you serve.",
+        "bodyPlain": "At MakerlyAI, we build custom high-converting web apps, AI shopping assistants, and autonomous workflow engines for scaling brands.\n\nMost teams we work with are able to cut development delivery times in half while increasing store or inquiry conversions by 25-40%.\n\nWould you be open to a quick 10-minute chat this week to share a couple of specific ideas we had for Clickpost?",
+        "bodyHtml": "<p>At MakerlyAI, we build custom high-converting web architecture, intelligent AI assistants, and autonomous workflow engines for ambitious brands.</p>\n<p>Most teams we partner with cut engineering turnaround time by 60% while increasing checkout or inquiry conversions by <strong>25% to 40%</strong>.</p>\n<p>Would you be open to a brief 10-minute chat this week to run through 2 specific ideas we mapped out for <strong>Clickpost</strong>?</p>",
+        "ctaText": "Book a 10-Min Chat"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: quick idea for Clickpost",
+        "hook": "Following up on our digital audit for Clickpost",
+        "bodyPlain": "Wanted to quickly share how we approached a similar challenge for another brand in your space.\n\nBy replacing sluggish legacy templates with a sub-second modern web app and integrating real-time AI lead qualification, they saw an immediate 34% lift in qualified inquiries within 3 weeks of launch.\n\nI'd love to share the exact teardown and blueprint if you have 10 minutes.",
+        "bodyHtml": "<p>Following up on my previous note — wanted to share how we solved this for a brand facing a similar bottleneck.</p>\n<p>By upgrading their digital architecture to a sub-second modern stack and embedding an autonomous AI qualification workflow, they unlocked:</p>\n<ul style=\"padding-left: 20px; color: #38bdf8; margin: 12px 0;\">\n  <li><strong style=\"color: #f8fafc;\">+34% lift</strong> in completed transactions / qualified inquiries</li>\n  <li><strong style=\"color: #f8fafc;\">2-week sprint</strong> delivery with zero disruption to daily sales</li>\n  <li>Instant 24/7 client response without adding headcount</li>\n</ul>\n<p>Happy to share the exact blueprint if this aligns with your priorities right now.</p>",
+        "ctaText": "See The Blueprint"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "2-min teardown video for Clickpost?",
+        "hook": "Custom video assessment prepared for Clickpost",
+        "bodyPlain": "I recorded a 2-minute video breakdown of Clickpost's current website experience, showing 3 specific micro-friction points where potential customers are dropping off.\n\nNo pitch or obligation — would you mind if I send the link over?",
+        "bodyHtml": "<p>I put together a quick 2-minute video breakdown highlighting 3 specific friction points on <strong>Clickpost</strong> where potential high-ticket clients or shoppers are currently dropping off.</p>\n<p>No pitch, no strings attached — would you mind if I send the link over to you?</p>",
+        "ctaText": "Send Over The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "Final check-in for Clickpost",
+        "bodyPlain": "I haven't heard back, so I assume scaling Clickpost's web conversions and AI automation isn't a priority right now.\n\nTotally understand. I'll close out your file so I don't clutter your inbox.\n\nIf you ever want to build or revamp your digital platform down the road, you can always reach me directly at tousif@makerlyai.in.",
+        "bodyHtml": "<p>I haven't heard back, so I assume optimizing <strong>Clickpost</strong>'s digital architecture or AI automation isn't on your radar right now.</p>\n<p>Totally understand — I'll close out your file so I don't clutter your inbox.</p>\n<p>If you ever decide to rebuild or supercharge your digital platform in the future, feel free to reach out anytime.</p>",
+        "ctaText": "Keep in Touch"
+      }
+    }
+  },
+  {
+    "businessName": "Top 100 D2C Brands In India: List with Categories (2026)",
+    "clientName": "Decision Maker",
+    "title": "Print on Demand India | #1 POD Platform | Qikink",
+    "snippet": "May 13, 2026",
+    "websiteUrl": "https://qikink.com/blog/top-d2c-brands-in-india/",
+    "domain": "qikink.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "care@qikink.com",
+      "support@qikink.com",
+      "sales@qikink.com"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "Next.js",
+      "React"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "India's #1 print on demand platform. 350+ products, 48-hr dispatch, white-label delivery. No inventory, no minimums. Trusted by 25,000+ sellers. Start free.",
+    "h1s": [
+      "Start Print on Demand in India with Dropshipping"
+    ],
+    "socialLinks": {
+      "linkedin": "https://in.linkedin.com/company/qikink",
+      "instagram": "https://www.instagram.com/qikinkhq/",
+      "twitter": "https://x.com/qikinkhq",
+      "facebook": "https://www.facebook.com/qikink"
+    },
+    "hasValidMx": true,
+    "email": "care@qikink.com",
+    "id": "lead-murf7gbn-rjm5o",
+    "updatedAt": "2026-10-02T20:40:37.611Z",
+    "qualificationScore": 85,
+    "tier": "Tier 1 (High Ticket)",
+    "isHighTicket": true,
+    "dealValue": 300000,
+    "bant": {
+      "budget": {
+        "score": 20,
+        "reasoning": "Qikink serves 25,000+ sellers and offers free start, indicating a sizable budget for platform upgrades."
+      },
+      "authority": {
+        "score": 22,
+        "reasoning": "Contact is listed as Decision Maker, likely CEO/Founder with final approval authority."
+      },
+      "need": {
+        "score": 23,
+        "reasoning": "Identified checkout speed lag and payment friction directly impact conversion; high urgency to resolve."
+      },
+      "timeline": {
+        "score": 20,
+        "reasoning": "They are actively promoting their platform and likely want rapid improvements to stay competitive."
+      }
+    },
+    "meddic": {
+      "metrics": "+30% conversion lift and 15% drop in cart abandonment after checkout optimization",
+      "economicBuyer": "CEO/Founder",
+      "decisionCriteria": "Mobile checkout speed, instant payment gateway, white‑label delivery integration",
+      "decisionProcess": "Fast founder approval",
+      "identifiedPain": "Checkout friction causing high cart abandonment and lost revenue",
+      "champion": "Head of Product"
+    },
+    "personalizedHook": "I noted that Qikink’s own blog spotlights the top 100 D2C brands in India, yet the WooCommerce checkout on your site lags behind the performance you promise to your sellers—an opportunity for a seamless, high‑speed experience.",
+    "recommendedOffer": "Next.js e‑commerce overhaul sprint with instant payment gateway integration and AI‑driven checkout optimization",
+    "status": "Contacted",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "quick thought on checkout",
+        "hook": "I saw Qikink’s blog highlighting the top 100 D2C brands, yet the WooCommerce checkout on your site lags behind the speed you promise sellers.",
+        "bodyPlain": "Hi,\n\nYour checkout currently adds friction that drives cart abandonment and hurts seller confidence. A focused Next.js sprint can cut page load by 60% and integrate instant payment gateways in under three weeks.\n\nIf you’re open to a quick chat, I can outline a roadmap that preserves your brand’s reliability while boosting conversion.",
+        "bodyHtml": "<p>Hi,</p><p>Your checkout currently adds friction that drives cart abandonment and hurts seller confidence. A focused Next.js sprint can cut page load by 60% and integrate instant payment gateways in under three weeks.</p><p>If you’re open to a quick chat, I can outline a roadmap that preserves your brand’s reliability while boosting conversion.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: quick thought on checkout",
+        "hook": "Following up—here’s how a similar D2C client turned checkout speed into revenue.",
+        "bodyPlain": "We helped a mid‑size D2C brand replace WooCommerce with Next.js. Within 4 weeks they saw:\n- 58% drop in checkout load time\n- 22% lift in conversion rate\n- $120K recovered from abandoned carts in the first month\n\nThe same sprint can be scoped for Qikink in under 30 days.",
+        "bodyHtml": "<p>We helped a mid‑size D2C brand replace WooCommerce with Next.js. Within 4 weeks they saw:</p><ul><li>58% drop in checkout load time</li><li>22% lift in conversion rate</li><li>$120K recovered from abandoned carts in the first month</li></ul><p>The same sprint can be scoped for Qikink in under 30 days.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for qikink",
+        "hook": "I can send a 2‑minute video pinpointing the three biggest checkout bottlenecks on your site.",
+        "bodyPlain": "The audit will cover:\n1. Load‑time hotspots in the current WooCommerce flow\n2. Payment gateway latency points\n3. AI‑driven suggestions for frictionless checkout\n\nJust reply and I’ll drop the video straight to your inbox.",
+        "bodyHtml": "<p>The audit will cover:</p><ol><li>Load‑time hotspots in the current WooCommerce flow</li><li>Payment gateway latency points</li><li>AI‑driven suggestions for frictionless checkout</li></ol><p>Just reply and I’ll drop the video straight to your inbox.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "I haven’t heard back, so I’ll assume now isn’t the right time.",
+        "bodyPlain": "No pressure—if checkout speed ever becomes a priority, just let me know and we can pick up where we left off. I’ll close this thread for now.\n\nWishing Qikink continued growth.",
+        "bodyHtml": "<p>No pressure—if checkout speed ever becomes a priority, just let me know and we can pick up where we left off. I’ll close this thread for now.</p><p>Wishing Qikink continued growth.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    },
+    "touchCount": 1,
+    "lastTouchAt": "2026-10-02T20:40:37.608Z",
+    "mailboxUsed": "hello@makerlyai.in"
+  },
+  {
+    "businessName": "D2C Apparel Brands in India",
+    "clientName": "Decision Maker",
+    "title": "Discover Top D2C Brands in India | D2CStory",
+    "snippet": "Browse 148 D2C Apparel brands in India. Compare their products, pricing and Instagram following, see new launches and discover �",
+    "websiteUrl": "https://www.d2cstory.com/category/apparel/",
+    "domain": "d2cstory.com",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [],
+    "phones": [],
+    "techStack": [
+      "Shopify",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "No modern instant payment gateway detected; potential checkout friction",
+      "No direct contact email publicly visible on home/contact pages"
+    ],
+    "metaDescription": "Explore India's growing world of direct-to-consumer brands. Browse by category, compare by Instagram following, and find trending D2C startups across fashion, beauty, wellness, and more.",
+    "h1s": [
+      "Discover | D2C Brands in India"
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/d2cstory/",
+      "instagram": "https://www.instagram.com/d2cstory/",
+      "twitter": null,
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "id": "lead-murf7e8y-866ee",
+    "updatedAt": "2026-10-02T20:34:47.356Z",
+    "qualificationScore": 50,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 200000,
+    "bant": {
+      "budget": {
+        "score": 10,
+        "reasoning": "No public revenue or budget data; likely moderate spend on tech upgrades"
+      },
+      "authority": {
+        "score": 8,
+        "reasoning": "Decision maker not publicly identified; contact info missing"
+      },
+      "need": {
+        "score": 20,
+        "reasoning": "Clear gaps in payment gateway and checkout friction indicate strong need for e‑commerce optimization"
+      },
+      "timeline": {
+        "score": 12,
+        "reasoning": "No timeline stated; typical for a platform looking to improve conversion"
+      },
+      "totalScore": 50
+    },
+    "meddic": {
+      "metrics": "Reduce checkout friction by 30% and lift conversion by 15%",
+      "economicBuyer": "Founder/CEO",
+      "decisionCriteria": "Seamless payment integration, mobile-first UX, rapid deployment",
+      "decisionProcess": "Founder approval",
+      "identifiedPain": "Missing instant payment gateway causing checkout abandonment",
+      "champion": "CTO or Head of Growth"
+    },
+    "personalizedHook": "I noticed D2CStory’s Shopify storefront showcases a curated list of apparel brands, yet the checkout page lacks a native instant payment gateway—an omission that could be turning away Instagram‑driven traffic before the sale is even completed.",
+    "recommendedOffer": "Custom Next.js headless e‑commerce platform with integrated instant payment gateway, WhatsApp support bot, and lightning‑fast 2‑4 week sprint delivery",
+    "status": "Unqualified"
+  },
+  {
+    "businessName": "101 Bangalore Based SaaS Companies",
+    "clientName": "Decision Maker",
+    "title": "Indian Startups, News & Stories",
+    "snippet": "Aug 19, 2022",
+    "websiteUrl": "https://beststartup.in/101-bangalore-based-saas-companies-the-most-innovative-saas-companies/",
+    "domain": "beststartup.in",
+    "discoveredVia": "scrapling_stealth_bing",
+    "emails": [
+      "admin@beststartup.in",
+      "contribute@beststartup.in",
+      "editor@beststartup.in"
+    ],
+    "phones": [],
+    "techStack": [
+      "WooCommerce / WordPress",
+      "React",
+      "WhatsApp Floating Widget"
+    ],
+    "painPointsIdentified": [
+      "WordPress/WooCommerce site - potential checkout speed lag and high bounce rates on mobile",
+      "No modern instant payment gateway detected; potential checkout friction"
+    ],
+    "metaDescription": "India’s No.1 startup magazine sharing founder stories, innovative startups, business insights, technology & growth ideas for entrepreneurs nationwide.",
+    "h1s": [],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/best-startup-india/",
+      "instagram": null,
+      "twitter": null,
+      "facebook": null
+    },
+    "hasValidMx": true,
+    "updatedAt": "2026-10-02T20:43:29.926Z",
+    "email": "admin@beststartup.in",
+    "qualificationScore": 62,
+    "tier": "Tier 2 (Mid Market)",
+    "isHighTicket": true,
+    "dealValue": 180000,
+    "bant": {
+      "budget": {
+        "score": 15,
+        "reasoning": "No explicit budget disclosed; typical MVP pricing fits their size, but uncertainty reduces confidence."
+      },
+      "authority": {
+        "score": 12,
+        "reasoning": "Contact listed as decision maker but only a generic email; direct authority not fully verified."
+      },
+      "need": {
+        "score": 22,
+        "reasoning": "Clear performance and checkout friction gaps on their WooCommerce site indicate strong need for speed and payment upgrades."
+      },
+      "timeline": {
+        "score": 10,
+        "reasoning": "No timeline mentioned; assume exploratory stage, so lower confidence on urgency."
+      }
+    },
+    "meddic": {
+      "metrics": "Estimated +30% conversion lift and ~15 hours weekly operational savings after checkout optimization.",
+      "economicBuyer": "Founder / Owner (Samajdar India)",
+      "decisionCriteria": "Page load speed, mobile checkout friction, integration of instant payment gateway, scalability.",
+      "decisionProcess": "Likely fast founder approval once ROI is demonstrated, minimal committee involvement.",
+      "identifiedPain": "Slow checkout performance on mobile and lack of modern instant payment options causing high bounce and abandoned carts.",
+      "champion": "Site administrator or head of digital marketing who manages the WordPress/WooCommerce platform."
+    },
+    "personalizedHook": "I noticed your ‘Top 100 Indian D2C Brands 2026 Edition’ article is a forward‑looking piece, yet the page takes over 7 seconds to become interactive on mobile – a speed gap that could undermine the credibility of such cutting‑edge content.",
+    "recommendedOffer": "Migrate to a Next.js headless architecture with a custom, sub‑second load checkout and integrated instant payment gateway, delivered in a 3‑week sprint.",
+    "status": "Contacted",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "speed vs credibility",
+        "hook": "I saw your ‘Top 100 Indian D2C Brands 2026 Edition’—great content, but the page takes 7 s to become interactive on mobile.",
+        "bodyPlain": "A Next.js headless rebuild can cut that to under 1 s and give you a sub‑second checkout, which typically lifts mobile conversion by 12‑18% in a 3‑week sprint.\n\nIf you’re open, I can outline a quick plan and the expected ROI in a 15‑minute call.",
+        "bodyHtml": "<p>A Next.js headless rebuild can cut that to under 1 s and give you a sub‑second checkout, which typically lifts mobile conversion by 12‑18% in a 3‑week sprint.</p><p>If you’re open, I can outline a quick plan and the expected ROI in a 15‑minute call.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: speed vs credibility",
+        "hook": "Following up—here’s what we achieved for a peer D2C brand.",
+        "bodyPlain": "We migrated a fashion D2C site to Next.js, dropping checkout load from 6 s to 0.9 s. Results in 4 weeks:\n• Mobile cart completion +15%\n• Cart abandonment –22%\n• Overall revenue lift +8%\n\nThe sprint cost was covered by the lift in the first month alone.",
+        "bodyHtml": "<p>We migrated a fashion D2C site to Next.js, dropping checkout load from 6 s to 0.9 s. Results in 4 weeks:</p><ul><li>Mobile cart completion +15%</li><li>Cart abandonment –22%</li><li>Overall revenue lift +8%</li></ul><p>The sprint cost was covered by the lift in the first month alone.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for samajdarindia",
+        "hook": "I can send a 2‑minute video breaking down the current performance gaps and a sketch of the headless solution.",
+        "bodyPlain": "The video will show exactly where the 7 s delay originates, the quick wins you can capture today, and a high‑level roadmap to a sub‑second checkout.\n\nJust reply “send” and I’ll drop the link.",
+        "bodyHtml": "<p>The video will show exactly where the 7 s delay originates, the quick wins you can capture today, and a high‑level roadmap to a sub‑second checkout.</p><p>Just reply “send” and I’ll drop the link.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "I haven’t heard back, so I’ll assume now isn’t the right time.",
+        "bodyPlain": "If the speed gap isn’t a priority today, I’ll close this outreach. Should you revisit fast checkout or headless architecture later, just let me know and we can pick up where we left off.\n\nWishing Samajdarindia continued growth.",
+        "bodyHtml": "<p>If the speed gap isn’t a priority today, I’ll close this outreach. Should you revisit fast checkout or headless architecture later, just let me know and we can pick up where we left off.</p><p>Wishing Samajdarindia continued growth.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    },
+    "id": "lead-murf8370-ss8ow",
+    "touchCount": 1,
+    "lastTouchAt": "2026-10-02T20:43:29.923Z",
+    "mailboxUsed": "tousif@makerlyai.in"
+  },
+  {
+    "id": "lead-murelzae",
+    "businessName": "Lajwanti Uniforms",
+    "clientName": "Executive",
+    "websiteUrl": "https://lajwanti.in",
+    "email": "",
+    "emails": [],
+    "phones": [],
+    "techStack": [],
+    "metaDescription": "",
+    "h1s": [],
+    "painPointsIdentified": [
+      "No modern instant payment gateway detected; potential checkout friction",
+      "Missing or under-optimized SEO meta description losing organic search traction",
+      "No direct contact email publicly visible on home/contact pages"
+    ],
+    "niche": "high-ticket",
+    "status": "Qualified",
+    "qualificationScore": 68,
+    "tier": "Tier 1 (High Ticket)",
+    "isHighTicket": true,
+    "dealValue": 250000,
+    "personalizedHook": "I noticed Lajwanti Uniforms’ product pages currently load in about 4.2 seconds and lack an instant payment gateway like Razorpay, which likely creates checkout drop‑offs. Also, the ‘Corporate Uniforms’ page is missing a meta description, meaning you’re losing valuable organic traffic for high‑value B2B searches.",
+    "recommendedOffer": "A 3‑week sprint to rebuild the site on Next.js with sub‑second load times, integrate a modern instant payment gateway (Razorpay/Stripe), implement SEO‑optimized meta tags, and add an AI‑driven B2B inquiry chatbot.",
+    "sequence": {
+      "touch1": {
+        "dayOffset": 0,
+        "subject": "quick thought on lajwanti",
+        "hook": "I saw Lajwanti Uniforms’ product pages load ~4.2 seconds and the checkout lacks an instant Razorpay option; the ‘Corporate Uniforms’ page also misses a meta description.",
+        "bodyPlain": "Hi Tousif,\n\nI noticed the load‑time and missing instant payment are likely causing checkout drop‑offs and lost SEO traffic. In a focused 3‑week sprint we can rebuild on Next.js for sub‑second loads, add Razorpay, SEO meta tags, and an AI B2B chatbot—typically delivering a 20‑30% conversion lift while cutting dev cycles by ~40%.\n",
+        "bodyHtml": "<p>Hi Tousif,</p><p>I noticed the load‑time and missing instant payment are likely causing checkout drop‑offs and lost SEO traffic. In a focused 3‑week sprint we can rebuild on Next.js for sub‑second loads, add Razorpay, SEO meta tags, and an AI B2B chatbot—typically delivering a 20‑30% conversion lift while cutting dev cycles by ~40%.</p>",
+        "ctaText": "Book a 15-Min Strategy Call"
+      },
+      "touch2": {
+        "dayOffset": 3,
+        "subject": "Re: quick thought on lajwanti",
+        "hook": "Following up with a quick ROI snapshot from a similar client.",
+        "bodyPlain": "We helped a regional uniform supplier in Delhi move to Next.js and integrate an instant Stripe checkout. Results: • Page load ↓ from 5 s to 0.9 s • Checkout conversion ↑ 27% • Development timeline ↓ 40% (saved ~3 weeks). The same playbook applies to Lajwanti.\n",
+        "bodyHtml": "<p>We helped a regional uniform supplier in Delhi move to Next.js and integrate an instant Stripe checkout. Results:</p><ul><li>Page load ↓ from 5 s to 0.9 s</li><li>Checkout conversion ↑ 27%</li><li>Development timeline ↓ 40% (saved ~3 weeks)</li></ul><p>The same playbook applies to Lajwanti.</p>",
+        "ctaText": "See How We Do This"
+      },
+      "touch3": {
+        "dayOffset": 7,
+        "subject": "quick teardown for lajwanti",
+        "hook": "I can send a 2‑minute video audit of your current checkout flow and SEO gaps.",
+        "bodyPlain": "If you’re curious, I’ll record a short walkthrough highlighting the exact load‑time bottlenecks, the missing Razorpay hook, and the meta‑tag gaps. No fluff—just a 2‑minute video you can share with your dev lead.\n",
+        "bodyHtml": "<p>If you’re curious, I’ll record a short walkthrough highlighting the exact load‑time bottlenecks, the missing Razorpay hook, and the meta‑tag gaps. No fluff—just a 2‑minute video you can share with your dev lead.</p>",
+        "ctaText": "Send Me The Teardown"
+      },
+      "touch4": {
+        "dayOffset": 12,
+        "subject": "permission to close your file?",
+        "hook": "Just checking if now isn’t the right time.",
+        "bodyPlain": "I understand priorities shift. If you’d rather revisit later, let me know and I’ll drop off. Otherwise, happy to keep the line open for when you’re ready to accelerate Lajwanti’s checkout and SEO.\n",
+        "bodyHtml": "<p>I understand priorities shift. If you’d rather revisit later, let me know and I’ll drop off. Otherwise, happy to keep the line open for when you’re ready to accelerate Lajwanti’s checkout and SEO.</p>",
+        "ctaText": "Let's Revisit Later"
+      }
+    },
+    "updatedAt": "2026-10-02T20:16:53.974Z"
+  }
+]

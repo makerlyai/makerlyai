@@ -4,10 +4,15 @@
 // ─────────────────────────────────────────────────────────────────
 
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 import { SALES_ENGINE_CONFIG } from './config.mjs';
 
 const CACHE_FILE = SALES_ENGINE_CONFIG.crm.localCacheFile;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const SEED_FILE = path.join(__dirname, 'seed-leads.json');
 
 let supabase = null;
 if (SALES_ENGINE_CONFIG.crm.supabaseUrl && SALES_ENGINE_CONFIG.crm.supabaseKey) {
@@ -22,16 +27,35 @@ if (SALES_ENGINE_CONFIG.crm.supabaseUrl && SALES_ENGINE_CONFIG.crm.supabaseKey) 
 }
 
 /**
- * Loads leads from local cache file
+ * Loads leads from local cache file with bundled seed fallback
  */
 export function loadCachedLeads() {
   try {
     if (fs.existsSync(CACHE_FILE)) {
-      return JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+      const data = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
     }
   } catch (err) {
-    console.error('[CRM Sync] Error reading cache file:', err.message);
+    console.warn('[CRM Sync] Notice reading local cache file:', err.message);
   }
+
+  // Fallback to bundled seed targets
+  try {
+    if (fs.existsSync(SEED_FILE)) {
+      const seedData = JSON.parse(fs.readFileSync(SEED_FILE, 'utf-8'));
+      if (Array.isArray(seedData) && seedData.length > 0) {
+        try {
+          fs.writeFileSync(CACHE_FILE, JSON.stringify(seedData, null, 2), 'utf-8');
+        } catch {}
+        return seedData;
+      }
+    }
+  } catch (err) {
+    console.warn('[CRM Sync] Notice reading seed targets file:', err.message);
+  }
+
   return [];
 }
 
